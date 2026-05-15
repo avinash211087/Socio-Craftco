@@ -1,0 +1,3112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Socio Craftco is a digital marketing agency for social media handling, paid ads, websites, ecommerce, portfolio websites and personal apps.">
+  <meta name="theme-color" content="#070809">
+  <title>Socio Craftco | Digital Marketing, Websites & Social Media Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="sociocraftco-logo.jpg">
+  <style>
+    :root {
+      --ink: #070809;
+      --ink-soft: #0d1010;
+      --panel: #111514;
+      --panel-2: #171c1a;
+      --paper: #f7f2e8;
+      --muted: #b8beb9;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-strong: rgba(255, 255, 255, 0.22);
+      --mint: #7cf7cf;
+      --coral: #ff6b5f;
+      --amber: #ffd166;
+      --sky: #65d9ff;
+      --violet: #a686ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --radius: 8px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--ink);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(124, 247, 207, 0.16), transparent 24rem),
+        radial-gradient(circle at 85% 18%, rgba(255, 107, 95, 0.12), transparent 26rem),
+        linear-gradient(180deg, #070809 0%, #0b0d0c 44%, #080909 100%);
+      overflow-x: hidden;
+    }
+
+    img,
+    svg {
+      display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .site-shell {
+      position: relative;
+      min-height: 100vh;
+      isolation: isolate;
+    }
+
+    .site-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
+    }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid transparent;
+      background: rgba(7, 8, 9, 0.68);
+      backdrop-filter: blur(20px);
+      transition: border-color 220ms ease, background 220ms ease;
+    }
+
+    .nav.is-scrolled {
+      border-color: var(--line);
+      background: rgba(7, 8, 9, 0.88);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-inner > * {
+      min-width: 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #0a0b0b;
+      padding: 6px;
+      box-shadow: 0 0 0 4px rgba(124, 247, 207, 0.08), 0 12px 32px rgba(0, 0, 0, 0.28);
+      flex: 0 0 auto;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 0.12rem;
+      min-width: 0;
+    }
+
+    .brand-name {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .brand-line {
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: rgba(247, 242, 232, 0.72);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 180ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--paper);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-left: auto;
+    }
+
+    .menu-btn {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--paper);
+      background: rgba(124, 247, 207, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn {
+      --btn-bg: rgba(255, 255, 255, 0.06);
+      --btn-color: var(--paper);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.76rem 1.05rem;
+      color: var(--btn-color);
+      background: var(--btn-bg);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.92rem;
+      line-height: 1;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.52;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      --btn-bg: linear-gradient(135deg, var(--mint), var(--sky));
+      --btn-color: #07100d;
+      border-color: transparent;
+    }
+
+    .btn-coral {
+      --btn-bg: linear-gradient(135deg, var(--coral), var(--amber));
+      --btn-color: #150907;
+      border-color: transparent;
+    }
+
+    .btn-ghost {
+      --btn-bg: rgba(255, 255, 255, 0.055);
+    }
+
+    .icon {
+      width: 1.05rem;
+      height: 1.05rem;
+      flex: 0 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: grid;
+      align-items: center;
+      padding: 6rem 0 4rem;
+      overflow: hidden;
+    }
+
+    .hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 0.92;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(7, 8, 9, 0.98), rgba(7, 8, 9, 0.78) 43%, rgba(7, 8, 9, 0.22) 100%),
+        linear-gradient(180deg, rgba(7, 8, 9, 0.05), rgba(7, 8, 9, 0.84));
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.78fr);
+      gap: 2.2rem;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .hero-copy-block,
+    .hero-panel {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      max-width: 100%;
+      flex-wrap: wrap;
+      color: var(--mint);
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid rgba(124, 247, 207, 0.28);
+      border-radius: 999px;
+      background: rgba(124, 247, 207, 0.07);
+      margin-bottom: 1.3rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.48rem;
+      height: 0.48rem;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 24px rgba(124, 247, 207, 0.76);
+    }
+
+    .hero h1 {
+      max-width: 820px;
+      margin: 0;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 5.55rem;
+      line-height: 0.9;
+      letter-spacing: 0;
+      color: var(--paper);
+      overflow-wrap: break-word;
+      text-shadow: 0 16px 48px rgba(0, 0, 0, 0.48);
+    }
+
+    .hero h1 span {
+      display: block;
+    }
+
+    .hero h1 .accent {
+      color: transparent;
+      background: linear-gradient(135deg, var(--paper), var(--mint) 45%, var(--amber));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin: 1.4rem 0 0;
+      color: rgba(247, 242, 232, 0.78);
+      font-size: 1.1rem;
+      line-height: 1.75;
+      overflow-wrap: break-word;
+    }
+
+    .hero-copy strong {
+      color: var(--paper);
+      font-weight: 800;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2.2rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.58rem 0.75rem;
+      background: rgba(255, 255, 255, 0.045);
+      color: rgba(247, 242, 232, 0.8);
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    .meta-dot {
+      width: 0.46rem;
+      height: 0.46rem;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .hero-panel {
+      position: relative;
+      min-height: 420px;
+      perspective: 1100px;
+    }
+
+    .orbit-card {
+      position: absolute;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(16, 20, 19, 0.72);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+
+    .orbit-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 30%);
+    }
+
+    .orbit-card.main {
+      width: min(360px, 100%);
+      min-height: 290px;
+      right: 3%;
+      top: 36px;
+      padding: 1.15rem;
+      transform: rotateY(-14deg) rotateX(8deg);
+      animation: hoverMain 7s ease-in-out infinite;
+    }
+
+    .orbit-card.mini {
+      width: 210px;
+      left: 8%;
+      bottom: 26px;
+      padding: 0.9rem;
+      transform: rotateY(16deg) rotateX(10deg);
+      animation: hoverMini 6s ease-in-out infinite;
+    }
+
+    .orbit-card.side {
+      width: 190px;
+      right: 0;
+      bottom: 2px;
+      padding: 0.9rem;
+      animation: hoverSide 6.5s ease-in-out infinite;
+    }
+
+    @keyframes hoverMain {
+      0%, 100% { transform: rotateY(-14deg) rotateX(8deg) translateY(0); }
+      50% { transform: rotateY(-10deg) rotateX(11deg) translateY(-14px); }
+    }
+
+    @keyframes hoverMini {
+      0%, 100% { transform: rotateY(16deg) rotateX(10deg) translateY(0); }
+      50% { transform: rotateY(10deg) rotateX(7deg) translateY(12px); }
+    }
+
+    @keyframes hoverSide {
+      0%, 100% { transform: rotateY(-10deg) rotateX(-7deg) translateY(0); }
+      50% { transform: rotateY(-16deg) rotateX(-4deg) translateY(-10px); }
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-weight: 900;
+      font-family: "Space Grotesk", Inter, sans-serif;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.36rem;
+      color: var(--mint);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .status::before {
+      content: "";
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .hero-chart {
+      height: 132px;
+      display: flex;
+      align-items: end;
+      gap: 0.55rem;
+      padding: 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.16);
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-chart span {
+      flex: 1;
+      min-width: 18px;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(180deg, var(--mint), rgba(101, 217, 255, 0.42));
+      animation: chartPulse 2.6s ease-in-out infinite;
+    }
+
+    .hero-chart span:nth-child(2) { animation-delay: 160ms; }
+    .hero-chart span:nth-child(3) { animation-delay: 320ms; }
+    .hero-chart span:nth-child(4) { animation-delay: 480ms; }
+    .hero-chart span:nth-child(5) { animation-delay: 640ms; }
+
+    @keyframes chartPulse {
+      0%, 100% { filter: saturate(0.8); transform: scaleY(0.92); }
+      50% { filter: saturate(1.35); transform: scaleY(1); }
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .card-metric {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0.72rem;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .metric-value {
+      display: block;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-top: 0.1rem;
+    }
+
+    .signal-strip {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.035);
+      overflow: hidden;
+    }
+
+    .signal-track {
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      padding: 0.9rem 0;
+      color: rgba(247, 242, 232, 0.7);
+      font-size: 0.86rem;
+      font-weight: 800;
+      animation: marquee 24s linear infinite;
+    }
+
+    .signal-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      white-space: nowrap;
+    }
+
+    .signal-track span::before {
+      content: "";
+      width: 0.44rem;
+      height: 0.44rem;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    .section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section-alt {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr);
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 2.6rem;
+    }
+
+    .label {
+      display: inline-flex;
+      color: var(--coral);
+      font-size: 0.78rem;
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+    }
+
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 3.4rem;
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      margin: 0;
+      color: rgba(247, 242, 232, 0.66);
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .service-card,
+    .package-card,
+    .mini-card,
+    .term-card,
+    .experience-panel,
+    .proof-step,
+    .review-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(17, 21, 20, 0.76);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
+    }
+
+    .service-card {
+      position: relative;
+      min-height: 280px;
+      padding: 1.25rem;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .service-card:hover {
+      border-color: rgba(124, 247, 207, 0.42);
+      background: rgba(19, 26, 23, 0.92);
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: var(--mint);
+      background: rgba(124, 247, 207, 0.08);
+      margin-bottom: 1.2rem;
+    }
+
+    .service-card h3 {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .service-card p {
+      color: rgba(247, 242, 232, 0.64);
+      line-height: 1.65;
+      margin-bottom: 1.1rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.36rem 0.55rem;
+      color: rgba(247, 242, 232, 0.76);
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .proof-section {
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(124, 247, 207, 0.06), transparent 34%),
+        linear-gradient(315deg, rgba(255, 209, 102, 0.055), transparent 38%),
+        rgba(255, 255, 255, 0.012);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.98fr) minmax(320px, 0.72fr);
+      gap: 1rem;
+      align-items: stretch;
+      perspective: 1200px;
+    }
+
+    .experience-panel {
+      position: relative;
+      padding: 1.25rem;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      animation: proofFloat 8s ease-in-out infinite;
+    }
+
+    .experience-panel:nth-child(2) {
+      animation-delay: -2.5s;
+    }
+
+    .experience-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.42;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.12), transparent 28%),
+        linear-gradient(290deg, rgba(101, 217, 255, 0.1), transparent 34%);
+      transform: translateZ(-1px);
+    }
+
+    @keyframes proofFloat {
+      0%, 100% { transform: rotateX(0deg) rotateY(0deg) translateY(0); }
+      50% { transform: rotateX(1.2deg) rotateY(-1.6deg) translateY(-8px); }
+    }
+
+    .proof-stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .proof-stat {
+      min-height: 150px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: grid;
+      align-content: space-between;
+      background: rgba(255, 255, 255, 0.055);
+      transform: translateZ(20px);
+    }
+
+    .proof-value {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      font-weight: 700;
+      line-height: 0.9;
+      color: var(--paper);
+    }
+
+    .proof-label {
+      color: rgba(247, 242, 232, 0.68);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      max-width: 16rem;
+    }
+
+    .proof-panel-title {
+      position: relative;
+      z-index: 1;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.45rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .proof-panel-copy {
+      position: relative;
+      z-index: 1;
+      color: rgba(247, 242, 232, 0.66);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .ai-flow {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .ai-flow-step {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 0.75rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .ai-flow-step span {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--mint), var(--sky));
+    }
+
+    .ai-flow-step strong {
+      display: block;
+      margin-bottom: 0.18rem;
+    }
+
+    .ai-flow-step small {
+      color: rgba(247, 242, 232, 0.62);
+      line-height: 1.45;
+    }
+
+    .proof-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .proof-step {
+      position: relative;
+      min-height: 190px;
+      padding: 1rem;
+      overflow: hidden;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .proof-step:hover {
+      transform: translateY(-6px) rotateX(2deg);
+      border-color: rgba(255, 209, 102, 0.4);
+      background: rgba(24, 30, 28, 0.88);
+    }
+
+    .proof-step::before {
+      content: attr(data-step);
+      position: absolute;
+      right: 0.9rem;
+      top: 0.75rem;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 3.4rem;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.06);
+    }
+
+    .proof-step h3 {
+      position: relative;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.12rem;
+      margin-bottom: 0.55rem;
+      max-width: 12rem;
+    }
+
+    .proof-step p {
+      position: relative;
+      color: rgba(247, 242, 232, 0.64);
+      line-height: 1.58;
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .review-card {
+      min-height: 240px;
+      padding: 1.1rem;
+      display: grid;
+      align-content: space-between;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(124, 247, 207, 0.38);
+    }
+
+    .review-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.48;
+      background: linear-gradient(135deg, rgba(124, 247, 207, 0.08), transparent 44%);
+    }
+
+    .review-rating {
+      position: relative;
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      color: var(--amber);
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+
+    .review-rating span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 18px rgba(255, 209, 102, 0.28);
+    }
+
+    .review-card p {
+      position: relative;
+      color: rgba(247, 242, 232, 0.72);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .review-source {
+      position: relative;
+      display: grid;
+      gap: 0.16rem;
+    }
+
+    .review-source strong {
+      font-family: "Space Grotesk", Inter, sans-serif;
+    }
+
+    .review-source span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .studio {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.38fr) minmax(0, 1fr);
+      gap: 1.3rem;
+      align-items: stretch;
+    }
+
+    .studio-controls {
+      display: grid;
+      gap: 0.75rem;
+      align-content: start;
+    }
+
+    .preview-tab {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: left;
+      color: var(--paper);
+      background: rgba(255, 255, 255, 0.045);
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .preview-tab:hover,
+    .preview-tab.is-active {
+      transform: translateX(5px);
+      border-color: rgba(255, 209, 102, 0.44);
+      background: rgba(255, 209, 102, 0.09);
+    }
+
+    .preview-tab strong {
+      display: block;
+      font-size: 0.98rem;
+      margin-bottom: 0.24rem;
+    }
+
+    .preview-tab span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .studio-stage {
+      position: relative;
+      min-height: 530px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 26% 20%, rgba(124, 247, 207, 0.15), transparent 17rem),
+        radial-gradient(circle at 78% 78%, rgba(255, 107, 95, 0.13), transparent 19rem),
+        rgba(11, 13, 12, 0.72);
+      overflow: hidden;
+      perspective: 1200px;
+    }
+
+    .browser-mock {
+      position: absolute;
+      width: min(680px, 92%);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotateX(6deg) rotateY(-10deg);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #0d0f0f;
+      box-shadow: 0 34px 100px rgba(0, 0, 0, 0.42);
+      overflow: hidden;
+      animation: mockFloat 7s ease-in-out infinite;
+    }
+
+    @keyframes mockFloat {
+      0%, 100% { transform: translate(-50%, -50%) rotateX(6deg) rotateY(-10deg) translateY(0); }
+      50% { transform: translate(-50%, -50%) rotateX(8deg) rotateY(-6deg) translateY(-14px); }
+    }
+
+    .browser-top {
+      height: 42px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0 0.85rem;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .browser-dot {
+      width: 0.68rem;
+      height: 0.68rem;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .browser-dot:nth-child(2) {
+      background: var(--amber);
+    }
+
+    .browser-dot:nth-child(3) {
+      background: var(--mint);
+    }
+
+    .browser-url {
+      margin-left: 0.5rem;
+      min-width: 0;
+      flex: 1;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(247, 242, 232, 0.54);
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      padding: 0 0.85rem;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .preview-screen {
+      min-height: 380px;
+      padding: 1.1rem;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .preview-screen.is-changing {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .mock-hero {
+      min-height: 150px;
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: grid;
+      align-items: end;
+      background:
+        linear-gradient(135deg, rgba(124, 247, 207, 0.18), rgba(255, 107, 95, 0.12)),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent);
+      border: 1px solid var(--line);
+    }
+
+    .mock-hero h3 {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      margin: 0 0 0.35rem;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .mock-hero p {
+      margin: 0;
+      color: rgba(247, 242, 232, 0.72);
+      line-height: 1.5;
+      max-width: 440px;
+    }
+
+    .mock-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .mock-block {
+      min-height: 94px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.75rem;
+      overflow: hidden;
+    }
+
+    .mock-block strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .mock-line {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      margin-top: 8px;
+    }
+
+    .mock-line.short {
+      width: 58%;
+    }
+
+    .floating-phone {
+      position: absolute;
+      right: 6%;
+      bottom: 6%;
+      width: 132px;
+      height: 238px;
+      border: 1px solid var(--line-strong);
+      border-radius: 22px;
+      background: #0a0d0c;
+      box-shadow: var(--shadow);
+      transform: rotateZ(7deg);
+      padding: 0.58rem;
+      animation: phoneFloat 5.8s ease-in-out infinite;
+    }
+
+    @keyframes phoneFloat {
+      0%, 100% { transform: rotateZ(7deg) translateY(0); }
+      50% { transform: rotateZ(3deg) translateY(-12px); }
+    }
+
+    .phone-screen {
+      height: 100%;
+      border-radius: 16px;
+      background:
+        linear-gradient(180deg, rgba(124, 247, 207, 0.24), rgba(101, 217, 255, 0.1)),
+        #121716;
+      padding: 0.7rem;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .phone-pill {
+      height: 9px;
+      width: 48px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      margin: 0 auto;
+    }
+
+    .phone-card {
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.12);
+      height: 42px;
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 1.3rem;
+      align-items: stretch;
+    }
+
+    .social-board {
+      min-height: 430px;
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 26% 10%, rgba(255, 209, 102, 0.16), transparent 16rem),
+        radial-gradient(circle at 88% 72%, rgba(124, 247, 207, 0.16), transparent 18rem),
+        rgba(17, 21, 20, 0.72);
+    }
+
+    .post-tile {
+      position: absolute;
+      width: 185px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+      animation: tileLift 6s ease-in-out infinite;
+    }
+
+    .post-tile:nth-child(1) { left: 8%; top: 10%; animation-delay: 0ms; }
+    .post-tile:nth-child(2) { right: 10%; top: 20%; animation-delay: 420ms; }
+    .post-tile:nth-child(3) { left: 19%; bottom: 13%; animation-delay: 820ms; }
+
+    @keyframes tileLift {
+      0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+      50% { transform: translateY(-12px) rotateZ(2deg); }
+    }
+
+    .tile-art {
+      aspect-ratio: 1;
+      background:
+        linear-gradient(135deg, rgba(255, 107, 95, 0.85), rgba(255, 209, 102, 0.8)),
+        linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.3));
+    }
+
+    .post-tile:nth-child(2) .tile-art {
+      background:
+        linear-gradient(135deg, rgba(124, 247, 207, 0.82), rgba(101, 217, 255, 0.76));
+    }
+
+    .post-tile:nth-child(3) .tile-art {
+      background:
+        linear-gradient(135deg, rgba(166, 134, 255, 0.85), rgba(255, 107, 95, 0.68));
+    }
+
+    .tile-copy {
+      padding: 0.7rem;
+    }
+
+    .social-steps {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .mini-card {
+      padding: 1.2rem;
+    }
+
+    .mini-card h3 {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      margin-bottom: 0.45rem;
+      font-size: 1.2rem;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: rgba(247, 242, 232, 0.66);
+      line-height: 1.65;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .package-card {
+      position: relative;
+      padding: 1.3rem;
+      display: grid;
+      gap: 1.1rem;
+      overflow: hidden;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .package-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(124, 247, 207, 0.4);
+    }
+
+    .package-card.is-featured {
+      border-color: rgba(255, 209, 102, 0.42);
+      background:
+        linear-gradient(180deg, rgba(255, 209, 102, 0.08), rgba(17, 21, 20, 0.88));
+    }
+
+    .package-kicker {
+      color: var(--mint);
+      font-weight: 900;
+      font-size: 0.78rem;
+    }
+
+    .package-card h3 {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 1.85rem;
+      margin: 0;
+    }
+
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .price strong {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 2.15rem;
+      line-height: 1;
+    }
+
+    .price span {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 0.72rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .feature-list li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 0.55rem;
+      color: rgba(247, 242, 232, 0.72);
+      line-height: 1.45;
+      font-size: 0.93rem;
+    }
+
+    .feature-list li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin-top: 0.05rem;
+      background:
+        linear-gradient(135deg, var(--mint), var(--sky));
+      box-shadow: 0 0 0 4px rgba(124, 247, 207, 0.08);
+    }
+
+    .package-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+      align-self: end;
+    }
+
+    .package-note {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .terms-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.2rem;
+    }
+
+    .term-card {
+      padding: 1rem;
+      color: rgba(247, 242, 232, 0.74);
+      line-height: 1.55;
+      font-size: 0.9rem;
+    }
+
+    .term-card strong {
+      display: block;
+      color: var(--paper);
+      margin-bottom: 0.35rem;
+    }
+
+    .terms-section {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      background: rgba(7, 8, 9, 0.98);
+      padding: 5.5rem 0 2rem;
+      backdrop-filter: blur(14px);
+    }
+
+    .terms-section.is-open {
+      display: block;
+    }
+
+    .terms-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(17, 21, 20, 0.72);
+      padding: clamp(1.1rem, 2.4vw, 1.7rem);
+      box-shadow: 0 20px 64px rgba(0, 0, 0, 0.24);
+    }
+
+    .terms-topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .terms-content {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.1rem;
+      color: rgba(247, 242, 232, 0.76);
+      line-height: 1.68;
+    }
+
+    .terms-content article {
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+    }
+
+    .terms-content h3 {
+      margin: 0 0 0.45rem;
+      color: var(--paper);
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.25;
+    }
+
+    .terms-content p,
+    .terms-content ul {
+      margin: 0;
+    }
+
+    .terms-content ul {
+      display: grid;
+      gap: 0.4rem;
+      padding-left: 1.1rem;
+    }
+
+    .terms-content li {
+      padding-left: 0.15rem;
+    }
+
+    .payment-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(3, 4, 4, 0.76);
+      backdrop-filter: blur(12px);
+    }
+
+    .payment-modal.is-open {
+      display: flex;
+    }
+
+    .payment-dialog {
+      width: min(560px, 100%);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: rgba(17, 21, 20, 0.98);
+      box-shadow: var(--shadow);
+      padding: 1.1rem;
+    }
+
+    .payment-dialog-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.9rem;
+    }
+
+    .payment-dialog h2 {
+      margin: 0;
+      font-size: clamp(1.2rem, 3vw, 1.55rem);
+    }
+
+    .payment-plan {
+      color: var(--muted);
+      margin: 0.25rem 0 0;
+      line-height: 1.5;
+    }
+
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--paper);
+      background: rgba(255, 255, 255, 0.06);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-copy {
+      color: rgba(247, 242, 232, 0.76);
+      line-height: 1.65;
+      margin: 1rem 0;
+    }
+
+    .terms-check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.045);
+      padding: 0.9rem;
+      color: rgba(247, 242, 232, 0.84);
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .terms-check input {
+      width: 20px;
+      height: 20px;
+      margin: 0.1rem 0 0;
+      accent-color: var(--mint);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(320px, 0.65fr);
+      gap: 1.3rem;
+      align-items: start;
+    }
+
+    .contact-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(17, 21, 20, 0.76);
+      padding: 1.2rem;
+    }
+
+    .lead-form {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.38rem;
+    }
+
+    .field span {
+      color: rgba(247, 242, 232, 0.74);
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      color: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+      min-height: 46px;
+      padding: 0.78rem 0.85rem;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .field textarea {
+      min-height: 104px;
+      resize: vertical;
+    }
+
+    .field select option {
+      background: #121514;
+      color: var(--paper);
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(124, 247, 207, 0.52);
+      box-shadow: 0 0 0 4px rgba(124, 247, 207, 0.08);
+    }
+
+    .contact-lines {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .contact-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      border-top: 1px solid var(--line);
+      padding-top: 0.75rem;
+      color: rgba(247, 242, 232, 0.75);
+    }
+
+    .contact-line strong {
+      color: var(--paper);
+    }
+
+    .contact-line a {
+      text-decoration: none;
+      color: var(--mint);
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .wa-float {
+      position: fixed;
+      right: 1.1rem;
+      bottom: 1.1rem;
+      z-index: 40;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #07100d;
+      background: linear-gradient(135deg, var(--mint), var(--sky));
+      box-shadow: 0 18px 44px rgba(124, 247, 207, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      text-decoration: none;
+      animation: floatAction 3.4s ease-in-out infinite;
+    }
+
+    @keyframes floatAction {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      background: #070809;
+      padding: 2.2rem 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.85fr 1fr 1fr;
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0.9rem 0 0;
+      max-width: 420px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .footer-links strong {
+      margin-bottom: 0.2rem;
+    }
+
+    .footer-links a,
+    .footer-links span {
+      color: rgba(247, 242, 232, 0.68);
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .footer-links button {
+      width: fit-content;
+      border: 0;
+      padding: 0;
+      color: rgba(247, 242, 232, 0.68);
+      background: transparent;
+      line-height: 1.4;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .footer-links a:hover,
+    .footer-links button:hover {
+      color: var(--mint);
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 560ms ease, transform 560ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.3rem;
+      z-index: 60;
+      width: min(520px, calc(100% - 32px));
+      transform: translate(-50%, 120%);
+      border: 1px solid rgba(255, 209, 102, 0.38);
+      border-radius: var(--radius);
+      padding: 0.9rem 1rem;
+      background: rgba(17, 21, 20, 0.96);
+      color: var(--paper);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+
+    .toast.is-open {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1040px) {
+      .hero-grid,
+      .section-head,
+      .experience-grid,
+      .review-grid,
+      .social-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 4.35rem;
+      }
+
+      .hero-panel {
+        min-height: 380px;
+      }
+
+      .services-grid,
+      .packages-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .proof-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .terms-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 821px) {
+      .menu-btn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav-links,
+      .nav-actions .btn {
+        display: none;
+      }
+
+      .menu-btn {
+        display: inline-flex;
+        position: fixed;
+        top: 16px;
+        right: auto;
+        left: min(calc(100vw - 58px), 332px);
+        z-index: 80;
+        border-color: rgba(124, 247, 207, 0.36);
+      }
+
+      .nav[data-open="true"] .nav-links {
+        display: grid;
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 76px;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(7, 8, 9, 0.96);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 4rem;
+      }
+
+      .hero h1 {
+        font-size: 3.3rem;
+      }
+
+      h2 {
+        font-size: 2.55rem;
+      }
+
+      .studio {
+        grid-template-columns: 1fr;
+      }
+
+      .studio-stage {
+        min-height: 470px;
+      }
+
+      .floating-phone {
+        display: none;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .wrap {
+        width: min(var(--max), calc(100% - 28px));
+      }
+
+      .section {
+        padding: 4.6rem 0;
+      }
+
+      .brand-line {
+        display: none;
+      }
+
+      .brand-name {
+        font-size: 0.98rem;
+      }
+
+      .hero h1 {
+        font-size: 2.36rem;
+      }
+
+      .hero-copy,
+      .section-copy {
+        font-size: 0.96rem;
+      }
+
+      .hero h1,
+      .hero-copy,
+      .eyebrow,
+      .hero-actions,
+      .hero-meta {
+        max-width: min(340px, 100%);
+      }
+
+      .hero-actions,
+      .package-actions {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-panel {
+        min-height: 340px;
+      }
+
+      .orbit-card.main {
+        right: auto;
+        left: 0;
+        width: 100%;
+      }
+
+      .orbit-card.mini,
+      .orbit-card.side {
+        display: none;
+      }
+
+      .services-grid,
+      .packages-grid,
+      .proof-stats,
+      .proof-timeline,
+      .terms-grid,
+      .mock-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .studio-stage {
+        min-height: 430px;
+      }
+
+      .browser-mock {
+        width: 96%;
+      }
+
+      .preview-screen {
+        min-height: 340px;
+      }
+
+      .contact-line {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="nav" id="siteNav" aria-label="Main navigation">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top" aria-label="Socio Craftco home">
+          <span class="brand-mark">
+            <img class="brand-logo" alt="Socio Craftco logo" src="sociocraftco-logo.jpg" />
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">Socio Craftco</span>
+            <span class="brand-line">Digital growth agency</span>
+          </span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#studio">Website Studio</a></li>
+          <li><a href="#marketing">Marketing</a></li>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a class="btn btn-primary js-whatsapp" href="#" data-message="Hi Socio Craftco, I want to know more about your digital marketing and website packages.">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 11.5h7.8M7 7.8h10M7 15.2h5.4M5.4 21l1.2-3A8.3 8.3 0 1 1 20.3 8.6c1.5 4.4-1 9.1-5.4 10.5A8.2 8.2 0 0 1 8 18.4L5.4 21Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            WhatsApp
+          </a>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="top">
+      <section class="hero" aria-label="Socio Craftco digital marketing agency">
+        <canvas class="hero-canvas" id="heroCanvas"></canvas>
+        <div class="wrap hero-grid">
+          <div class="hero-copy-block">
+            <div class="eyebrow">Websites, content and ads under one roof.</div>
+            <h1>
+              <span>Socio Craftco</span>
+              <span class="accent">makes brands look built to win.</span>
+            </h1>
+            <p class="hero-copy">
+              We handle <strong>social media posts and reels</strong>, run <strong>paid ad campaigns</strong>, and build <strong>business, ecommerce, portfolio websites and personal apps</strong> that feel premium from the first click.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#packages">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13.5 10 19 20 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                View packages
+              </a>
+              <a class="btn btn-ghost js-whatsapp" href="#" data-message="Hi Socio Craftco, I want a website/social media plan for my business. Please share details.">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 10h8M8 14h5M4.5 19.5V6.7c0-1.2 1-2.2 2.2-2.2h10.6c1.2 0 2.2 1 2.2 2.2v7.6c0 1.2-1 2.2-2.2 2.2H9.2l-4.7 3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Direct WhatsApp
+              </a>
+            </div>
+            <div class="hero-meta" aria-label="Highlights">
+              <span class="meta-pill"><span class="meta-dot"></span>Digital growth partner</span>
+              <span class="meta-pill"><span class="meta-dot" style="background: var(--mint)"></span>Social media handling</span>
+              <span class="meta-pill"><span class="meta-dot" style="background: var(--amber)"></span>Plan checkout ready</span>
+            </div>
+          </div>
+
+          <div class="hero-panel" aria-hidden="true">
+            <div class="orbit-card main">
+              <div class="card-top">
+                <span class="card-title">Campaign cockpit</span>
+                <span class="status">Live</span>
+              </div>
+              <div class="hero-chart">
+                <span style="height: 34%"></span>
+                <span style="height: 58%"></span>
+                <span style="height: 44%"></span>
+                <span style="height: 76%"></span>
+                <span style="height: 92%"></span>
+              </div>
+              <div class="card-grid">
+                <span class="card-metric"><span class="metric-value">20</span><span class="metric-label">Posts plan</span></span>
+                <span class="card-metric"><span class="metric-value">7</span><span class="metric-label">Reels plan</span></span>
+                <span class="card-metric"><span class="metric-value">50+</span><span class="metric-label">Lead goal/day</span></span>
+                <span class="card-metric"><span class="metric-value">4</span><span class="metric-label">Site types</span></span>
+              </div>
+            </div>
+            <div class="orbit-card mini">
+              <div class="card-title">Creative queue</div>
+              <div class="mock-line"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-line"></div>
+            </div>
+            <div class="orbit-card side">
+              <div class="card-title">Website build</div>
+              <div class="mock-line"></div>
+              <div class="mock-line short"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="signal-strip" aria-hidden="true">
+        <div class="signal-track">
+          <span>Business websites</span><span>Ecommerce stores</span><span>Portfolio websites</span><span>Personal apps</span><span>AI clinic agents</span><span>Meta ads</span><span>Social media handling</span>
+          <span>Business websites</span><span>Ecommerce stores</span><span>Portfolio websites</span><span>Personal apps</span><span>AI clinic agents</span><span>Meta ads</span><span>Social media handling</span>
+        </div>
+      </div>
+
+      <section class="section" id="services">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <span class="label">Services</span>
+              <h2>Everything a client expects from a serious digital agency.</h2>
+            </div>
+            <p class="section-copy">The site positions Socio Craftco as a complete digital partner: design, content, ads, funnels, websites and subscription-based social handling.</p>
+          </div>
+
+          <div class="services-grid">
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 9h10M7 13h7M5 21l3-3h9a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v14Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Social media handling</h3>
+              <p>Monthly content calendars, post designs, reels, captions and page hygiene for Instagram and Facebook.</p>
+              <div class="tag-row"><span class="tag">Posts</span><span class="tag">Reels</span><span class="tag">Brand voice</span></div>
+            </article>
+
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 13V7l16-3v16L4 17v-4Zm0 0h4v5a2 2 0 0 0 2 2h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Paid marketing</h3>
+              <p>Meta ads setup, creative testing, audience targeting, lead campaign structure and reporting.</p>
+              <div class="tag-row"><span class="tag">Lead ads</span><span class="tag">Retargeting</span><span class="tag">Reports</span></div>
+            </article>
+
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11ZM4 9h16M8 14h3M8 17h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Business websites</h3>
+              <p>Fast, responsive, conversion-focused websites for agencies, shops, clinics, creators and local brands.</p>
+              <div class="tag-row"><span class="tag">Landing pages</span><span class="tag">SEO ready</span><span class="tag">WhatsApp CTA</span></div>
+            </article>
+
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M6 8h15l-2 8H8L6 4H3M9 20h.1M18 20h.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Ecommerce websites</h3>
+              <p>Product pages, checkout-ready structure, offer sections and store layouts that make buying feel easy.</p>
+              <div class="tag-row"><span class="tag">Catalog</span><span class="tag">Offers</span><span class="tag">Payments</span></div>
+            </article>
+
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Portfolio websites</h3>
+              <p>Premium personal portfolios for founders, freelancers, artists, students and professionals.</p>
+              <div class="tag-row"><span class="tag">Case studies</span><span class="tag">Resume</span><span class="tag">Booking CTA</span></div>
+            </article>
+
+            <article class="service-card reveal">
+              <div class="service-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 15h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Personal apps</h3>
+              <p>Simple web apps, booking tools, dashboards and custom experiences for personal or business workflows.</p>
+              <div class="tag-row"><span class="tag">Dashboards</span><span class="tag">Booking</span><span class="tag">Tools</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section proof-section" id="experience">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <span class="label">Experience</span>
+              <h2>Proof that Socio Craftco builds for real growth.</h2>
+            </div>
+            <p class="section-copy">A dedicated proof page for clients who want confidence before they buy: social growth, lead campaigns, websites, portfolios and AI automation workflows.</p>
+          </div>
+
+          <div class="experience-grid">
+            <div class="experience-panel reveal">
+              <div class="proof-stats" aria-label="Socio Craftco experience numbers">
+                <div class="proof-stat">
+                  <strong class="proof-value">300+</strong>
+                  <span class="proof-label">People, creators, professionals and businesses worked with across digital needs.</span>
+                </div>
+                <div class="proof-stat">
+                  <strong class="proof-value">100+</strong>
+                  <span class="proof-label">Websites, portfolios and business pages created for serious online presence.</span>
+                </div>
+                <div class="proof-stat">
+                  <strong class="proof-value">Many</strong>
+                  <span class="proof-label">Brands helped with lead generation, ad funnels, content and sales growth.</span>
+                </div>
+                <div class="proof-stat">
+                  <strong class="proof-value">AI</strong>
+                  <span class="proof-label">Appointment agents created for clinic-style booking and WhatsApp workflows.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="experience-panel reveal">
+              <h3 class="proof-panel-title">AI agents for doctors, clinics and service businesses.</h3>
+              <p class="proof-panel-copy">Socio Craftco can build smart enquiry agents that collect patient details, understand appointment intent and send the conversation toward the doctor's WhatsApp for faster booking.</p>
+              <div class="ai-flow" aria-label="AI appointment agent flow">
+                <div class="ai-flow-step">
+                  <span>1</span>
+                  <div><strong>Patient enquiry</strong><small>Website or social visitor asks for appointment details.</small></div>
+                </div>
+                <div class="ai-flow-step">
+                  <span>2</span>
+                  <div><strong>AI qualification</strong><small>The agent captures name, concern, preferred time and service.</small></div>
+                </div>
+                <div class="ai-flow-step">
+                  <span>3</span>
+                  <div><strong>WhatsApp handoff</strong><small>Details are routed to the clinic's WhatsApp for confirmation.</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proof-timeline" aria-label="Experience categories">
+            <article class="proof-step reveal" data-step="01">
+              <h3>Social media and leads</h3>
+              <p>Content, reels and ad campaigns built to help brands get enquiries, improve visibility and create a cleaner sales flow.</p>
+            </article>
+            <article class="proof-step reveal" data-step="02">
+              <h3>Business and ecommerce websites</h3>
+              <p>Premium websites for local services, agencies and stores with clear sections, WhatsApp CTA and checkout-ready layouts.</p>
+            </article>
+            <article class="proof-step reveal" data-step="03">
+              <h3>Portfolio websites</h3>
+              <p>Personal brand websites for professionals, founders, students and creators who need their work to look polished online.</p>
+            </article>
+            <article class="proof-step reveal" data-step="04">
+              <h3>Automation and AI tools</h3>
+              <p>Booking agents, enquiry flows and simple app-style tools that save time and move customers toward direct action.</p>
+            </article>
+          </div>
+
+          <div class="review-grid" aria-label="Client feedback themes">
+            <article class="review-card reveal">
+              <div class="review-rating" aria-label="Positive client feedback"><span></span><span></span><span></span><span></span><span></span> Client note</div>
+              <p>"The clinic enquiry flow became much easier because patients could share their details on WhatsApp without repeated calls."</p>
+              <div class="review-source"><strong>Clinic team</strong><span>AI appointment workflow</span></div>
+            </article>
+            <article class="review-card reveal">
+              <div class="review-rating" aria-label="Positive client feedback"><span></span><span></span><span></span><span></span><span></span> Client note</div>
+              <p>"Our website finally looked premium enough to share with customers and ads. The leads moved into one clean WhatsApp flow."</p>
+              <div class="review-source"><strong>Local service brand</strong><span>Website and lead ads</span></div>
+            </article>
+            <article class="review-card reveal">
+              <div class="review-rating" aria-label="Positive client feedback"><span></span><span></span><span></span><span></span><span></span> Client note</div>
+              <p>"The portfolio made it easier to show work, pricing and contact details without explaining everything manually every time."</p>
+              <div class="review-source"><strong>Creator and professional</strong><span>Portfolio website</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="studio">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <span class="label">Website Studio</span>
+              <h2>Clients can preview the type of website they want.</h2>
+            </div>
+            <p class="section-copy">Each category changes the animated browser mockup, so customers immediately understand how a business, ecommerce, portfolio or app project could look.</p>
+          </div>
+
+          <div class="studio">
+            <div class="studio-controls reveal" role="tablist" aria-label="Website preview categories">
+              <button class="preview-tab is-active" type="button" role="tab" aria-selected="true" data-preview="business"><strong>Business website</strong><span>Professional services, clinics, agencies and local brands.</span></button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview="ecommerce"><strong>Ecommerce website</strong><span>Product-first store pages with offer and checkout sections.</span></button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview="portfolio"><strong>Portfolio website</strong><span>Personal brand pages with work, achievements and contact CTA.</span></button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-preview="app"><strong>Personal app</strong><span>Dashboard-style tools, booking panels and interactive workflows.</span></button>
+            </div>
+
+            <div class="studio-stage reveal">
+              <div class="browser-mock">
+                <div class="browser-top">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-url" id="previewUrl">sociocraftco.in/business-preview</span>
+                </div>
+                <div class="preview-screen" id="previewScreen"></div>
+              </div>
+              <div class="floating-phone" aria-hidden="true">
+                <div class="phone-screen">
+                  <span class="phone-pill"></span>
+                  <span class="phone-card"></span>
+                  <span class="phone-card"></span>
+                  <span class="phone-card"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="marketing">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <span class="label">Social Media And Marketing</span>
+              <h2>A dedicated place for content, ads and lead campaigns.</h2>
+            </div>
+            <p class="section-copy">The offer is clear: Socio Craftco plans the content, makes the creatives, runs the ads and sends interested customers toward WhatsApp or website funnels.</p>
+          </div>
+
+          <div class="social-grid">
+            <div class="social-board reveal" aria-hidden="true">
+              <div class="post-tile">
+                <div class="tile-art"></div>
+                <div class="tile-copy"><strong>Launch post</strong><div class="mock-line"></div><div class="mock-line short"></div></div>
+              </div>
+              <div class="post-tile">
+                <div class="tile-art"></div>
+                <div class="tile-copy"><strong>Reel cover</strong><div class="mock-line"></div><div class="mock-line short"></div></div>
+              </div>
+              <div class="post-tile">
+                <div class="tile-art"></div>
+                <div class="tile-copy"><strong>Ad creative</strong><div class="mock-line"></div><div class="mock-line short"></div></div>
+              </div>
+            </div>
+
+            <div class="social-steps">
+              <article class="mini-card reveal">
+                <h3>1. Content system</h3>
+                <p>Monthly posts, reels, captions and design direction so the page looks active, branded and trustworthy.</p>
+              </article>
+              <article class="mini-card reveal">
+                <h3>2. Marketing campaigns</h3>
+                <p>Ad setup for awareness, messages and leads with campaign objectives matched to the client business.</p>
+              </article>
+              <article class="mini-card reveal">
+                <h3>3. WhatsApp lead flow</h3>
+                <p>Website buttons and lead forms route prospects straight to WhatsApp with prefilled enquiry details.</p>
+              </article>
+              <article class="mini-card reveal">
+                <h3>4. Monthly reporting</h3>
+                <p>Performance summaries help customers understand what was posted, what ads ran and what should improve next.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="packages">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <span class="label">Subscription Packages</span>
+              <h2>Three simple plans for social media handling and marketing.</h2>
+            </div>
+            <p class="section-copy">Each plan includes a clear monthly deliverable count, a daily lead campaign goal and a plan-specific checkout button.</p>
+          </div>
+
+          <div class="packages-grid">
+            <article class="package-card reveal" data-plan="starter">
+              <div>
+                <div class="package-kicker">Starter</div>
+                <h3>Presence Plan</h3>
+              </div>
+              <div class="price"><strong>INR 7,999</strong><span>/ month</span></div>
+              <ul class="feature-list">
+                <li>5 custom social media posts per month</li>
+                <li>2 reels per month</li>
+                <li>Daily lead campaign goal: 10+ leads</li>
+                <li>Basic ad setup and audience targeting</li>
+                <li>WhatsApp enquiry routing</li>
+              </ul>
+              <p class="package-note">Lead count is a campaign goal, not a guaranteed result. Ad spend is separate.</p>
+              <div class="package-actions">
+                <button class="btn btn-primary js-subscribe" type="button" data-plan="starter">Subscribe with Razorpay</button>
+                <a class="btn btn-ghost js-whatsapp" href="#" data-message="Hi Socio Craftco, I want details about the Presence Plan with 5 posts, 2 reels and 10+ daily lead campaign goal.">Know more on WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="package-card is-featured reveal" data-plan="growth">
+              <div>
+                <div class="package-kicker">Growth</div>
+                <h3>Acceleration Plan</h3>
+              </div>
+              <div class="price"><strong>INR 14,999</strong><span>/ month</span></div>
+              <ul class="feature-list">
+                <li>10 custom social media posts per month</li>
+                <li>4 reels per month</li>
+                <li>Daily lead campaign goal: 25+ leads</li>
+                <li>Creative testing for ad campaigns</li>
+                <li>Monthly performance summary</li>
+              </ul>
+              <p class="package-note">Lead count depends on budget, market demand and campaign response. Ad spend is separate.</p>
+              <div class="package-actions">
+                <button class="btn btn-coral js-subscribe" type="button" data-plan="growth">Subscribe with Razorpay</button>
+                <a class="btn btn-ghost js-whatsapp" href="#" data-message="Hi Socio Craftco, I want details about the Acceleration Plan with 10 posts, 4 reels and 25+ daily lead campaign goal.">Know more on WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="package-card reveal" data-plan="scale">
+              <div>
+                <div class="package-kicker">Scale</div>
+                <h3>Dominance Plan</h3>
+              </div>
+              <div class="price"><strong>INR 24,999</strong><span>/ month</span></div>
+              <ul class="feature-list">
+                <li>20 custom social media posts per month</li>
+                <li>7 reels per month</li>
+                <li>Daily lead campaign goal: 50+ leads</li>
+                <li>Advanced campaign structure and retargeting</li>
+                <li>Priority creative and reporting support</li>
+              </ul>
+              <p class="package-note">Lead count is not guaranteed. Results depend on ad spend, targeting, season and offer strength.</p>
+              <div class="package-actions">
+                <button class="btn btn-primary js-subscribe" type="button" data-plan="scale">Subscribe with Razorpay</button>
+                <a class="btn btn-ghost js-whatsapp" href="#" data-message="Hi Socio Craftco, I want details about the Dominance Plan with 20 posts, 7 reels and 50+ daily lead campaign goal.">Know more on WhatsApp</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="terms-grid reveal" aria-label="Terms and conditions">
+            <div class="term-card"><strong>Leads disclaimer</strong>Lead numbers are campaign goals. Socio Craftco runs ads and optimizes campaigns, but cannot guarantee exact lead volume.</div>
+            <div class="term-card"><strong>Ad spend</strong>Meta/Google ad budget is paid separately by the client unless a custom agreement says otherwise.</div>
+            <div class="term-card"><strong>Subscription</strong>Monthly plans use their own plan-specific checkout links and follow the Terms &amp; Conditions below.</div>
+            <div class="term-card"><strong>Content approvals</strong>Client approvals, offer quality and response time can affect performance and publishing speed.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="wrap contact-grid">
+          <div class="reveal">
+            <span class="label">Start A Project</span>
+            <h2>Turn visitors into WhatsApp enquiries.</h2>
+            <p class="section-copy" style="margin-top: 1rem;">The form opens a ready-to-send WhatsApp message with the client's details. Your public contact information stays clean: email, Instagram and domain only.</p>
+
+            <div class="contact-lines">
+              <div class="contact-line"><strong>Email</strong><a href="mailto:sociocraftco@gmail.com">sociocraftco@gmail.com</a></div>
+              <div class="contact-line"><strong>Instagram</strong><a href="https://www.instagram.com/sociocraftco.in/" target="_blank" rel="noreferrer">@sociocraftco.in</a></div>
+              <div class="contact-line"><strong>Facebook</strong><a href="https://www.facebook.com/profile.php?id=61589318203119" target="_blank" rel="noreferrer">Socio Craftco</a></div>
+              <div class="contact-line"><strong>Company Location</strong><span>Delhi, India</span></div>
+              <div class="contact-line"><strong>Domain</strong><span>sociocraftco.in</span></div>
+            </div>
+          </div>
+
+          <div class="contact-card reveal">
+            <form class="lead-form" id="leadForm">
+              <label class="field">
+                <span>Your name</span>
+                <input name="name" type="text" placeholder="Enter your name" required>
+              </label>
+              <label class="field">
+                <span>Business / brand name</span>
+                <input name="business" type="text" placeholder="Example: Studio Nova" required>
+              </label>
+              <label class="field">
+                <span>What do you need?</span>
+                <select name="service" required>
+                  <option value="">Select a service</option>
+                  <option>Social media handling</option>
+                  <option>Paid marketing and lead ads</option>
+                  <option>Business website</option>
+                  <option>Ecommerce website</option>
+                  <option>Portfolio website</option>
+                  <option>Personal app</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Your WhatsApp or email</span>
+                <input name="contact" type="text" placeholder="So we can reply to you" required>
+              </label>
+              <label class="field">
+                <span>Project details</span>
+                <textarea name="message" placeholder="Tell us about your business, target customers and timeline"></textarea>
+              </label>
+              <button class="btn btn-primary" type="submit">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Send details on WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section terms-section" id="terms">
+        <div class="wrap">
+          <div class="terms-panel reveal">
+            <div class="terms-topbar">
+              <div>
+                <span class="label">Terms &amp; Conditions</span>
+                <h2>Terms that apply before purchase or service use.</h2>
+              </div>
+              <button class="modal-close" type="button" id="termsClose" aria-label="Close terms and conditions">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <p class="section-copy">Please read these terms carefully before purchasing, accessing, or using any Socio Craftco service.</p>
+
+            <div class="terms-content">
+              <article>
+                <p>Welcome to Socio Craftco. By accessing, purchasing, or using any service provided by Socio Craftco, you agree to comply with and be bound by the following Terms &amp; Conditions. If you do not agree with any part of these terms, please do not use our services.</p>
+              </article>
+
+              <article>
+                <h3>1. Nature of Services</h3>
+                <p>Socio Craftco provides digital marketing, branding, social media management, website development, promotional, consultation, advertising, and related online services. All services are provided on a best-effort basis intended to improve online presence, visibility, branding, and digital growth.</p>
+              </article>
+
+              <article>
+                <h3>2. No Guaranteed Results</h3>
+                <p>Social media growth, marketing performance, advertising outcomes, and online visibility depend on multiple external factors including platform algorithms, audience behavior, competition, market trends, content quality, account consistency, and third-party platform policies. Therefore:</p>
+                <ul>
+                  <li>We do not guarantee followers, engagement, reach, leads, views, sales, monetization, revenue, or business growth.</li>
+                  <li>Any projections, screenshots, analytics, examples, case studies, or estimated outcomes shared by Socio Craftco are for informational and illustrative purposes only and should not be considered guaranteed results.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h3>3. Client Responsibilities</h3>
+                <p>Clients are solely responsible for:</p>
+                <ul>
+                  <li>the legality, accuracy, and ownership of their content,</li>
+                  <li>ensuring compliance with platform policies and applicable laws,</li>
+                  <li>providing necessary approvals, access, and information on time,</li>
+                  <li>maintaining account security and credentials.</li>
+                </ul>
+                <p>Socio Craftco shall not be responsible for issues arising from false information, delayed responses, restricted account access, or policy violations by the client.</p>
+              </article>
+
+              <article>
+                <h3>4. Payments &amp; Refund Policy</h3>
+                <ul>
+                  <li>All payments made to Socio Craftco including subscriptions, retainers, consultation fees, support charges, setup fees, add-ons, digital products, and custom services are strictly non-refundable once payment is completed or work has started.</li>
+                  <li>Subscription services may be canceled anytime; however, previously paid amounts remain non-refundable and non-transferable.</li>
+                  <li>Failure to use a purchased service does not qualify for a refund.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h3>5. Service Modifications &amp; Termination</h3>
+                <p>Socio Craftco reserves the right to:</p>
+                <ul>
+                  <li>refuse, suspend, pause, or terminate any service or business relationship at any time,</li>
+                  <li>reject projects considered fraudulent, illegal, harmful, abusive, unethical, misleading, or against platform policies,</li>
+                  <li>discontinue services due to operational, legal, financial, security, or business reasons.</li>
+                </ul>
+                <p>We may also stop working with a client without prior notice if communication becomes abusive, cooperation is not provided, or continued work poses a business or legal risk.</p>
+              </article>
+
+              <article>
+                <h3>6. Limitation of Liability</h3>
+                <p>Socio Craftco shall not be held liable for:</p>
+                <ul>
+                  <li>social media algorithm changes,</li>
+                  <li>account bans, restrictions, suspensions, or shadow bans,</li>
+                  <li>reduced engagement or advertising performance,</li>
+                  <li>third-party platform downtime or policy updates,</li>
+                  <li>business losses, missed opportunities, or revenue decline,</li>
+                  <li>delays caused by external services or technical issues,</li>
+                  <li>indirect, incidental, or consequential damages.</li>
+                </ul>
+                <p>Clients use our services at their own discretion and risk.</p>
+              </article>
+
+              <article>
+                <h3>7. Delivery Timelines</h3>
+                <p>Any timelines provided are estimates only and may vary depending on:</p>
+                <ul>
+                  <li>project complexity,</li>
+                  <li>revisions requested,</li>
+                  <li>client response delays,</li>
+                  <li>technical limitations,</li>
+                  <li>workload,</li>
+                  <li>third-party platform delays.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h3>8. Intellectual Property</h3>
+                <p>Any content, design, graphics, strategies, or materials created by Socio Craftco remain the intellectual property of Socio Craftco until full payment is completed unless otherwise agreed in writing.</p>
+              </article>
+
+              <article>
+                <h3>9. Chargebacks &amp; Payment Disputes</h3>
+                <p>Clients agree not to initiate false chargebacks or unauthorized payment disputes after successful payment or service initiation. Fraudulent disputes may result in:</p>
+                <ul>
+                  <li>permanent service termination,</li>
+                  <li>legal action,</li>
+                  <li>restriction from future services.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h3>10. Privacy</h3>
+                <p>Client information shared with Socio Craftco will be handled responsibly and used only for service-related purposes. However, we are not responsible for breaches caused by third-party services, hosting providers, or external platforms.</p>
+              </article>
+
+              <article>
+                <h3>11. Changes to Terms</h3>
+                <p>Socio Craftco reserves the right to update or modify these Terms &amp; Conditions at any time without prior notice. Continued use of our services constitutes acceptance of the updated terms.</p>
+              </article>
+
+              <article>
+                <h3>12. Acceptance of Terms</h3>
+                <p>By purchasing, accessing, or using any service from Socio Craftco, the client confirms that they have read, understood, and agreed to these Terms &amp; Conditions, Refund Policy, and Cancellation Policy.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a class="wa-float js-whatsapp" href="#" aria-label="Contact Socio Craftco on WhatsApp" data-message="Hi Socio Craftco, I want to know more about your services.">
+      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.2 10.2c.7 2 2.5 4.1 4.5 5 .5.2.9.2 1.2-.1l.8-.7c.3-.3.8-.4 1.2-.2l2.1.9c.5.2.8.7.7 1.2-.2 1.2-1.1 2.2-2.4 2.4-2.2.3-5.1-.7-7.5-3.1-2.5-2.5-3.5-5.4-3.1-7.6.2-1.2 1.2-2.1 2.4-2.3.5-.1 1 .2 1.2.7l.9 2.1c.2.4.1.8-.2 1.2l-.7.8c-.2.2-.3.5-.1.7Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.4 21 6.6 18A8.3 8.3 0 1 1 18 17.6L5.4 21Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <footer>
+      <div class="wrap footer-grid">
+        <div>
+          <a class="brand" href="#top">
+            <span class="brand-mark">
+              <img alt="Socio Craftco logo" src="sociocraftco-logo.jpg" />
+            </span>
+            <span class="brand-text">
+              <span class="brand-name">Socio Craftco</span>
+              <span class="brand-line">sociocraftco.in</span>
+            </span>
+          </a>
+          <p class="footer-copy">Digital marketing, social media handling, paid ads and premium website development.</p>
+        </div>
+        <div class="footer-links">
+          <strong>Explore</strong>
+          <a href="#services">Services</a>
+          <a href="#experience">Experience</a>
+          <a href="#studio">Website Studio</a>
+          <a href="#marketing">Social Marketing</a>
+          <a href="#packages">Packages</a>
+        </div>
+        <div class="footer-links">
+          <strong>Connect</strong>
+          <a href="mailto:sociocraftco@gmail.com">sociocraftco@gmail.com</a>
+          <a href="https://www.instagram.com/sociocraftco.in/" target="_blank" rel="noreferrer">Instagram: @sociocraftco.in</a>
+          <a href="https://www.facebook.com/profile.php?id=61589318203119" target="_blank" rel="noreferrer">Facebook: Socio Craftco</a>
+          <a class="js-whatsapp" href="#" data-message="Hi Socio Craftco, I am interested in your digital marketing services.">Direct WhatsApp</a>
+        </div>
+        <div class="footer-links">
+          <strong>Details</strong>
+          <span>Company Location: Delhi, India</span>
+          <span>Domain: sociocraftco.in</span>
+          <button type="button" id="footerTermsButton">Terms &amp; Conditions</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="payment-modal" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle" aria-hidden="true">
+    <div class="payment-dialog">
+      <div class="payment-dialog-head">
+        <div>
+          <h2 id="paymentModalTitle">Confirm Terms &amp; Conditions</h2>
+          <p class="payment-plan" id="paymentPlanText">Select a plan to continue.</p>
+        </div>
+        <button class="modal-close" type="button" id="paymentModalClose" aria-label="Close payment confirmation">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <p class="modal-copy">Before opening checkout, please confirm that you have read and agree to the Terms &amp; Conditions for Socio Craftco services.</p>
+      <label class="terms-check">
+        <input type="checkbox" id="termsAccept">
+        <span>I have read and agree to the Terms &amp; Conditions.</span>
+      </label>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" id="continuePayment" disabled>Continue to Razorpay</button>
+        <a class="btn btn-ghost" href="#terms" id="reviewTerms">Review Terms</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const WHATSAPP_NUMBER = "919119687579";
+    const PAYMENT_LINKS = {
+      starter: "https://rzp.io/rzp/Y1EApufV",
+      growth: "https://rzp.io/rzp/mpyjdmv",
+      scale: "https://rzp.io/rzp/5V3HKfSI"
+    };
+
+    const plans = {
+      starter: {
+        name: "Presence Plan",
+        price: "INR 7,999 / month",
+        description: "5 posts, 2 reels, 10+ daily lead campaign goal"
+      },
+      growth: {
+        name: "Acceleration Plan",
+        price: "INR 14,999 / month",
+        description: "10 posts, 4 reels, 25+ daily lead campaign goal"
+      },
+      scale: {
+        name: "Dominance Plan",
+        price: "INR 24,999 / month",
+        description: "20 posts, 7 reels, 50+ daily lead campaign goal"
+      }
+    };
+
+    const previews = {
+      business: {
+        url: "sociocraftco.in/business-preview",
+        title: "Growth-ready business website",
+        copy: "Hero, services, testimonials, enquiry CTA and WhatsApp funnel for local or national brands.",
+        blocks: ["Services", "Trust proof", "Lead form"]
+      },
+      ecommerce: {
+        url: "sociocraftco.in/store-preview",
+        title: "Premium ecommerce storefront",
+        copy: "Product cards, offer bands, payment-ready structure and conversion sections for online stores.",
+        blocks: ["Products", "Cart flow", "Offers"]
+      },
+      portfolio: {
+        url: "sociocraftco.in/portfolio-preview",
+        title: "Personal portfolio that sells your work",
+        copy: "Bio, selected projects, achievements, resume links and clean contact sections for personal brands.",
+        blocks: ["Projects", "Bio", "Contact"]
+      },
+      app: {
+        url: "sociocraftco.in/app-preview",
+        title: "Interactive personal app",
+        copy: "Dashboard panels, task views, booking flows and custom tools made for repeat use.",
+        blocks: ["Dashboard", "Bookings", "Reports"]
+      }
+    };
+
+    function whatsappUrl(message) {
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("is-open");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("is-open"), 4200);
+    }
+
+    function updateWhatsAppLinks() {
+      document.querySelectorAll(".js-whatsapp").forEach((link) => {
+        const message = link.dataset.message || "Hi Socio Craftco, I want to know more about your services.";
+        link.href = whatsappUrl(message);
+        link.target = "_blank";
+        link.rel = "noreferrer";
+      });
+    }
+
+    function renderPreview(key) {
+      const data = previews[key] || previews.business;
+      const screen = document.getElementById("previewScreen");
+      const url = document.getElementById("previewUrl");
+      screen.classList.add("is-changing");
+      setTimeout(() => {
+        url.textContent = data.url;
+        screen.innerHTML = `
+          <div class="mock-hero">
+            <div>
+              <h3>${data.title}</h3>
+              <p>${data.copy}</p>
+            </div>
+          </div>
+          <div class="mock-layout">
+            ${data.blocks.map((block, index) => `
+              <div class="mock-block">
+                <strong>${block}</strong>
+                <div class="mock-line" style="width:${88 - index * 10}%"></div>
+                <div class="mock-line short"></div>
+                <div class="mock-line" style="width:${62 + index * 9}%"></div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        screen.classList.remove("is-changing");
+      }, 140);
+    }
+
+    function setupPreviewTabs() {
+      document.querySelectorAll(".preview-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".preview-tab").forEach((item) => {
+            item.classList.remove("is-active");
+            item.setAttribute("aria-selected", "false");
+          });
+          tab.classList.add("is-active");
+          tab.setAttribute("aria-selected", "true");
+          renderPreview(tab.dataset.preview);
+        });
+      });
+      renderPreview("business");
+    }
+
+    function setupLeadForm() {
+      const form = document.getElementById("leadForm");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const data = Object.fromEntries(new FormData(form).entries());
+        const message = [
+          "New enquiry for Socio Craftco",
+          `Name: ${data.name}`,
+          `Business: ${data.business}`,
+          `Need: ${data.service}`,
+          `Client contact: ${data.contact}`,
+          `Details: ${data.message || "Not added"}`
+        ].join("\n");
+        window.open(whatsappUrl(message), "_blank", "noopener,noreferrer");
+      });
+    }
+
+    let selectedPaymentPlan = null;
+
+    function openPaymentModal(planKey) {
+      const plan = plans[planKey];
+      const paymentLink = PAYMENT_LINKS[planKey];
+      if (!plan || !paymentLink) {
+        showToast("This plan checkout link is not available yet.");
+        return;
+      }
+
+      selectedPaymentPlan = planKey;
+      const modal = document.getElementById("paymentModal");
+      const checkbox = document.getElementById("termsAccept");
+      const continueButton = document.getElementById("continuePayment");
+      document.getElementById("paymentPlanText").textContent = `${plan.name} - ${plan.price}`;
+      checkbox.checked = false;
+      continueButton.disabled = true;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      checkbox.focus();
+    }
+
+    function closePaymentModal() {
+      const modal = document.getElementById("paymentModal");
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      selectedPaymentPlan = null;
+    }
+
+    function continueToPayment() {
+      if (!selectedPaymentPlan) return;
+      window.open(PAYMENT_LINKS[selectedPaymentPlan], "_blank", "noopener,noreferrer");
+      closePaymentModal();
+    }
+
+    function openTermsModal() {
+      const terms = document.getElementById("terms");
+      terms.classList.add("is-open");
+      terms.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      const closeButton = document.getElementById("termsClose");
+      if (closeButton) closeButton.focus();
+    }
+
+    function closeTermsModal() {
+      const terms = document.getElementById("terms");
+      terms.classList.remove("is-open");
+      terms.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+    }
+
+    function setupSubscribeButtons() {
+      document.querySelectorAll(".js-subscribe").forEach((button) => {
+        button.addEventListener("click", () => openPaymentModal(button.dataset.plan));
+      });
+    }
+
+    function setupPaymentModal() {
+      const modal = document.getElementById("paymentModal");
+      const checkbox = document.getElementById("termsAccept");
+      const continueButton = document.getElementById("continuePayment");
+      const closeButton = document.getElementById("paymentModalClose");
+      const reviewTerms = document.getElementById("reviewTerms");
+
+      checkbox.addEventListener("change", () => {
+        continueButton.disabled = !checkbox.checked;
+      });
+      continueButton.addEventListener("click", continueToPayment);
+      closeButton.addEventListener("click", closePaymentModal);
+      reviewTerms.addEventListener("click", (event) => {
+        event.preventDefault();
+        closePaymentModal();
+        openTermsModal();
+      });
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closePaymentModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+          closePaymentModal();
+        }
+      });
+    }
+
+    function setupTermsModal() {
+      const terms = document.getElementById("terms");
+      const footerButton = document.getElementById("footerTermsButton");
+      const closeButton = document.getElementById("termsClose");
+
+      terms.setAttribute("aria-hidden", "true");
+      footerButton.addEventListener("click", openTermsModal);
+      closeButton.addEventListener("click", closeTermsModal);
+      terms.addEventListener("click", (event) => {
+        if (event.target === terms) closeTermsModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && terms.classList.contains("is-open")) {
+          closeTermsModal();
+        }
+      });
+    }
+
+    function setupNavigation() {
+      const nav = document.getElementById("siteNav");
+      const menuBtn = document.getElementById("menuBtn");
+      const setScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 20);
+      setScroll();
+      window.addEventListener("scroll", setScroll, { passive: true });
+      menuBtn.addEventListener("click", () => {
+        const isOpen = nav.dataset.open === "true";
+        nav.dataset.open = String(!isOpen);
+        menuBtn.setAttribute("aria-expanded", String(!isOpen));
+      });
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          nav.dataset.open = "false";
+          menuBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    function setupReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+    }
+
+    function setupTilt() {
+      document.querySelectorAll(".service-card, .package-card").forEach((card) => {
+        card.addEventListener("mousemove", (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `rotateX(${y * -5}deg) rotateY(${x * 5}deg) translateY(-5px)`;
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+    }
+
+    function setupHeroCanvas() {
+      const canvas = document.getElementById("heroCanvas");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (window.THREE && !reducedMotion) {
+        setupThreeScene(canvas);
+      } else {
+        setupCanvasFallback(canvas, reducedMotion);
+      }
+    }
+
+    function setupSectionQueryScroll() {
+      const section = new URLSearchParams(window.location.search).get("section");
+      if (!section) return;
+      if (section === "terms") {
+        setTimeout(openTermsModal, 260);
+        return;
+      }
+      const target = document.getElementById(section);
+      if (!target) return;
+      setTimeout(() => {
+        target.scrollIntoView({ block: "start" });
+        target.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+      }, 260);
+    }
+
+    function setupThreeScene(canvas) {
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+      camera.position.set(0, 0, 8);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const nodes = [
+        [-2.5, 0.4, 0.2], [-1.55, 1.2, -0.2], [-1.5, -0.7, 0.35],
+        [-0.3, 0.1, -0.12], [0.9, -0.45, 0.22], [2.0, 1.35, -0.22],
+        [2.8, 2.05, 0.12], [2.8, 0.8, -0.22]
+      ];
+      const edges = [[0,1],[0,2],[1,3],[2,3],[2,4],[3,4],[3,5],[4,5],[5,6],[5,7],[6,7]];
+      const colors = [0x7cf7cf, 0xffd166, 0x65d9ff, 0xff6b5f];
+
+      edges.forEach(([a, b], index) => {
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(...nodes[a]),
+          new THREE.Vector3(...nodes[b])
+        ]);
+        const material = new THREE.LineBasicMaterial({
+          color: colors[index % colors.length],
+          transparent: true,
+          opacity: 0.54
+        });
+        group.add(new THREE.Line(geometry, material));
+      });
+
+      nodes.forEach((node, index) => {
+        const geometry = new THREE.SphereGeometry(0.095, 24, 24);
+        const material = new THREE.MeshBasicMaterial({ color: colors[index % colors.length] });
+        const sphere = new THREE.Mesh(geometry, material);
+        sphere.position.set(...node);
+        group.add(sphere);
+      });
+
+      const arrowMaterial = new THREE.LineBasicMaterial({ color: 0xf7f2e8, transparent: true, opacity: 0.8 });
+      const arrow = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(1.05, 0.65, 0.08),
+        new THREE.Vector3(2.8, 2.05, 0.12),
+        new THREE.Vector3(2.8, 0.9, -0.2),
+        new THREE.Vector3(2.8, 2.05, 0.12),
+        new THREE.Vector3(1.45, 2.05, 0.08)
+      ]);
+      group.add(new THREE.Line(arrow, arrowMaterial));
+
+      const starsGeometry = new THREE.BufferGeometry();
+      const starPositions = new Float32Array(720);
+      for (let i = 0; i < starPositions.length; i += 3) {
+        starPositions[i] = (Math.random() - 0.5) * 13;
+        starPositions[i + 1] = (Math.random() - 0.5) * 8;
+        starPositions[i + 2] = (Math.random() - 0.5) * 6;
+      }
+      starsGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
+      const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({
+        color: 0xf7f2e8,
+        size: 0.012,
+        transparent: true,
+        opacity: 0.42
+      }));
+      scene.add(stars);
+
+      let pointerX = 0;
+      let pointerY = 0;
+      window.addEventListener("mousemove", (event) => {
+        pointerX = (event.clientX / window.innerWidth - 0.5) * 0.7;
+        pointerY = (event.clientY / window.innerHeight - 0.5) * 0.5;
+      }, { passive: true });
+
+      function resize() {
+        const { clientWidth, clientHeight } = canvas;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(clientWidth, clientHeight, false);
+        camera.aspect = clientWidth / clientHeight;
+        camera.updateProjectionMatrix();
+      }
+
+      function animate() {
+        resize();
+        group.rotation.y += 0.003;
+        group.rotation.x += (pointerY - group.rotation.x) * 0.02;
+        group.position.x += (pointerX - group.position.x) * 0.025;
+        stars.rotation.y -= 0.0008;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    function setupCanvasFallback(canvas, reducedMotion) {
+      const context = canvas.getContext("2d");
+      const points = Array.from({ length: 62 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        z: Math.random() * 0.8 + 0.2,
+        vx: (Math.random() - 0.5) * 0.0008,
+        vy: (Math.random() - 0.5) * 0.0008
+      }));
+
+      function resize() {
+        canvas.width = canvas.clientWidth * Math.min(window.devicePixelRatio, 2);
+        canvas.height = canvas.clientHeight * Math.min(window.devicePixelRatio, 2);
+      }
+
+      function draw() {
+        resize();
+        const w = canvas.width;
+        const h = canvas.height;
+        context.clearRect(0, 0, w, h);
+        context.lineWidth = 1;
+        points.forEach((point) => {
+          if (!reducedMotion) {
+            point.x += point.vx;
+            point.y += point.vy;
+            if (point.x < 0 || point.x > 1) point.vx *= -1;
+            if (point.y < 0 || point.y > 1) point.vy *= -1;
+          }
+          const x = point.x * w;
+          const y = point.y * h;
+          context.fillStyle = "rgba(124,247,207,0.62)";
+          context.beginPath();
+          context.arc(x, y, 2.4 * point.z, 0, Math.PI * 2);
+          context.fill();
+        });
+        for (let i = 0; i < points.length; i += 1) {
+          for (let j = i + 1; j < points.length; j += 1) {
+            const a = points[i];
+            const b = points[j];
+            const dx = (a.x - b.x) * w;
+            const dy = (a.y - b.y) * h;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 150) {
+              context.strokeStyle = `rgba(247,242,232,${0.12 * (1 - distance / 150)})`;
+              context.beginPath();
+              context.moveTo(a.x * w, a.y * h);
+              context.lineTo(b.x * w, b.y * h);
+              context.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    updateWhatsAppLinks();
+    setupNavigation();
+    setupPreviewTabs();
+    setupLeadForm();
+    setupPaymentModal();
+    setupTermsModal();
+    setupSubscribeButtons();
+    setupReveal();
+    setupTilt();
+    setupHeroCanvas();
+    setupSectionQueryScroll();
+  </script>
+</body>
+</html>
+
