@@ -4,3 +4,5 @@ zip-check/
 *.png
 *.zip
 verify-server.*
+.github/
+site-package.b64.*
