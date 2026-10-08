@@ -361,6 +361,7 @@
     .nav-links a:hover::after { transform: scaleX(1); }
 
     .nav-cta { display: flex; align-items: center; gap: .6rem; }
+    .nav-contact { display: none; }
 
     .menu-btn {
       display: none;
@@ -870,7 +871,7 @@
       transition: width .6s var(--ease), border-radius .6s var(--ease);
     }
 
-    .device[data-view="mobile"] {
+    .device[data-size="mobile"] {
       width: 380px;
       max-width: 100%;
       border-radius: 40px;
@@ -913,9 +914,9 @@
       white-space: nowrap;
     }
 
-    .device[data-view="mobile"] .device-top { height: 30px; justify-content: center; background: var(--white); }
-    .device[data-view="mobile"] .device-top i { display: none; }
-    .device[data-view="mobile"] .device-url { flex: 0 1 70%; margin: 0; height: 22px; justify-content: center; background: #F1F3F7; }
+    .device[data-size="mobile"] .device-top { height: 30px; justify-content: center; background: var(--white); }
+    .device[data-size="mobile"] .device-top i { display: none; }
+    .device[data-size="mobile"] .device-url { flex: 0 1 70%; margin: 0; height: 22px; justify-content: center; background: #F1F3F7; }
 
     .viewport {
       position: relative;
@@ -1398,15 +1399,15 @@
 
     .store-toast.show { transform: translate(-50%, 0); opacity: 1; }
 
-    .device[data-view="mobile"] .store-nav { display: none; }
-    .device[data-view="mobile"] .store-hero { grid-template-columns: 1fr; padding: 1.4rem; margin: .9rem .9rem 0; }
-    .device[data-view="mobile"] .store-hero-art { aspect-ratio: 16 / 9; }
-    .device[data-view="mobile"] .store-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 .9rem 1rem; gap: .8rem; }
-    .device[data-view="mobile"] .store-head { padding: .8rem .9rem; }
-    .device[data-view="mobile"] .store-chips,
-    .device[data-view="mobile"] .store-section-title { padding-inline: .9rem; }
-    .device[data-view="mobile"] .store-trust { margin-inline: .9rem; grid-template-columns: 1fr; text-align: left; }
-    .device[data-view="mobile"] .screen { height: 640px; }
+    .device[data-size="mobile"] .store-nav { display: none; }
+    .device[data-size="mobile"] .store-hero { grid-template-columns: 1fr; padding: 1.4rem; margin: .9rem .9rem 0; }
+    .device[data-size="mobile"] .store-hero-art { aspect-ratio: 16 / 9; }
+    .device[data-size="mobile"] .store-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 .9rem 1rem; gap: .8rem; }
+    .device[data-size="mobile"] .store-head { padding: .8rem .9rem; }
+    .device[data-size="mobile"] .store-chips,
+    .device[data-size="mobile"] .store-section-title { padding-inline: .9rem; }
+    .device[data-size="mobile"] .store-trust { margin-inline: .9rem; grid-template-columns: 1fr; text-align: left; }
+    .device[data-size="mobile"] .screen { height: 640px; }
 
     /* WhatsApp demo */
 
@@ -1858,6 +1859,7 @@
     }
 
     .shot img { width: 100%; height: auto; }
+    .shot.bare { border: 0; border-radius: 34px; background: transparent; box-shadow: 0 30px 60px -24px rgba(10, 20, 40, .35); }
     .shot:nth-child(2) { transform: translateY(30px); }
     .project-media:hover .shot:nth-child(1) { transform: translateY(-8px) rotate(-1.5deg); }
     .project-media:hover .shot:nth-child(2) { transform: translateY(22px) rotate(1.5deg); }
@@ -2056,10 +2058,10 @@
       gap: 2rem;
     }
 
-    .footer-brand { display: grid; gap: 1.1rem; justify-items: start; }
+    .footer-brand { display: grid; gap: 1.1rem; justify-items: start; align-content: start; }
     .footer-brand .lockup { display: flex; align-items: center; gap: .7rem; }
-    .footer-brand .lockup .mark { width: 44px; }
-    .footer-brand .lockup .word { width: 170px; }
+    .footer-brand .lockup .mark { width: 44px; height: auto; }
+    .footer-brand .lockup .word { width: 170px; height: auto; }
     .footer-brand .tracked { color: var(--muted-dark); }
 
     .footer-col { display: grid; gap: .55rem; align-content: start; }
@@ -2110,15 +2112,133 @@
 
     .wa-float:hover { transform: translateY(-3px) scale(1.04); }
 
-    /* Scroll reveal */
 
-    .js .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .9s var(--ease), transform .9s var(--ease);
+
+
+    /* Views: one section at a time */
+
+    .js [data-view][hidden] { display: none !important; }
+
+    .view-enter { animation: viewIn .55s var(--ease) both; }
+
+    @keyframes viewIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
     }
 
-    .js .reveal.in { opacity: 1; transform: none; }
+    .nav-links a[aria-current="page"] { color: var(--black); }
+    .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+    .explore { padding-top: clamp(3rem, 6vw, 4.5rem); }
+
+    .explore-title {
+      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      font-weight: 500;
+      letter-spacing: -.02em;
+      margin-bottom: 1.8rem;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .tile {
+      position: relative;
+      display: grid;
+      gap: .35rem;
+      align-content: start;
+      min-height: 190px;
+      padding: 1.6rem 1.5rem;
+      border-radius: var(--radius-m);
+      border: 1px solid var(--line);
+      background: var(--white);
+      text-decoration: none;
+      transition: transform .35s var(--ease), border-color .3s, box-shadow .35s var(--ease);
+    }
+
+    .tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--black);
+      box-shadow: 0 24px 50px -30px rgba(10, 20, 40, .35);
+    }
+
+    .tile svg {
+      width: 34px;
+      height: 34px;
+      stroke: var(--black);
+      margin-bottom: auto;
+      padding-bottom: 1.4rem;
+      box-sizing: content-box;
+    }
+
+    .tile strong { font-weight: 500; font-size: 1.3rem; letter-spacing: -.01em; }
+    .tile span { color: var(--muted); font-weight: 300; font-size: .96rem; }
+
+    .tile::after {
+      content: "";
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A0A0B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E") center / 16px no-repeat;
+      transition: transform .35s var(--ease), background-color .3s, border-color .3s;
+    }
+
+    .tile:hover::after { transform: rotate(45deg); background-color: var(--mist); }
+
+    .tile-blue { background: var(--blue); border-color: var(--blue); color: var(--white); }
+    .tile-blue svg { stroke: var(--white); }
+    .tile-blue span { color: rgba(255, 255, 255, .8); }
+    .tile-blue::after, .tile-dark::after { border-color: rgba(255, 255, 255, .3); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E"); }
+    .tile-blue:hover, .tile-dark:hover { border-color: transparent; }
+    .tile-blue:hover::after, .tile-dark:hover::after { background-color: rgba(255, 255, 255, .12); }
+    .tile-dark { background: var(--navy-0); border-color: var(--navy-0); color: var(--white); }
+    .tile-dark svg { stroke: var(--white); }
+    .tile-dark span { color: var(--muted-dark); }
+
+    .view-next {
+      border-top: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .view-next a {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 2rem 0;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 500;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      transition: color .25s, padding .35s var(--ease);
+    }
+
+    .view-next a span {
+      font-weight: 300;
+      font-size: .78rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      order: -1;
+    }
+
+    .view-next a:hover { color: var(--blue); padding-left: .5rem; }
+
+    @media (max-width: 920px) {
+      .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .tiles { grid-template-columns: 1fr; }
+      .tile { min-height: 0; }
+      .view-next a { flex-direction: column; gap: .3rem; }
+    }
 
     /* Responsive */
 
@@ -2172,6 +2292,7 @@
       body { font-size: 16px; }
       .wrap { width: calc(100% - 32px); }
       .nav-cta .btn { display: none; }
+      .nav-contact { display: list-item; }
       .brand .word { width: 128px; }
       .brand .mark { width: 34px; }
       .hero-actions .btn { flex: 1 1 100%; }
@@ -2241,6 +2362,7 @@
         <li><a href="#work">Work</a></li>
         <li><a href="#process">Process</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li class="nav-contact"><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-cta">
         <a class="btn btn-black" href="#contact">Start a project</a>
@@ -2252,7 +2374,7 @@
   </nav>
 
   <main id="main">
-    <section class="hero dark" id="top" aria-labelledby="heroTitle">
+    <section class="hero dark" id="top" data-view="home" aria-labelledby="heroTitle">
       <svg class="hero-arc hero-glow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
           <linearGradient id="arcStroke" x1="0" y1="1" x2="1" y2="0">
@@ -2287,8 +2409,8 @@
             </div>
           </div>
           <div class="hero-aside hero-in">
-            <p class="tracked">Build your store in 30 seconds</p>
-            <p>Pick a name, a category and a colour, and watch a working storefront appear below. Then chat with a WhatsApp AI agent set up for a business like yours.</p>
+            <p class="tracked">Try it yourself</p>
+            <p>Build a sample online store in 30 seconds, or chat with a WhatsApp AI agent set up for a business like yours. Everything runs right here in your browser.</p>
           </div>
         </div>
 
@@ -2312,15 +2434,53 @@
       </div>
     </section>
 
-    <div class="brand-line">
+    <div class="brand-line" data-view="home">
       <p class="rule-line tracked" aria-label="Build, grow, together">
         <span>Build</span><span class="dot" aria-hidden="true"></span><span>Grow</span><span class="dot" aria-hidden="true"></span><span>Together</span>
       </p>
     </div>
 
-    <section class="band" id="services" aria-labelledby="servicesTitle">
+    <section class="band explore" data-view="home" aria-labelledby="exploreTitle">
       <div class="wrap">
-        <div class="head reveal">
+        <h2 id="exploreTitle" class="explore-title">What would you like to see?</h2>
+        <div class="tiles">
+          <a class="tile" href="#services">
+            <svg aria-hidden="true"><use href="#i-web"/></svg>
+            <strong>Services</strong>
+            <span>Websites, stores, apps and AI agents we build.</span>
+          </a>
+          <a class="tile tile-blue" href="#demos">
+            <svg aria-hidden="true"><use href="#i-store"/></svg>
+            <strong>Live demos</strong>
+            <span>Build a sample store or chat with an AI agent.</span>
+          </a>
+          <a class="tile" href="#work">
+            <svg aria-hidden="true"><use href="#i-app"/></svg>
+            <strong>Our work</strong>
+            <span>Apps we're building right now.</span>
+          </a>
+          <a class="tile" href="#process">
+            <svg aria-hidden="true"><use href="#i-flow"/></svg>
+            <strong>Process</strong>
+            <span>How a project runs, from first call to launch.</span>
+          </a>
+          <a class="tile" href="#faq">
+            <svg aria-hidden="true"><use href="#i-care"/></svg>
+            <strong>FAQ</strong>
+            <span>Costs, timelines and what happens after launch.</span>
+          </a>
+          <a class="tile tile-dark" href="#contact">
+            <svg aria-hidden="true"><use href="#i-agent"/></svg>
+            <strong>Start a project</strong>
+            <span>Tell us what you want built.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band view-page" id="services" data-view="services" aria-labelledby="servicesTitle">
+      <div class="wrap">
+        <div class="head ">
           <div>
             <p class="kicker tracked">What we build</p>
             <h2 id="servicesTitle">Everything your business needs to work online.</h2>
@@ -2328,7 +2488,7 @@
           <p>Every project is built from scratch around your customers and your process. No templates, no page builders, and code you can grow with.</p>
         </div>
 
-        <div class="services reveal">
+        <div class="services ">
           <article class="service">
             <svg aria-hidden="true"><use href="#i-web"/></svg>
             <h3>Business websites</h3>
@@ -2349,7 +2509,7 @@
           <article class="service">
             <svg aria-hidden="true"><use href="#i-app"/></svg>
             <h3>Mobile &amp; web apps</h3>
-            <p>Android and web apps, dashboards and booking systems, including offline-first apps that work on patchy networks.</p>
+            <p>Android, iPhone and web apps, dashboards and booking systems, including offline-first apps that work on patchy networks.</p>
           </article>
           <article class="service">
             <svg aria-hidden="true"><use href="#i-flow"/></svg>
@@ -2364,10 +2524,13 @@
         </div>
       </div>
     </section>
+    <nav class="view-next" data-view="services" aria-label="Next">
+      <div class="wrap"><a href="#demos"><span>Up next</span>Try the live demos</a></div>
+    </nav>
 
-    <section class="band band-mist" id="demos" aria-labelledby="demosTitle">
+    <section class="band band-mist view-page" id="demos" data-view="demos" aria-labelledby="demosTitle">
       <div class="wrap">
-        <div class="head reveal">
+        <div class="head ">
           <div>
             <p class="kicker tracked">Live demos</p>
             <h2 id="demosTitle">See yours working before you pay for it.</h2>
@@ -2450,7 +2613,7 @@
               </div>
             </div>
 
-            <div class="device" id="device" data-view="desktop">
+            <div class="device" id="device" data-size="desktop">
               <div class="device-top" aria-hidden="true"><i></i><i></i><i></i><span class="device-url" id="storeUrl">kaaristudio.in</span></div>
               <div class="viewport">
               <div class="screen" id="screen">
@@ -2581,10 +2744,13 @@
         </div>
       </div>
     </section>
+    <nav class="view-next" data-view="demos" aria-label="Next">
+      <div class="wrap"><a href="#work"><span>Up next</span>See our current work</a></div>
+    </nav>
 
-    <section class="band" id="work" aria-labelledby="workTitle">
+    <section class="band view-page" id="work" data-view="work" aria-labelledby="workTitle">
       <div class="wrap">
-        <div class="head reveal">
+        <div class="head ">
           <div>
             <p class="kicker tracked">Current work</p>
             <h2 id="workTitle">Products we're building right now.</h2>
@@ -2593,7 +2759,7 @@
         </div>
 
         <div class="work-list">
-          <article class="project reveal">
+          <article class="project ">
             <div>
               <p class="status" style="--c:#18C964">In beta</p>
               <h3>Paisa</h3>
@@ -2612,38 +2778,41 @@
             </div>
           </article>
 
-          <article class="project flip reveal">
+          <article class="project flip ">
             <div>
               <p class="status" style="--c:#F5A524">In development</p>
               <h3>Focusly</h3>
-              <p class="type">Deep-work and study app for web and Android</p>
-              <p class="copy">A focus app for students preparing for big exams. It combines a focus timer, study planner, soundscapes and session analytics, with AI study suggestions that tell you what to revise next.</p>
+              <p class="type">Study timer for iPhone</p>
+              <p class="copy">"Put your phone down. Get your future up." Students tap Start focus and place their phone face down on the desk. While it stays down, Focusly counts focused time upward. Pick it up and the count pauses on its own, with no pause button and no session length to choose.</p>
               <ul class="ticks-list">
-                <li>Focus sessions with streaks, daily targets and milestones</li>
-                <li>Planner calendar with AI-suggested study slots</li>
-                <li>Weekly focus-time analytics</li>
+                <li>Face-down timer using the phone's motion sensors, with a 3·2·1 settle and adjustable sensitivity</li>
+                <li>Study timetable with Google Calendar sync and a reminder before every block</li>
+                <li>Daily goal ring, streaks, weekly analytics and a focus heatmap</li>
               </ul>
-              <ul class="stack" aria-label="Built with"><li>React</li><li>TypeScript</li><li>Tailwind</li><li>Gemini AI</li></ul>
+              <ul class="stack" aria-label="Built with"><li>iOS</li><li>Motion sensors</li><li>Live Activities</li><li>Google Calendar API</li></ul>
             </div>
             <div class="project-media light">
-              <figure class="shot"><img src="work/focusly-hub.jpg" width="520" height="1127" loading="lazy" decoding="async" alt="Focusly focus hub with a 50 minute timer, daily target and streak"></figure>
-              <figure class="shot"><img src="work/focusly-analytics.jpg" width="520" height="1127" loading="lazy" decoding="async" alt="Focusly session analytics with total focus time and a weekly chart"></figure>
+              <figure class="shot bare"><img src="work/focusly-timer.webp" width="520" height="1138" loading="lazy" decoding="async" alt="Focusly focus session with the phone face down, counting up 50 minutes"></figure>
+              <figure class="shot bare"><img src="work/focusly-plan.webp" width="520" height="1138" loading="lazy" decoding="async" alt="Focusly plan screen with Google Calendar connection and colour-coded study blocks"></figure>
             </div>
           </article>
         </div>
       </div>
     </section>
+    <nav class="view-next" data-view="work" aria-label="Next">
+      <div class="wrap"><a href="#process"><span>Up next</span>How a project runs</a></div>
+    </nav>
 
-    <section class="band dark" id="process" aria-labelledby="processTitle">
+    <section class="band dark view-page" id="process" data-view="process" aria-labelledby="processTitle">
       <div class="wrap">
-        <div class="head reveal">
+        <div class="head ">
           <div>
             <p class="kicker tracked">Process</p>
             <h2 id="processTitle">From idea to launch, with no surprises.</h2>
           </div>
           <p>You always know what's being built, when it ships and what it costs, with everything agreed in writing before work starts.</p>
         </div>
-        <ol class="steps reveal">
+        <ol class="steps ">
           <li class="step"><span class="n">01</span><h3>Discovery call</h3><p>We learn your business, your customers and the problem the software has to solve.</p></li>
           <li class="step"><span class="n">02</span><h3>Scope &amp; quote</h3><p>A written scope with features, timeline and price, agreed before any work starts.</p></li>
           <li class="step"><span class="n">03</span><h3>Design &amp; build</h3><p>Regular demos on a live preview link, so you see progress and give feedback early.</p></li>
@@ -2651,17 +2820,20 @@
         </ol>
       </div>
     </section>
+    <nav class="view-next" data-view="process" aria-label="Next">
+      <div class="wrap"><a href="#faq"><span>Up next</span>Questions clients ask</a></div>
+    </nav>
 
-    <section class="band" id="faq" aria-labelledby="faqTitle">
+    <section class="band view-page" id="faq" data-view="faq" aria-labelledby="faqTitle">
       <div class="wrap">
-        <div class="head reveal">
+        <div class="head ">
           <div>
             <p class="kicker tracked">FAQ</p>
             <h2 id="faqTitle">Questions clients usually ask.</h2>
           </div>
           <p>Can't find your answer? Message us on WhatsApp for a direct reply.</p>
         </div>
-        <div class="faq reveal">
+        <div class="faq ">
           <details>
             <summary>How much does a custom website or app cost?</summary>
             <p>It depends on what it needs to do. A focused business website costs far less than an app with logins, payments and dashboards. After a short discovery call you get a written, fixed quote, so you know the full cost before anything starts.</p>
@@ -2685,10 +2857,13 @@
         </div>
       </div>
     </section>
+    <nav class="view-next" data-view="faq" aria-label="Next">
+      <div class="wrap"><a href="#contact"><span>Up next</span>Start a project</a></div>
+    </nav>
 
-    <section class="band dark" id="contact" aria-labelledby="contactTitle">
+    <section class="band dark view-page" id="contact" data-view="contact" aria-labelledby="contactTitle">
       <div class="wrap contact-grid">
-        <div class="reveal">
+        <div >
           <p class="kicker tracked">Start a project</p>
           <h2 id="contactTitle">Tell us what you want built.</h2>
           <p class="lead-copy">Share a few details and we'll reply on WhatsApp to set up a discovery call. A rough idea is enough to start.</p>
@@ -2700,7 +2875,7 @@
           </div>
         </div>
 
-        <form class="form reveal" id="leadForm">
+        <form class="form " id="leadForm">
           <div class="form-row">
             <label class="field"><span>Your name</span><input name="name" type="text" autocomplete="name" required></label>
             <label class="field"><span>Business</span><input name="business" type="text" autocomplete="organization"></label>
@@ -2745,6 +2920,9 @@
         </form>
       </div>
     </section>
+    <nav class="view-next" data-view="contact" aria-label="Next">
+      <div class="wrap"><a href="#top"><span>Back</span>Back to home</a></div>
+    </nav>
   </main>
 
   <footer>
@@ -2823,16 +3001,72 @@
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    /* ---------- Reveal on scroll ---------- */
-    const reveals = $$(".reveal");
-    if (reduced || !("IntersectionObserver" in window)) {
-      reveals.forEach((el) => el.classList.add("in"));
-    } else {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-      }, { rootMargin: "0px 0px -60px 0px", threshold: .08 });
-      reveals.forEach((el) => io.observe(el));
+    /* ---------- Views: show one section at a time ---------- */
+    const VIEWS = {
+      home: "Socio Craftco | Websites, Apps & AI Agents for Growing Businesses",
+      services: "Services | Socio Craftco",
+      demos: "Live demos | Socio Craftco",
+      work: "Our work | Socio Craftco",
+      process: "Process | Socio Craftco",
+      faq: "FAQ | Socio Craftco",
+      contact: "Start a project | Socio Craftco"
+    };
+    const viewEls = $$("[data-view]");
+    let currentView = null;
+
+    function viewFor(hash) {
+      const id = decodeURIComponent(hash.replace(/^#/, ""));
+      if (!id || id === "top") return { view: "home" };
+      if (VIEWS[id]) return { view: id };
+      const target = document.getElementById(id);
+      const holder = target && target.closest("[data-view]");
+      if (holder) return { view: holder.dataset.view, target };
+      return null;
     }
+
+    function showView(hash, animate) {
+      const found = viewFor(hash);
+      if (!found) return;
+      const changed = found.view !== currentView;
+      if (changed) {
+        viewEls.forEach((el) => {
+          const on = el.dataset.view === found.view;
+          el.hidden = !on;
+          el.classList.remove("view-enter");
+          if (on && animate && !reduced) { void el.offsetWidth; el.classList.add("view-enter"); }
+        });
+        currentView = found.view;
+        document.title = VIEWS[found.view];
+        $$(".nav-links a").forEach((a) => {
+          if (a.getAttribute("href") === "#" + found.view) a.setAttribute("aria-current", "page");
+          else a.removeAttribute("aria-current");
+        });
+        if (found.view === "demos" && !$("#panel-agent").hidden) agent.start();
+      }
+      if (found.target && found.target.dataset.view === undefined) {
+        found.target.scrollIntoView({ block: "start" });
+      } else if (changed || !found.target) {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      if (changed && animate) {
+        const heading = found.view === "home" ? $("#heroTitle") : $(`#${found.view} h2`);
+        if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true }); }
+      }
+    }
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.addEventListener("hashchange", () => showView(location.hash, true));
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented) return;
+      const hash = a.getAttribute("href");
+      if (hash === "#main") return;
+      if (hash === location.hash || (hash === "#top" && !location.hash)) {
+        e.preventDefault();
+        showView(hash, false);
+        window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" });
+      }
+    });
 
     /* ---------- Demo tabs ---------- */
     const tabs = $$(".demo-tab");
@@ -3046,7 +3280,7 @@
     $("#sCat").addEventListener("change", (e) => { st.cat = e.target.value; renderCatalog(); });
     radio($("#sColor"), (b) => { st.color = b.dataset.c; renderBrand(); });
     radio($("#sStyle"), (b) => { st.style = b.dataset.v; renderBrand(); });
-    radio($("#sView"), (b) => { device.dataset.view = b.dataset.v; setCart(false); });
+    radio($("#sView"), (b) => { device.dataset.size = b.dataset.v; setCart(false); });
 
     $("#sendStore").addEventListener("click", () => {
       const catLabel = $("#sCat").selectedOptions[0].textContent;
@@ -3303,6 +3537,8 @@
         `Details: ${d.message || "-"}`
       ].join("\n"));
     });
+
+    showView(location.hash, false);
   })();
   </script>
 </body>
