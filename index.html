@@ -409,6 +409,44 @@
     @keyframes drawArc { to { stroke-dashoffset: 0; } }
     @keyframes glowIn { to { opacity: 1; } }
 
+    /* 3D brand motion: desktop only. Rendered on black and screen-blended,
+       so only the light of the mark and objects lands on the navy gradient. */
+    .hero-motion { display: none; }
+
+    @media (min-width: 921px) {
+      .hero-motion {
+        display: block;
+        position: absolute;
+        z-index: -1;
+        top: clamp(.5rem, 2vw, 2rem);
+        right: max(-2rem, calc((100% - var(--max)) / 2 - 3rem));
+        width: min(42vw, 600px);
+        aspect-ratio: 1;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        -webkit-mask-image: radial-gradient(closest-side, #000 58%, transparent 100%);
+        mask-image: radial-gradient(closest-side, #000 58%, transparent 100%);
+        background: center / cover no-repeat;
+        opacity: 0;
+        transition: opacity 1.2s var(--ease);
+      }
+
+      .hero-motion.is-ready { opacity: 1; }
+
+      .hero-motion video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .hero-motion .hm-loop { opacity: 0; }
+      .hero-motion.is-looping .hm-loop { opacity: 1; }
+      .hero-motion.is-looping .hm-intro { opacity: 0; }
+    }
+
     .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
@@ -2396,6 +2434,10 @@
       <svg class="hero-arc hero-line" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <path class="arc-line" pathLength="1" d="M-120 900C260 860 760 640 1560 120" fill="none" stroke="url(#arcStroke)" stroke-width="2"/>
       </svg>
+      <div class="hero-motion" aria-hidden="true" data-poster="/media/hero-poster.jpg">
+        <video class="hm-intro" muted playsinline preload="none" disablepictureinpicture data-src="/media/hero-intro"></video>
+        <video class="hm-loop" muted playsinline loop preload="none" disablepictureinpicture data-src="/media/hero-loop"></video>
+      </div>
 
       <div class="wrap">
         <div class="hero-grid">

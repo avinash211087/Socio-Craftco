@@ -618,6 +618,58 @@
   };
   $$('a[href="#work"]').forEach((a) => ["pointerenter", "touchstart", "focus"].forEach((ev) => a.addEventListener(ev, warmWork, { passive: true, once: true })));
 
+  /* ---------- Hero 3D motion (desktop only) ----------
+     Plays a 5s intro where the mark assembles, then hands off to a seamless 8s loop.
+     Phones never download it; reduced-motion and data-saver visitors get the still frame. */
+  const motion = $(".hero-motion");
+  if (motion) {
+    const intro = $(".hm-intro", motion);
+    const loop = $(".hm-loop", motion);
+    const wide = window.matchMedia("(min-width: 921px)");
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    // H.264 where supported (hardware decoding), VP9 WebM otherwise
+    const ext = intro.canPlayType('video/mp4; codecs="avc1.640028"') ? ".mp4" : ".webm";
+    let started = false;
+    let visible = true;
+    const active = () => (motion.classList.contains("is-looping") ? loop : intro);
+    const play = (v) => { const p = v.play(); if (p) p.catch(() => {}); };
+
+    const start = () => {
+      if (started || !wide.matches) return;
+      started = true;
+      if (reduced || saveData) {
+        motion.style.backgroundImage = `url("${motion.dataset.poster}")`;
+        motion.classList.add("is-ready");
+        return;
+      }
+      intro.src = intro.dataset.src + ext;
+      intro.addEventListener("playing", () => {
+        motion.classList.add("is-ready");
+        loop.src = loop.dataset.src + ext;   // fetch the loop while the intro plays
+        loop.preload = "auto";
+      }, { once: true });
+      intro.addEventListener("ended", () => {
+        loop.addEventListener("playing", () => {
+          motion.classList.add("is-looping");
+          intro.removeAttribute("src");
+          intro.load();
+        }, { once: true });
+        if (visible) play(loop);
+      }, { once: true });
+      if (visible) play(intro);
+    };
+
+    // Save battery: pause whenever the hero is off screen or another section is open.
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (!started || !active().src) return;
+      if (visible) play(active()); else active().pause();
+    }).observe(motion);
+
+    start();
+    wide.addEventListener("change", start);
+  }
+
   showView(location.hash, false);
   if (currentView === "work") warmWork();
 })();
