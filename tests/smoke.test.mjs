@@ -22,6 +22,8 @@ const checks = [
   [html.includes('id="panel-preview"'), "personalised preview panel must remain available"],
   [html.includes('id="pUnlockDialog"'), "preview must include the lead unlock step"],
   [preview.includes("shareUrl(state.config)"), "preview must generate a shareable configuration link"],
+  [preview.includes("function sceneMarkup(config)") && preview.includes("p-scene-realestate"), "preview must render distinct industry scenes"],
+  [preview.includes('id="pChatComposer"') && preview.includes("assistantReply(question)"), "preview assistant must accept typed test questions"],
   [preview.includes('url.searchParams.set("pv", encodeConfig(config))') && !preview.includes('searchParams.set("phone"'), "share links must exclude contact details"],
   [!preview.includes("₹") && !previewCss.includes("₹"), "personalised preview must not expose estimated pricing"],
   [html.includes('<link rel="canonical" href="https://sociocraftco.in/">'), "canonical URL must stay present"],
