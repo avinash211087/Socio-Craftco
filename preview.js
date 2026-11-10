@@ -179,6 +179,59 @@
     });
   }
 
+
+  function sceneMarkup(config) {
+    const type = TYPES[config.type];
+    const services = config.services.length ? config.services : type.services;
+    const scenes = {
+      clinic: [
+        '<div class="p-scene p-scene-clinic">',
+        '<div class="p-scene-label"><i></i><span>Appointments open today</span></div>',
+        '<div class="p-appointment-card"><small>Next available</small><strong>4:30 PM</strong><span>General consultation</span></div>',
+        '<div class="p-calendar-row"><b>Mon</b><b>Tue</b><b class="active">Wed</b><b>Thu</b><b>Fri</b></div>',
+        '</div>'
+      ].join(""),
+      restaurant: [
+        '<div class="p-scene p-scene-restaurant">',
+        '<div class="p-plate"><span>Chef’s<br>choice</span></div>',
+        '<div class="p-menu-ticket"><small>Tonight’s table</small><strong>Seasonal menu</strong><span>Reserve in under a minute</span></div>',
+        '</div>'
+      ].join(""),
+      retail: [
+        '<div class="p-scene p-scene-retail">',
+        '<div class="p-product product-one"><span>New</span></div>',
+        '<div class="p-product product-two"></div>',
+        '<div class="p-product product-three"></div>',
+        '<div class="p-retail-caption"><small>Curated for you</small><strong>' + escapeHtml(services[0]) + '</strong></div>',
+        '</div>'
+      ].join(""),
+      coaching: [
+        '<div class="p-scene p-scene-coaching">',
+        '<div class="p-course-head"><span>Learning path</span><b>72%</b></div>',
+        '<div class="p-progress"><i></i></div>',
+        '<div class="p-lesson active"><b>01</b><span>Core concepts</span><i>Done</i></div>',
+        '<div class="p-lesson"><b>02</b><span>Guided practice</span><i>Next</i></div>',
+        '<div class="p-lesson"><b>03</b><span>Progress review</span><i>Later</i></div>',
+        '</div>'
+      ].join(""),
+      realestate: [
+        '<div class="p-scene p-scene-realestate">',
+        '<div class="p-property-sky"></div><div class="p-property-home"><i></i><i></i><i></i></div>',
+        '<div class="p-property-meta"><small>Featured property</small><strong>Space for the next chapter</strong><span>Verified listing · Site visit available</span></div>',
+        '</div>'
+      ].join(""),
+      services: [
+        '<div class="p-scene p-scene-services">',
+        '<div class="p-brief-top"><span>Project brief</span><i>In review</i></div>',
+        '<strong>' + escapeHtml(config.name) + '</strong>',
+        '<div class="p-brief-line wide"></div><div class="p-brief-line"></div>',
+        '<div class="p-brief-steps"><span class="done">Discover</span><span class="active">Design</span><span>Deliver</span></div>',
+        '</div>'
+      ].join("")
+    };
+    return scenes[config.type] || scenes.services;
+  }
+
   function websiteMarkup(config) {
     const type = TYPES[config.type];
     const goal = GOALS[config.goal];
@@ -188,7 +241,7 @@
       : ["Home", "Services"];
 
     return [
-      '<div class="p-site" data-style="' + escapeHtml(config.style) + '" style="--preview-brand:' + escapeHtml(config.color) + '">',
+      '<div class="p-site" data-style="' + escapeHtml(config.style) + '" data-industry="' + escapeHtml(config.type) + '" style="--preview-brand:' + escapeHtml(config.color) + '">',
       '  <header class="p-site-head">',
       '    <div class="p-site-logo"><span>' + escapeHtml(config.name.charAt(0).toUpperCase()) + '</span>' + escapeHtml(config.name) + '</div>',
       '    <nav aria-label="Preview pages">' + pages.map((page) => '<button type="button">' + page + '</button>').join("") + '</nav>',
@@ -200,7 +253,7 @@
       '      <h3>' + escapeHtml(type.headline) + '</h3>',
       '      <p>' + escapeHtml(type.summary) + '</p>',
       '      <button class="p-site-cta" type="button">' + escapeHtml(goal.cta) + '</button></div>',
-      '      <div class="p-site-art" aria-hidden="true"><span>' + escapeHtml(config.name.charAt(0).toUpperCase()) + '</span></div>',
+      '      <div class="p-site-scene" aria-hidden="true">' + sceneMarkup(config) + '</div>',
       '    </section>',
       '    <section class="p-site-services">',
       '      <div class="p-site-section-head"><small>WHAT WE DO</small><h4>Built around what your customers need.</h4></div>',
@@ -236,7 +289,7 @@
       '<div class="p-chat-actions">' + questions.map((question) =>
         '<button type="button" data-question="' + escapeHtml(question) + '">' + escapeHtml(question) + '</button>'
       ).join("") + '</div>',
-      '<div class="p-chat-input"><span>Type a message…</span><button type="button" aria-label="Send simulated message">➤</button></div>',
+      '<form class="p-chat-input" id="pChatComposer"><input type="text" maxlength="120" autocomplete="off" aria-label="Test a question" placeholder="Ask a question…"><button type="submit" aria-label="Send simulated message">➤</button></form>',
       '<script type="application/json" data-preview-services>' + JSON.stringify(services).replace(/</g, "\\u003c") + '</script>'
     ].join("");
   }
@@ -401,6 +454,44 @@
     els.shell.dataset.size = button.dataset.size;
   });
 
+
+  function appendChatMessage(question, response) {
+    const body = $("#pChatBody");
+    if (!body) return;
+    body.insertAdjacentHTML("beforeend",
+      '<div class="p-message user">' + escapeHtml(question) + '</div>' +
+      '<div class="p-message bot">' + escapeHtml(response) + '</div>'
+    );
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function assistantReply(question) {
+    const query = clean(question, 120).toLowerCase();
+    const type = TYPES[state.config.type];
+    const goal = GOALS[state.config.goal];
+    const services = state.config.services.length ? state.config.services : type.services;
+
+    if (/price|cost|charge|fee|quote/.test(query)) {
+      return "Pricing depends on what you need. I can collect a few details so the team can prepare an exact quotation.";
+    }
+    if (/time|hour|open|close|available/.test(query)) {
+      return "I can help check availability and pass your preferred time to the team.";
+    }
+    if (/book|appointment|reserve|visit|call/.test(query)) {
+      return "Tell me your preferred day and contact details, and I can start the request for the team.";
+    }
+    if (/human|person|team|agent|contact/.test(query)) {
+      return "I can collect your name and WhatsApp number so the right person can continue the conversation.";
+    }
+    if (/service|offer|product|course|property|menu/.test(query)) {
+      return "We can help with " + services.join(", ") + ". Which option would you like to explore?";
+    }
+    if (/hello|hi|hey/.test(query)) {
+      return type.greeting;
+    }
+    return goal.assistant + " Ask about services, availability, bookings or speaking with the team.";
+  }
+
   els.chat.addEventListener("click", (event) => {
     const button = event.target.closest("[data-question]");
     if (!button) return;
@@ -415,12 +506,21 @@
       "How can I get started?": "Tell me what you need and I will collect the right details for the " + state.config.name + " team.",
       "Talk to your team": "Of course. I can collect your name and contact number so the team can continue the conversation."
     };
-    body.insertAdjacentHTML("beforeend",
-      '<div class="p-message user">' + escapeHtml(question) + '</div>' +
-      '<div class="p-message bot">' + escapeHtml(responses[question] || type.greeting) + '</div>'
-    );
+    appendChatMessage(question, responses[question] || type.greeting);
     button.disabled = true;
-    body.scrollTop = body.scrollHeight;
+  });
+
+
+  els.chat.addEventListener("submit", (event) => {
+    const composer = event.target.closest("#pChatComposer");
+    if (!composer) return;
+    event.preventDefault();
+    const input = $("input", composer);
+    const question = clean(input.value, 120);
+    if (!question) return;
+    appendChatMessage(question, assistantReply(question));
+    input.value = "";
+    input.focus();
   });
 
   els.copy.addEventListener("click", async () => {
