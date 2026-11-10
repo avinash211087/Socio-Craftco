@@ -25,6 +25,7 @@ Open `http://localhost:8080`. A local server is preferred over opening `index.ht
 
 ```sh
 node --check app.js
+node --check preview.js
 node tests/smoke.test.mjs
 ```
 
@@ -34,6 +35,7 @@ The smoke test protects critical form-safety, chat-state, CSP, SEO, and asset in
 
 - `index.html` — page markup, styles, SEO metadata, and inline SVG icons
 - `app.js` — navigation, store demo, chat demo, view routing, and enquiry handoff
+- `preview.js`, `preview.css` — personalised website/chatbot preview and sales unlock funnel
 - `privacy.html`, `terms.html` — legal pages
 - `brand/`, `work/`, `media/`, `fonts/` — static assets
 - `vercel.json` — security headers and cache rules
