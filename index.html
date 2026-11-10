@@ -2688,7 +2688,7 @@
               <div class="p-gate" id="pGate">
                 <div>
                   <h4>Your basic preview is ready.</h4>
-                  <p>Unlock the complete pages, phone view, expanded assistant and a private share link.</p>
+                  <p>Unlock the complete pages, phone view, expanded assistant and a shareable preview link.</p>
                 </div>
                 <button class="btn btn-blue" type="button" id="pUnlockOpen">Save &amp; unlock my preview</button>
               </div>
@@ -2714,7 +2714,7 @@
                 <button class="p-dialog-close" type="button" id="pUnlockClose" aria-label="Close">✕</button>
               </div>
               <label class="field"><span>Your name</span><input name="name" type="text" autocomplete="name" required></label>
-              <label class="field"><span>WhatsApp number</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required></label>
+              <label class="field"><span>WhatsApp number</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9+() -]{8,20}" title="Enter a valid WhatsApp number" required></label>
               <label class="field">
                 <span>When would you like to launch?</span>
                 <select name="timeline" required>
