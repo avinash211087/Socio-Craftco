@@ -131,6 +131,7 @@
   }[char]));
 
   const validColor = (value) => /^#[0-9A-F]{6}$/i.test(value) ? value.toUpperCase() : DEFAULT.color;
+  const slug = (value) => clean(value, 40).toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 28) || "yourbusiness";
   const parseServices = (value) => clean(value, 180).split(",").map((item) => clean(item, 32)).filter(Boolean).slice(0, 3);
 
   function sanitise(input) {
@@ -247,6 +248,7 @@
 
     els.website.innerHTML = websiteMarkup(state.config);
     els.chat.innerHTML = assistantMarkup(state.config);
+    $(".p-browser-url").textContent = slug(state.config.name) + ".in";
     els.shell.style.setProperty("--preview-brand", state.config.color);
     els.shell.dataset.style = state.config.style;
     els.empty.hidden = true;
