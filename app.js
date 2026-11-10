@@ -16,6 +16,13 @@
   });
   $("#year").textContent = new Date().getFullYear();
 
+  // Keep the enquiry form inert until this script has loaded. This prevents
+  // browsers from falling back to an accidental URL-based form submission.
+  const leadForm = $("#leadForm");
+  leadForm.inert = false;
+  leadForm.removeAttribute("inert");
+  $("#leadSubmit").disabled = false;
+
   /* ---------- Navigation ---------- */
   const nav = $("#siteNav");
   const menuBtn = $("#menuBtn");
@@ -316,6 +323,14 @@
     let booking = {};
     let timers = [];
     let started = false;
+    let pending = false;
+
+    const setPending = (value) => {
+      pending = value;
+      $("#waText").disabled = value;
+      $(".wa-send", $("#waForm")).disabled = value;
+      if (!value) $("#waText").focus({ preventScroll: true });
+    };
 
     const now = () => new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
     const fill = (s) => s.replace(/\{name\}/g, bizName);
@@ -352,6 +367,7 @@
     }
 
     function botSays(text, btns, delay = 900) {
+      setPending(true);
       const typing = document.createElement("div");
       typing.className = "typing";
       typing.innerHTML = "<i></i><i></i><i></i>";
@@ -361,6 +377,7 @@
         statusEl.textContent = "online";
         bubble(fill(text), "in");
         if (btns) buttons(btns);
+        setPending(false);
       }, 250 + delay);
     }
 
@@ -391,6 +408,10 @@
         botSays(biz.place, [[biz.book, "book"], ["Prices", "prices"]]);
       } else if (action === "human") {
         botSays("No problem. I've let the team know and someone will reply here shortly. 🙂", null);
+      } else if (action === "askservice") {
+        botSays("Please choose one of these options so I can continue the booking.", biz.services.map((s) => [s, "svc:" + s]));
+      } else if (action === "askslot") {
+        botSays("Please choose one of the available times.", biz.slots.map((s) => [type === "coaching" ? s : "Tomorrow, " + s, "slot:" + (type === "coaching" ? s : "Tomorrow, " + s)]));
       } else if (action === "askname") {
         botSays("Sorry, I didn't catch that. Please type just your name, like Priya Sharma.", [["Use a sample name", "name:Rahul Verma"]]);
       } else if (action === "bye") {
@@ -412,16 +433,36 @@
     const NOT_A_NAME = /\b(what|where|when|why|how|who|which|is|are|can|do|does|please|tell|kya|hai|kaise|need|want)\b/;
     const looksLikeName = (text) => /^[\p{L}][\p{L} .'-]{1,39}$/u.test(text) && text.split(/\s+/).length <= 4 && !NOT_A_NAME.test(text.toLowerCase());
 
+    const normalise = (value) => value.toLowerCase().replace(/[^\p{L}\p{N}:]+/gu, " ").trim();
+    const matchesChoice = (text, choices) => {
+      const wanted = normalise(text);
+      return choices.find((choice) => {
+        const candidate = normalise(choice);
+        return wanted === candidate || wanted.includes(candidate) || candidate.includes(wanted);
+      });
+    };
+
     function intent(text) {
       const t = text.toLowerCase().trim();
       if (GREETING.test(t)) return "hello";
       const hit = INTENTS.find(([, re]) => re.test(t));
       if (hit) return hit[0];
+      if (step === "service") {
+        const choice = matchesChoice(text, B().services);
+        return choice ? "svc:" + choice : "askservice";
+      }
+      if (step === "slot") {
+        const choice = matchesChoice(text, B().slots);
+        if (!choice) return "askslot";
+        return "slot:" + (type === "coaching" ? choice : "Tomorrow, " + choice);
+      }
       if (step === "name" && looksLikeName(text.trim())) return "name:" + text.trim();
       return step === "name" ? "askname" : "fallback";
     }
 
     function userSays(text, action) {
+      if (pending) return;
+      $(".wa-buttons button", body).forEach((button) => (button.disabled = true));
       bubble(text, "out");
       const a = action || intent(text);
       if (a === "hello") botSays(B().greet, menuButtons());
@@ -448,6 +489,7 @@
       $("#waName").textContent = bizName;
       $("#waAvatar").textContent = bizName.charAt(0).toUpperCase();
       statusEl.textContent = "online";
+      setPending(true);
       later(() => bubble("Hi, I found you on Instagram", "out"), 300);
       later(() => botSays(B().greet, menuButtons(), 1100), 600);
     }
@@ -456,7 +498,7 @@
       e.preventDefault();
       const input = $("#waText");
       const text = input.value.trim();
-      if (!text) return;
+      if (!text || pending) return;
       input.value = "";
       $$(".wa-buttons button", body).forEach((b) => (b.disabled = true));
       userSays(text);
@@ -588,7 +630,7 @@
   });
 
   /* ---------- Contact form ---------- */
-  $("#leadForm").addEventListener("submit", (e) => {
+  leadForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const f = e.target;
     if (!f.reportValidity()) return;
