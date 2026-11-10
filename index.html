@@ -2917,7 +2917,8 @@
           </div>
         </div>
 
-        <form class="form " id="leadForm">
+        <noscript><p class="form-note">The project form needs JavaScript. Please use the WhatsApp or email link above.</p></noscript>
+        <form class="form " id="leadForm" inert>
           <div class="form-row">
             <label class="field"><span>Your name</span><input name="name" type="text" autocomplete="name" required></label>
             <label class="field"><span>Business</span><input name="business" type="text" autocomplete="organization"></label>
@@ -2957,7 +2958,7 @@
           </div>
           <label class="field"><span>WhatsApp number or email</span><input name="contact" type="text" autocomplete="tel" required></label>
           <label class="field"><span>Project details</span><textarea name="message" placeholder="What should it do? Who will use it? Any examples you like?"></textarea></label>
-          <button class="btn btn-blue" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> Send details on WhatsApp</button>
+          <button class="btn btn-blue" id="leadSubmit" type="submit" disabled><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> Send details on WhatsApp</button>
           <p class="form-note">This opens WhatsApp with your details filled in. Nothing is stored on this website, and we only use your details to reply. See our <a href="privacy.html">Privacy Policy</a>.</p>
         </form>
       </div>
