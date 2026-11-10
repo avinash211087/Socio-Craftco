@@ -32,8 +32,8 @@ for (const required of ["content-security-policy", "x-content-type-options", "re
   assert.ok(names.has(required), `missing security header: ${required}`);
 }
 
-const localAssets = [...html.matchAll(/\b(?:src|href)="([^"]+)"/g)]
-  .map((match) => match[1].split(/[?#]/)[0])
+const localAssets = [...html.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)]
+  .map((match) => match[1].split(/[?#]/)[0].replace(/^\//, ""))
   .filter((value) => value && !/^(?:https?:|mailto:|tel:|#)/.test(value));
 
 for (const asset of new Set(localAssets)) await access(asset);
