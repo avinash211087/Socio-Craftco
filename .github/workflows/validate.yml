@@ -27,6 +27,7 @@ jobs:
         run: |
           node --check app.js
           node --check preview.js
+          node --check pay.js
 
       - name: Run smoke checks
         run: node tests/smoke.test.mjs

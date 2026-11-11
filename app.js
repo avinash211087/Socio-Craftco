@@ -12,6 +12,7 @@
     if (!LEAD_ENDPOINT) return;
     fetch(LEAD_ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true, body: new URLSearchParams(data) }).catch(() => {});
   };
+  window.saveLead = saveLead; // preview.js reuses this
   const inr = (n) => "₹" + n.toLocaleString("en-IN");
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -25,7 +26,6 @@
   // Keep the enquiry form inert until this script has loaded. This prevents
   // browsers from falling back to an accidental URL-based form submission.
   const leadForm = $("#leadForm");
-  leadForm.inert = false;
   leadForm.removeAttribute("inert");
   $("#leadSubmit").disabled = false;
 
@@ -390,7 +390,7 @@
     const B = () => BIZ[type];
     const menuButtons = () => [[B().book, "book"], ["Prices", "prices"], ["Location & timings", "place"]];
 
-    function act(action, text) {
+    function act(action) {
       const biz = B();
       if (action === "book") {
         step = "service";
@@ -468,11 +468,11 @@
 
     function userSays(text, action) {
       if (pending) return;
-      $(".wa-buttons button", body).forEach((button) => (button.disabled = true));
+      $$(".wa-buttons button", body).forEach((button) => (button.disabled = true));
       bubble(text, "out");
       const a = action || intent(text);
       if (a === "hello") botSays(B().greet, menuButtons());
-      else act(a, text);
+      else act(a);
     }
 
     function showLead() {

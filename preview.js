@@ -2,7 +2,6 @@
 
 (() => {
   const WA_NUMBER = document.querySelector('meta[name="wa-number"]').content;
-  const LEAD_ENDPOINT = document.querySelector('meta[name="lead-endpoint"]').content;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -383,7 +382,6 @@
       item.setAttribute("aria-checked", String(active));
       item.tabIndex = active ? 0 : -1;
     });
-    state.config[dataKey] = button.dataset[dataKey === "color" ? "color" : "value"];
     if (state.generated) render(readConfig(), { unlocked: state.unlocked, scroll: false });
   }
 
@@ -438,13 +436,12 @@
     state.unlocked = true;
     render(state.config, { unlocked: true, scroll: false });
     els.unlockDialog.close();
-    if (LEAD_ENDPOINT) {
-      const c = state.config;
-      fetch(LEAD_ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true, body: new URLSearchParams({
-        source: "preview", name: state.lead.name, contact: state.lead.phone, timeline: state.lead.timeline,
-        business: c.name, service: c.type, message: [c.goal, c.style, c.services.join(", ")].join(" | ")
-      }) }).catch(() => {});
-    }
+    const c = state.config;
+    window.saveLead({
+      source: "preview", name: state.lead.name, contact: state.lead.phone, timeline: state.lead.timeline,
+      business: c.name, service: "Website + AI assistant (preview)",
+      message: [TYPES[c.type].label, GOALS[c.goal].label, c.style, c.services.join(", ")].filter(Boolean).join(" | ")
+    });
     openWhatsApp(quoteMessage());
   });
 

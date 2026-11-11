@@ -1,7 +1,6 @@
 /* Packages + payment pages. Loaded after legal.css (fonts, header, footer, tokens).
    Type and buttons follow site.css: tracked kicker with blue rule, thin/bold h1, black pill buttons. */
 :root {
-  --navy-1: #0A1426;
   --muted-dark: #9AA6BD;
 }
 
