@@ -160,7 +160,7 @@ function buildDashboard(ss) {
 
   section(d, "G53", "Came from");
   header(d, "G54:H54", ["Form", "Leads"]);
-  [["Contact form", "contact"], ["Website preview", "preview"]].forEach(([label, key], i) => {
+  [["Contact form", "contact"], ["Website preview", "preview"], ["Chat assistant", "chat"]].forEach(([label, key], i) => {
     d.getRange(55 + i, 7).setValue(label);
     d.getRange(55 + i, 8).setFormula("=COUNTIF(" + L + "B2:B,\"" + key + "\")");
   });

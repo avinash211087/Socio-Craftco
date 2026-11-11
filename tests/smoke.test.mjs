@@ -62,4 +62,29 @@ const localAssets = [html, ...pages].flatMap((doc) => [...doc.matchAll(/(?:^|\s)
 
 for (const asset of new Set(localAssets)) await access(asset);
 
+// Chat assistant: on every page, saves to the same Sheet, and answers common questions.
+const chatJs = await readFile("chat.js", "utf8");
+[html, ...pages].forEach((page, i) => {
+  assert.ok(page.includes('src="chat.js"') && page.includes('href="chat.css"'), `${i ? PAGES[i - 1] : "index.html"} must load the chat`);
+});
+const endpoint = html.match(/name="lead-endpoint" content="([^"]+)"/)[1];
+assert.ok(chatJs.includes(`"${endpoint}"`), "chat must save leads to the same endpoint as the site");
+const sandbox = {};
+(await import("node:vm")).runInNewContext(chatJs, sandbox);
+const { match, detect, TOPICS, UI } = sandbox.socioChat;
+for (const [q, want] of [["how much for a website?", "website"], ["website kitna ka hai", "website"], ["what is your pricing", "prices"],
+  ["can you make an android app", "app"], ["do you do instagram marketing", "social"], ["how long will it take", "timeline"],
+  ["how do I cancel and get a refund", "refund"], ["hi", "hello"], ["I need a chatbot for my business", "agent"], ["asdfgh", null],
+  ["app banwane mein kitne din lagenge", "timeline"], ["paise wapas milenge kya", "refund"], ["aapka contact kaise karu", "contact"],
+  ["वेबसाइट कितने की बनेगी?", "website"], ["रिफंड कैसे मिलेगा", "refund"], ["आप क्या बनाते हैं", "services"], ["नमस्ते", "hello"]])
+  assert.equal(match(q), want, `chat: "${q}"`);
+for (const [q, want] of [["वेबसाइट चाहिए", "hi"], ["mujhe website chahiye", "hn"], ["kitna lagega", "hn"],
+  ["how much does a website cost", "en"], ["website", null]])
+  assert.equal(detect(q), want, `chat language: "${q}"`);
+for (const lang of ["en", "hn", "hi"]) {
+  for (const topic of TOPICS) assert.ok(topic.a[lang] && (!topic.l || topic.l[lang]), `chat ${topic.id} needs a ${lang} answer and label`);
+  for (const key in UI) assert.ok(UI[key][lang], `chat text ${key} needs ${lang}`);
+}
+assert.ok(!/9119|91196/.test(JSON.stringify({ TOPICS, UI })), "chat must not show the phone number");
+
 console.log(`Smoke checks passed (${checks.length} behavioural checks, ${new Set(localAssets).size} local assets).`);

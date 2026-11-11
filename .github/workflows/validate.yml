@@ -28,6 +28,7 @@ jobs:
           node --check app.js
           node --check preview.js
           node --check pay.js
+          node --check chat.js
 
       - name: Run smoke checks
         run: node tests/smoke.test.mjs
