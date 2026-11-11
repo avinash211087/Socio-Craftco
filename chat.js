@@ -22,7 +22,7 @@
            hn: "Hum banate hain:<ul><li>Business websites</li><li>UPI aur card payment wale online stores</li><li>WhatsApp aur website AI agents</li><li>Mobile aur web apps</li><li>Automation aur integrations</li><li>Social media, AI ad creative aur Meta ads</li></ul>Sab kuch scratch se banta hai, koi template ya page builder nahi.",
            hi: "हम बनाते हैं:<ul><li>बिज़नेस वेबसाइट</li><li>UPI और कार्ड पेमेंट वाले ऑनलाइन स्टोर</li><li>WhatsApp और वेबसाइट AI एजेंट</li><li>मोबाइल और वेब ऐप</li><li>ऑटोमेशन और इंटीग्रेशन</li><li>सोशल मीडिया, AI विज्ञापन क्रिएटिव और Meta ads</li></ul>सब कुछ शुरुआत से बनाया जाता है, कोई टेम्पलेट या पेज बिल्डर नहीं।" },
       next: ["prices", "website", "social"] },
-    { id: "prices", words: ["price", "pricing", "cost", "charge", "fee", "rate", "budget", "how much", "kitna", "kitne", "kitni", "kharcha", "kharch", "daam", "paisa", "package", "plan", "quote",
+    { id: "prices", weak: true, words: ["price", "pricing", "cost", "charge", "fee", "rate", "budget", "how much", "kitna", "kitne", "kitni", "kharcha", "kharch", "daam", "paisa", "package", "plan", "quote",
         "कीमत", "दाम", "कितना", "कितने", "कितनी", "खर्च", "चार्ज", "फीस", "पैकेज", "रेट"],
       l: { en: "How much does it cost?", hn: "Kitna kharcha hoga?", hi: "कितना खर्च होगा?" },
       a: { en: `Some starting prices:<ul><li>Websites from ₹14,999 (one-time)</li><li>Social media from ₹9,999 a month</li><li>Social media plus lead ads from ₹16,999 a month</li><li>Clinic booking system ₹19,999 setup plus ₹3,499 a month</li><li>Brand content from ₹24,999 a month</li></ul>Apps, online stores and AI agents get a written, fixed quote after a short discovery call. ${link("packages.html", "See all packages")}`,
@@ -72,7 +72,7 @@
            hn: "Chhoti websites mein aam taur par kuch hafte lagte hain. Stores, apps aur AI agents mein features aur integrations ke hisaab se zyada time lagta hai. Aapke likhit scope mein milestones ke saath timeline hoti hai, aur kaam payment, access aur zaroori material milne ke baad shuru hota hai.",
            hi: "छोटी वेबसाइट में आम तौर पर कुछ हफ़्ते लगते हैं। स्टोर, ऐप और AI एजेंट में फीचर्स और इंटीग्रेशन के हिसाब से ज़्यादा समय लगता है। आपके लिखित स्कोप में माइलस्टोन के साथ समय-सीमा होती है, और काम पेमेंट, एक्सेस और ज़रूरी सामग्री मिलने के बाद शुरू होता है।" },
       next: ["process", "lead"] },
-    { id: "process", words: ["process", "how do you work", "steps", "start", "begin", "procedure", "kaise kaam", "kaise", "प्रक्रिया", "कैसे काम", "शुरू"],
+    { id: "process", words: ["process", "how do you work", "steps", "start", "begin", "procedure", "kaise kaam", "प्रक्रिया", "कैसे काम", "शुरू"],
       l: { en: "How do you work?", hn: "Aap kaise kaam karte ho?", hi: "आप कैसे काम करते हैं?" },
       a: { en: "Four steps:<ol><li><b>Discovery call:</b> we learn your business and the problem to solve.</li><li><b>Scope and quote:</b> features, timeline and price, agreed in writing before work starts.</li><li><b>Design and build:</b> regular demos on a live preview link.</li><li><b>Launch and support:</b> we deploy, hand over and stay on for fixes and updates.</li></ol>",
            hn: "Chaar steps:<ol><li><b>Discovery call:</b> hum aapka business aur problem samajhte hain.</li><li><b>Scope aur quote:</b> features, timeline aur price, kaam shuru hone se pehle likhit mein tay.</li><li><b>Design aur build:</b> live preview link par regular demos.</li><li><b>Launch aur support:</b> hum deploy karte hain, handover karte hain aur fixes aur updates ke liye saath rehte hain.</li></ol>",
@@ -143,12 +143,14 @@
   };
 
   const norm = (s) => " " + String(s).toLowerCase().replace(/[^a-z0-9₹$ ऀ-ॣ०-ॿ]+/g, " ").replace(/\s+/g, " ") + " ";
-  // Best topic for free text: the most keyword hits wins; short words must match a whole word.
+  // Best topic for free text: the most keyword hits wins. Keywords match from the start of a word
+  // (plurals and Hindi endings still match); words of 3 letters or fewer must match whole.
   const match = (text) => {
     const t = norm(text);
     let best = null, score = 0;
     for (const topic of TOPICS) {
-      const s = topic.words.reduce((n, w) => n + (t.includes(w.length <= 3 ? ` ${w} ` : w) ? (w.length > 6 ? 2 : 1) : 0), 0);
+      const hits = topic.words.reduce((n, w) => n + (t.includes(w.length <= 3 ? ` ${w} ` : ` ${w}`) ? (w.length > 6 ? 2 : 1) : 0), 0);
+      const s = topic.weak ? hits * .4 : hits; // a product named with a price word ("website kitna") gets that product's prices
       if (s > score) { best = topic.id; score = s; }
     }
     return best;
@@ -157,7 +159,7 @@
   // Reply language: Devanagari means Hindi; common Hindi words in Latin script mean Hinglish.
   // Returns null when a message is too short to tell, so the current language stays.
   const HINGLISH = new Set(("hai hain kya kitna kitne kitni kaise kaisa mujhe muje chahiye chaiye karte karna karo aap aapka apka nahi nhi kab kyu kyun " +
-    "banwana banana banta bata batao bhai ji mera meri mere liye krna kr hoga sakte skte wala wali paisa din kaam ka ki ke ko se mein hum humein " +
+    "banwana banana banta bata batao bhai ji mera meri liye krna kr hoga sakte skte wala wali paisa din kaam ka ki ke ko se mein hum humein " +
     "acha accha theek thik haan ha toh bhi kuch koi kaun kahan kidhar").split(" "));
   const detect = (text) => {
     if (/[ऀ-ॿ]/.test(text)) return "hi";
@@ -232,20 +234,23 @@
     reply(() => { say(t("waOpened")); offer(START); });
   };
 
-  const startLead = () => { lead = { step: "name" }; reply(() => { say(t("askName")); chips.replaceChildren(); input.focus(); }); };
+  // Every typed step keeps one chip that leaves the form, so a visitor who changes their mind is never stuck.
+  const exitChip = () => chip(t("askElse"), () => { lead = null; reply(() => { say(t("askElseReply")); offer(START); }); });
+  const startLead = () => { lead = { step: "name" }; reply(() => { say(t("askName")); chips.replaceChildren(); exitChip(); input.focus(); }); };
   const leadInput = (text) => {
     if (lead.step === "name") {
       lead.name = text.slice(0, 80);
       lead.step = "contact";
-      reply(() => say(t("askContact", lead.name)));
+      reply(() => { say(t("askContact", lead.name)); chips.replaceChildren(); exitChip(); });
     } else if (lead.step === "contact") {
-      if (text.replace(/\D/g, "").length < 8 && !/^\S+@\S+\.\S+$/.test(text)) return reply(() => say(t("badContact")));
+      if (text.replace(/\D/g, "").length < 8 && !/^\S+@\S+\.\S+$/.test(text)) return reply(() => say(t("badContact"))); // the exit chip from this step stays
       lead.contact = text.slice(0, 120);
       lead.step = "need";
       reply(() => {
         say(t("askNeed"));
         chips.replaceChildren();
         UI.needs[lang].forEach((label, i) => chip(label, () => finishLead(UI.needs.en[i]))); // Sheet gets the English label
+        exitChip();
       });
     } else finishLead(text);
   };
