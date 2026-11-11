@@ -2335,6 +2335,7 @@ footer {
 .tile-blue:hover, .tile-dark:hover { border-color: transparent; }
 .tile-blue:hover::after, .tile-dark:hover::after { background-color: rgba(255, 255, 255, .12); }
 .tile-dark { background: var(--navy-0); border-color: var(--navy-0); color: var(--white); }
+.tiles .tile-dark { grid-column: 1 / -1; min-height: 0; } /* closing call to action takes the last row */
 .tile-dark svg { stroke: var(--white); }
 .tile-dark span { color: var(--muted-dark); }
 
