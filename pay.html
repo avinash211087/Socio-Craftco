@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pay an Invoice | Socio Craftco</title>
+  <meta name="description" content="Pay a Socio Craftco invoice or quote securely online.">
+  <meta name="theme-color" content="#050A12">
+  <meta name="robots" content="noindex">
+  <!-- Razorpay key id (public). Empty = online payment not switched on yet. -->
+  <meta name="razorpay-key" content="">
+  <link rel="canonical" href="https://www.sociocraftco.in/pay.html">
+  <link rel="icon" type="image/jpeg" sizes="48x48" href="favicon-48.jpg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.jpg">
+  <link rel="preload" href="fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="legal.css">
+  <link rel="stylesheet" href="packages.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="Socio Craftco home">
+        <img src="brand/mark.webp" width="245" height="240" alt="">
+        <img class="word" src="brand/wordmark.webp" width="785" height="120" alt="sociocraftco">
+      </a>
+      <nav class="top-links" aria-label="Main">
+        <a href="packages.html">Packages</a>
+        <a href="pay.html" aria-current="page">Pay</a>
+        <a href="contact.html">Contact</a>
+        <a class="back" href="./">Back to home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="pk-top">
+      <div class="wide">
+        <p class="pk-kicker tracked">Payments</p>
+        <h1><span class="thin">Pay an invoice</span>online.</h1>
+        <p class="pk-lead">Enter the amount and invoice number from your Socio Craftco invoice. Payments are processed by Razorpay; we never see your card or bank details.</p>
+      </div>
+    </section>
+
+    <div class="wide pay-wrap">
+      <form class="pay-form" id="payForm" novalidate>
+        <h2>Payment details</h2>
+        <p>Amounts are in Indian rupees.</p>
+        <div class="pay-row">
+          <label class="pay-field"><span>Full name</span><input name="name" autocomplete="name" required maxlength="80"></label>
+          <label class="pay-field"><span>Business name (optional)</span><input name="business" autocomplete="organization" maxlength="80"></label>
+        </div>
+        <div class="pay-row">
+          <label class="pay-field"><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+          <label class="pay-field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9+\(\) \-]{8,20}"></label>
+        </div>
+        <div class="pay-row">
+          <label class="pay-field"><span>Invoice or quote number</span><input name="invoice" required maxlength="40" placeholder="e.g. SC-2026-014"></label>
+          <label class="pay-field"><span>Payment for</span>
+            <select name="purpose" required>
+              <option value="">Choose one</option>
+              <option>Setup fee</option>
+              <option>Monthly package fee</option>
+              <option>Website advance</option>
+              <option>Website balance</option>
+              <option>Add-on service</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+        <label class="pay-field"><span>Amount</span>
+          <div class="pay-amount"><i aria-hidden="true">₹</i><input name="amount" type="number" inputmode="decimal" min="1" max="500000" step="0.01" required aria-label="Amount in rupees"></div>
+        </label>
+        <label class="pay-agree"><input type="checkbox" name="agree" required><span>I agree to the <a href="terms.html">Terms of Service</a> and <a href="refund.html">Refund &amp; Cancellation Policy</a>.</span></label>
+        <button class="btn btn-black" type="submit">Pay securely</button>
+        <p class="pay-msg" id="payMsg" role="status" hidden></p>
+        <p class="pay-secure">Secured by Razorpay. UPI, cards, net banking and wallets.</p>
+      </form>
+
+      <aside class="pay-info" aria-labelledby="howPay">
+        <h2 id="howPay">How it works</h2>
+        <ol class="pay-steps">
+          <li>We send you an invoice with its number.</li>
+          <li>Enter the number and amount here.</li>
+          <li>Pay through Razorpay's checkout.</li>
+          <li>You get a receipt by email, and we confirm on WhatsApp.</li>
+        </ol>
+        <div class="pay-trust">
+          <span>Not sure what to pay? See our <a href="packages.html">packages and prices</a>.</span>
+          <span>Read our <a href="refund.html">refund &amp; cancellation policy</a> and <a href="delivery.html">service delivery policy</a> before paying.</span>
+          <span>Questions? Email <a href="mailto:sociocraftco@gmail.com">sociocraftco@gmail.com</a> or message <a href="https://wa.me/919119687579" target="_blank" rel="noopener">+91 91196 87579</a> on WhatsApp.</span>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>© <span id="year">2026</span> Socio Craftco</span>
+      <nav aria-label="Legal"><a href="packages.html">Packages</a><a href="pay.html">Pay</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refunds</a><a href="delivery.html">Delivery</a></nav>
+    </div>
+  </footer>
+  <script src="legal.js" defer></script>
+  <script src="pay.js" defer></script>
+  <script src="/_vercel/insights/script.js" defer></script>
+</body>
+</html>

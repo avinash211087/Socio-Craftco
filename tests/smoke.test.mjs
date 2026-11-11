@@ -32,7 +32,8 @@ const checks = [
   [html.includes('<meta name="lead-endpoint"') && app.includes("saveLead({") && preview.includes("LEAD_ENDPOINT"), "both enquiry forms must save leads when an endpoint is set"],
   [vercel.includes("https://script.google.com"), "CSP must allow posting leads to Google Apps Script"],
     [robots.includes("https://www.sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
-  [sitemap.includes("https://www.sociocraftco.in/"), "sitemap must include the production homepage"]
+  [sitemap.includes("https://www.sociocraftco.in/"), "sitemap must include the production homepage"],
+  [vercel.includes("https://checkout.razorpay.com"), "CSP must allow Razorpay Checkout"]
 ];
 
 for (const [ok, message] of checks) assert.ok(ok, message);
@@ -45,7 +46,17 @@ for (const required of ["content-security-policy", "x-content-type-options", "re
   assert.ok(names.has(required), `missing security header: ${required}`);
 }
 
-const localAssets = [...html.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)]
+// Razorpay review needs these pages, linked from every page footer.
+const PAGES = ["packages.html", "pay.html", "contact.html", "refund.html", "delivery.html", "terms.html", "privacy.html"];
+const pages = await Promise.all(PAGES.map((p) => readFile(p, "utf8")));
+pages.forEach((page, i) => {
+  for (const link of ["refund.html", "delivery.html", "contact.html", "terms.html", "privacy.html"])
+    assert.ok(page.includes(`href="${link}"`), `${PAGES[i]} must link ${link}`);
+});
+assert.ok(pages[1].includes('<meta name="razorpay-key"'), "pay page must read its key from a meta tag");
+assert.ok(!/rzp_(live|test)_\w+\s*:|key_secret/i.test(pages[1]), "no Razorpay secret on the pay page");
+
+const localAssets = [html, ...pages].flatMap((doc) => [...doc.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)])
   .map((match) => match[1].split(/[?#]/)[0].replace(/^\//, ""))
   .filter((value) => value && !/^(?:https?:|mailto:|tel:|#|_vercel\/)/.test(value));
 

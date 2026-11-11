@@ -150,7 +150,7 @@ li { margin-bottom: .45rem; }
   width: min(1200px, calc(100% - 40px));
 }
 
-.foot nav { display: flex; gap: 1.4rem; }
+.foot nav { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; }
 .foot a { color: #9AA6BD; text-decoration: none; }
 .foot a:hover, .foot a[aria-current="page"] { color: #fff; }
 
