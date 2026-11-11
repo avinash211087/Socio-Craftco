@@ -4,7 +4,7 @@ Static marketing website for Socio Craftco, deployed on Vercel.
 
 ## Stack
 
-- Semantic HTML and inline site styles in `index.html`
+- Semantic HTML in `index.html`, site styles in `site.css`
 - Vanilla JavaScript in `app.js`
 - Static media and self-hosted Outfit fonts
 - Vercel headers and caching rules in `vercel.json`
@@ -33,12 +33,28 @@ The smoke test protects critical form-safety, chat-state, CSP, SEO, and asset in
 
 ## Structure
 
-- `index.html` — page markup, styles, SEO metadata, and inline SVG icons
+- `index.html` — page markup, SEO metadata, WhatsApp number (`wa-number` meta), and inline SVG icons
+- `site.css` — main site styles
 - `app.js` — navigation, store demo, chat demo, view routing, and enquiry handoff
 - `preview.js`, `preview.css` — personalised website/chatbot preview and sales unlock funnel
 - `privacy.html`, `terms.html` — legal pages
 - `brand/`, `work/`, `media/`, `fonts/` — static assets
 - `vercel.json` — security headers and cache rules
+
+## Saving enquiries to a Google Sheet
+
+Both enquiry forms (contact and personalised preview) can save a copy to a Google Sheet before WhatsApp opens. Free, no extra accounts.
+
+1. Create a new Google Sheet, then open **Extensions → Apps Script**.
+2. Replace the code with `tools/lead-sheet.gs` and save.
+3. **Deploy → New deployment → Web app**. Execute as: **Me**. Who has access: **Anyone**. Deploy and approve the permissions.
+4. Copy the web app URL (ends in `/exec`) into the `lead-endpoint` meta tag in `index.html`, then deploy the site.
+
+Leave `lead-endpoint` empty to send enquiries through WhatsApp only.
+
+## Analytics
+
+The site loads Vercel Web Analytics (no cookies). Turn it on once in the Vercel dashboard: project → **Analytics** → **Enable**. The script returns 404 locally; that is expected.
 
 ## Deployment
 

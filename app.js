@@ -1,11 +1,17 @@
 "use strict";
 (() => {
-  const WA_NUMBER = "919119687579";
+  const WA_NUMBER = document.querySelector('meta[name="wa-number"]').content;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const waUrl = (msg) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   const openWa = (msg) => window.open(waUrl(msg), "_blank", "noopener");
+  const LEAD_ENDPOINT = document.querySelector('meta[name="lead-endpoint"]').content;
+  // Fire-and-forget: never block or delay the WhatsApp handoff on the sheet save.
+  const saveLead = (data) => {
+    if (!LEAD_ENDPOINT) return;
+    fetch(LEAD_ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true, body: new URLSearchParams(data) }).catch(() => {});
+  };
   const inr = (n) => "₹" + n.toLocaleString("en-IN");
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -635,7 +641,7 @@
     const f = e.target;
     if (!f.reportValidity()) return;
     const d = Object.fromEntries(new FormData(f).entries());
-    openWa([
+    const msg = [
       "New project enquiry for Socio Craftco",
       `Name: ${d.name}`,
       `Business: ${d.business || "-"}`,
@@ -644,7 +650,12 @@
       `Timeline: ${d.timeline || "Flexible"}`,
       `Contact: ${d.contact}`,
       `Details: ${d.message || "-"}`
-    ].join("\n"));
+    ].join("\n");
+    saveLead({ source: "contact", ...d });
+    openWa(msg);
+    // Popup blockers (and "noopener") hide whether WhatsApp opened, so always offer a direct link.
+    $("#leadFallbackLink").href = waUrl(msg);
+    $("#leadFallback").hidden = false;
   });
 
   // Start loading the Work screenshots as soon as someone shows intent to open Work,

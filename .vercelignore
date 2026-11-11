@@ -6,3 +6,4 @@ zip-check/
 verify-server.*
 .github/
 site-package.b64.*
+tools/

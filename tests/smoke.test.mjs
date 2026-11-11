@@ -27,7 +27,11 @@ const checks = [
   [preview.includes('url.searchParams.set("pv", encodeConfig(config))') && !preview.includes('searchParams.set("phone"'), "share links must exclude contact details"],
   [!preview.includes("₹") && !previewCss.includes("₹"), "personalised preview must not expose estimated pricing"],
   [html.includes('<link rel="canonical" href="https://sociocraftco.in/">'), "canonical URL must stay present"],
-  [robots.includes("https://sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
+  [/<meta name="wa-number" content="\d{10,15}">/.test(html) && !/const WA_NUMBER = "/.test(app + preview), "WhatsApp number must live only in the wa-number meta"],
+  [html.includes('id="leadFallbackLink"'), "enquiry form must offer a direct WhatsApp link"],
+  [html.includes('<meta name="lead-endpoint"') && app.includes("saveLead({") && preview.includes("LEAD_ENDPOINT"), "both enquiry forms must save leads when an endpoint is set"],
+  [vercel.includes("https://script.google.com"), "CSP must allow posting leads to Google Apps Script"],
+    [robots.includes("https://sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
   [sitemap.includes("https://sociocraftco.in/"), "sitemap must include the production homepage"]
 ];
 
@@ -43,7 +47,7 @@ for (const required of ["content-security-policy", "x-content-type-options", "re
 
 const localAssets = [...html.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)]
   .map((match) => match[1].split(/[?#]/)[0].replace(/^\//, ""))
-  .filter((value) => value && !/^(?:https?:|mailto:|tel:|#)/.test(value));
+  .filter((value) => value && !/^(?:https?:|mailto:|tel:|#|_vercel\/)/.test(value));
 
 for (const asset of new Set(localAssets)) await access(asset);
 
