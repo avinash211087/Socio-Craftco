@@ -58,4 +58,4 @@ The site loads Vercel Web Analytics (no cookies). Turn it on once in the Vercel 
 
 ## Deployment
 
-Vercel can deploy the repository as a static site with no framework preset or build command. The production domain used by canonical metadata and the sitemap is `https://sociocraftco.in/`.
+Vercel can deploy the repository as a static site with no framework preset or build command. The production domain used by canonical metadata and the sitemap is `https://www.sociocraftco.in/`.

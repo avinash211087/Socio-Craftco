@@ -26,13 +26,13 @@ const checks = [
   [preview.includes('id="pChatComposer"') && preview.includes("assistantReply(question)"), "preview assistant must accept typed test questions"],
   [preview.includes('url.searchParams.set("pv", encodeConfig(config))') && !preview.includes('searchParams.set("phone"'), "share links must exclude contact details"],
   [!preview.includes("₹") && !previewCss.includes("₹"), "personalised preview must not expose estimated pricing"],
-  [html.includes('<link rel="canonical" href="https://sociocraftco.in/">'), "canonical URL must stay present"],
+  [html.includes('<link rel="canonical" href="https://www.sociocraftco.in/">'), "canonical URL must stay present"],
   [/<meta name="wa-number" content="\d{10,15}">/.test(html) && !/const WA_NUMBER = "/.test(app + preview), "WhatsApp number must live only in the wa-number meta"],
   [html.includes('id="leadFallbackLink"'), "enquiry form must offer a direct WhatsApp link"],
   [html.includes('<meta name="lead-endpoint"') && app.includes("saveLead({") && preview.includes("LEAD_ENDPOINT"), "both enquiry forms must save leads when an endpoint is set"],
   [vercel.includes("https://script.google.com"), "CSP must allow posting leads to Google Apps Script"],
-    [robots.includes("https://sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
-  [sitemap.includes("https://sociocraftco.in/"), "sitemap must include the production homepage"]
+    [robots.includes("https://www.sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
+  [sitemap.includes("https://www.sociocraftco.in/"), "sitemap must include the production homepage"]
 ];
 
 for (const [ok, message] of checks) assert.ok(ok, message);
