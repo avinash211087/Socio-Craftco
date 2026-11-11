@@ -50,6 +50,10 @@ Both enquiry forms (contact and personalised preview) can save a copy to a Googl
 3. **Deploy → New deployment → Web app**. Execute as: **Me**. Who has access: **Anyone**. Deploy and approve the permissions.
 4. Copy the web app URL (ends in `/exec`) into the `lead-endpoint` meta tag in `index.html`, then deploy the site.
 
+5. In the Apps Script editor, pick `setupDashboard` and press **Run** once. It names the first tab **Leads**, adds a **Status** dropdown (New → Contacted → Quoted → Won/Lost) and a **Notes** column, and builds a live **Dashboard** tab (totals, latest leads, leads per week, by service, pipeline, budget, source). Re-run it any time to rebuild the Dashboard.
+
+After editing the script, redeploy via **Deploy → Manage deployments → Edit → New version** so the web app URL keeps working with the new code.
+
 Leave `lead-endpoint` empty to send enquiries through WhatsApp only.
 
 ## Analytics
