@@ -1804,6 +1804,7 @@ fieldset.ctl { border: 0; margin: 0; padding: 0; }
 }
 
 .project-media.light { background: var(--mist); }
+.work-film { margin-top: 1.6rem; }
 
 .shot {
   width: min(44%, 230px);
