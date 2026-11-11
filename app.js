@@ -723,6 +723,33 @@
     wide.addEventListener("change", start);
   }
 
+  // Process: one tab per step; the active scene plays, then moves on until the visitor picks a step.
+  const proc = $(".proc");
+  if (proc) {
+    const tabs = $$(".proc-tab", proc);
+    const panels = $$(".proc-panel", proc);
+    const pick = (i, focus) => {
+      tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === i)); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => (p.hidden = j !== i));
+      if (focus) tabs[i].focus();
+    };
+    const manual = (i, focus) => { proc.classList.remove("autoplay"); pick(i, focus); };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => manual(i));
+      t.addEventListener("keydown", (e) => {
+        const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        manual((i + step + tabs.length) % tabs.length, true);
+      });
+      $(".proc-bar", t).addEventListener("animationend", () => {
+        if (proc.classList.contains("autoplay")) pick((i + 1) % tabs.length);
+      });
+    });
+    if (!reduced) proc.classList.add("autoplay"); // reduced motion: no auto-advance
+    pick(0);
+  }
+
   showView(location.hash, false);
   if (currentView === "work") warmWork();
 })();
