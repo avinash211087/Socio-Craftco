@@ -1805,6 +1805,9 @@ fieldset.ctl { border: 0; margin: 0; padding: 0; }
 
 .project-media.light { background: var(--mist); }
 .work-film { margin-top: 1.6rem; }
+.work-links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; }
+.project-media.stacked { flex-direction: column; justify-content: center; padding-bottom: clamp(1.5rem, 4vw, 3rem); }
+.project-media.stacked img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 24px 50px -24px rgba(0, 0, 0, .6); }
 
 .shot {
   width: min(44%, 230px);
