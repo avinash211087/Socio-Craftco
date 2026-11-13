@@ -39,7 +39,8 @@ The smoke test protects critical form-safety, chat-state, CSP, SEO, and asset in
 - `preview.js`, `preview.css` — personalised website/chatbot preview and sales unlock funnel
 - `chat.js`, `chat.css` — the chat assistant in the corner of every page (English, Hindi, Hinglish answers and its own lead form)
 - `packages.html`, `packages.css` — packages and prices
-- `pay.html`, `pay.js` — pay an invoice (Razorpay is added later)
+- `pay.html`, `pay.js` — pay an invoice with Razorpay Checkout
+- `api/razorpay-order.js`, `api/razorpay-verify.js` — Vercel functions that create the order and verify the payment signature (the only code that sees the secret key)
 - `contact.html`, `refund.html`, `delivery.html`, `privacy.html`, `terms.html` — contact and policy pages, styled by `legal.css`
 
 **Changing the WhatsApp number:** update every copy together: the `wa-number` meta in `index.html`, `WA_NUMBER` in `chat.js`, the link in `pay.js`, and the `wa.me` links in `packages.html`, `contact.html` and `pay.html`. The smoke test fails if any copy differs.
@@ -60,6 +61,15 @@ The enquiry forms (contact, personalised preview and the chat assistant) can sav
 The script only saves rows with a name and a valid phone number or email, and stops saving after 30 leads in one hour (enquiries still reach WhatsApp). After editing the script, redeploy via **Deploy → Manage deployments → Edit → New version** so the web app URL keeps working with the new code.
 
 Leave both `lead-endpoint` and `LEAD_ENDPOINT` empty to send enquiries through WhatsApp only.
+
+## Online payments (Razorpay)
+
+The keys are never in the code. Add them in Vercel: project → **Settings → Environment Variables**, for **Production**:
+
+- `RAZORPAY_KEY_ID` — starts with `rzp_live_` (or `rzp_test_` for testing)
+- `RAZORPAY_KEY_SECRET` — the matching secret
+
+Then redeploy (Deployments → ⋯ → Redeploy). Without the keys the pay page sends clients to WhatsApp instead. In the Razorpay dashboard, keep **automatic capture** on so payments settle without manual action. Every payment, refund and receipt is in the Razorpay dashboard.
 
 ## Analytics
 

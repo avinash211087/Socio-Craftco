@@ -33,7 +33,7 @@ const checks = [
   [vercel.includes("https://script.google.com"), "CSP must allow posting leads to Google Apps Script"],
     [robots.includes("https://www.sociocraftco.in/sitemap.xml"), "robots.txt must advertise the sitemap"],
   [sitemap.includes("https://www.sociocraftco.in/"), "sitemap must include the production homepage"],
-  [vercel.includes("https://checkout.razorpay.com"), "CSP must allow Razorpay Checkout"]
+  [vercel.includes("script-src 'self' 'sha256-WZRJfWvsnNCPcxzZwvyhovnZGqhZaC+8gPGPRbx6wTk=' https://*.razorpay.com"), "CSP must allow Razorpay Checkout"]
 ];
 
 for (const [ok, message] of checks) assert.ok(ok, message);
@@ -53,8 +53,9 @@ pages.forEach((page, i) => {
   for (const link of ["refund.html", "delivery.html", "contact.html", "terms.html", "privacy.html"])
     assert.ok(page.includes(`href="${link}"`), `${PAGES[i]} must link ${link}`);
 });
-assert.ok(pages[1].includes('<meta name="razorpay-key"'), "pay page must read its key from a meta tag");
-assert.ok(!/rzp_(live|test)_\w+\s*:|key_secret/i.test(pages[1]), "no Razorpay secret on the pay page");
+const payJsSrc = await readFile("pay.js", "utf8");
+assert.ok(payJsSrc.includes("/api/razorpay-order") && payJsSrc.includes("/api/razorpay-verify"), "pay page must create orders and verify payments on the server");
+assert.ok(!/rzp_(live|test)_|key_secret|RAZORPAY_KEY_SECRET/i.test(pages[1] + payJsSrc), "no Razorpay keys in the pay page code");
 
 const localAssets = [html, ...pages].flatMap((doc) => [...doc.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)])
   .map((match) => match[1].split(/[?#]/)[0].replace(/^\//, ""))
@@ -103,5 +104,37 @@ const gsBox = {};
 (await import("node:vm")).runInNewContext(gs + "\nthis.validContact = validContact;", gsBox);
 for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true], ["1234", false], ["", false]])
   assert.equal(gsBox.validContact(v), ok, `lead-sheet.gs contact check: "${v}"`);
+
+// Razorpay functions: keys come only from env vars; amounts are checked; signatures are verified.
+{
+  const { createRequire } = await import("node:module");
+  const req = createRequire(import.meta.url);
+  const makeOrder = req("../api/razorpay-order.js"), verify = req("../api/razorpay-verify.js");
+  const call = async (fn, body, method = "POST") => {
+    const out = {};
+    const res = { status(c) { out.status = c; return res; }, json(j) { out.body = j; return res; } };
+    await fn({ method, body }, res);
+    return out;
+  };
+  delete process.env.RAZORPAY_KEY_ID; delete process.env.RAZORPAY_KEY_SECRET;
+  assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "X" })).status, 503, "no keys: payments switched off");
+  process.env.RAZORPAY_KEY_ID = "rzp_test_id"; process.env.RAZORPAY_KEY_SECRET = "s3cret";
+  const realFetch = globalThis.fetch;
+  let sent;
+  globalThis.fetch = async (url, o) => { sent = { url, o }; return { ok: true, json: async () => ({ id: "order_1", amount: JSON.parse(o.body).amount }) }; };
+  for (const bad of [0, 0.5, -10, 500001, "abc"]) assert.equal((await call(makeOrder, { amount: bad, name: "A", invoice: "X" })).status, 400, `amount ${bad} rejected`);
+  assert.equal((await call(makeOrder, { amount: 100, invoice: "X" })).status, 400, "name required");
+  assert.equal((await call(makeOrder, {}, "GET")).status, 405, "GET rejected");
+  const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1" });
+  assert.deepEqual([ok.status, ok.body.order_id, ok.body.amount, ok.body.key], [200, "order_1", 149950, "rzp_test_id"], "order created in paise");
+  assert.ok(!JSON.stringify(ok.body).includes("s3cret"), "secret never sent to the browser");
+  assert.equal(sent.url, "https://api.razorpay.com/v1/orders");
+  globalThis.fetch = realFetch;
+  const { createHmac } = await import("node:crypto");
+  const sig = createHmac("sha256", "s3cret").update("order_1|pay_1").digest("hex");
+  assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: sig })).body.ok, true, "good signature accepted");
+  assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_2", razorpay_signature: sig })).body.ok, false, "wrong payment rejected");
+  assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: "x" })).body.ok, false, "bad signature rejected");
+}
 
 console.log(`Smoke checks passed (${checks.length} behavioural checks, ${new Set(localAssets).size} local assets).`);
