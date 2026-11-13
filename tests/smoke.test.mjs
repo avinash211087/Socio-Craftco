@@ -88,4 +88,20 @@ for (const lang of ["en", "hn", "hi"]) {
 }
 assert.ok(!/9119|91196/.test(JSON.stringify({ TOPICS, UI })), "chat must not show the phone number");
 
+// WhatsApp number: every copy must match the wa-number meta in index.html.
+const waNumber = html.match(/name="wa-number" content="(\d+)"/)[1];
+const payJs = await readFile("pay.js", "utf8");
+for (const [file, text] of [["chat.js", chatJs], ["pay.js", payJs], ...PAGES.map((p, i) => [p, pages[i]])]) {
+  for (const [, n] of text.matchAll(/wa\.me\/(\d+)/g)) assert.equal(n, waNumber, `${file} has a different WhatsApp number`);
+}
+assert.ok(chatJs.includes(`const WA_NUMBER = "${waNumber}"`), "chat.js WA_NUMBER must match index.html");
+
+// Main form and Sheet script share the chat's contact rule.
+assert.ok(app.includes("contactOk"), "main form must check the contact field");
+const gs = await readFile("tools/lead-sheet.gs", "utf8");
+const gsBox = {};
+(await import("node:vm")).runInNewContext(gs + "\nthis.validContact = validContact;", gsBox);
+for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true], ["1234", false], ["", false]])
+  assert.equal(gsBox.validContact(v), ok, `lead-sheet.gs contact check: "${v}"`);
+
 console.log(`Smoke checks passed (${checks.length} behavioural checks, ${new Set(localAssets).size} local assets).`);

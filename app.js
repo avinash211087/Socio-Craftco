@@ -636,9 +636,13 @@
   });
 
   /* ---------- Contact form ---------- */
+  // Same rule as the chat and the Sheet script: 8+ digits or an email, so "hello" is not saved as a lead.
+  const contactOk = (v) => v.replace(/\D/g, "").length >= 8 || /^\S+@\S+\.\S+$/.test(v.trim());
+  leadForm.elements.contact.addEventListener("input", (e) => e.target.setCustomValidity(""));
   leadForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const f = e.target;
+    f.elements.contact.setCustomValidity(contactOk(f.elements.contact.value) ? "" : "Enter a WhatsApp number or an email address.");
     if (!f.reportValidity()) return;
     const d = Object.fromEntries(new FormData(f).entries());
     const msg = [

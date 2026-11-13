@@ -42,7 +42,7 @@ The smoke test protects critical form-safety, chat-state, CSP, SEO, and asset in
 - `pay.html`, `pay.js` — pay an invoice (Razorpay is added later)
 - `contact.html`, `refund.html`, `delivery.html`, `privacy.html`, `terms.html` — contact and policy pages, styled by `legal.css`
 
-**Changing the WhatsApp number:** it is in four places. Update all of them together: the `wa-number` meta in `index.html`, `WA_NUMBER` in `chat.js`, the link in `pay.js`, and the `wa.me` links in `packages.html`.
+**Changing the WhatsApp number:** update every copy together: the `wa-number` meta in `index.html`, `WA_NUMBER` in `chat.js`, the link in `pay.js`, and the `wa.me` links in `packages.html`, `contact.html` and `pay.html`. The smoke test fails if any copy differs.
 - `brand/`, `work/`, `media/`, `fonts/` — static assets
 - `vercel.json` — security headers and cache rules
 
@@ -57,7 +57,7 @@ The enquiry forms (contact, personalised preview and the chat assistant) can sav
 
 5. In the Apps Script editor, pick `setupDashboard` and press **Run** once. It names the first tab **Leads**, adds a **Status** dropdown (New → Contacted → Quoted → Won/Lost) and a **Notes** column, and builds a live **Dashboard** tab (totals, latest leads, leads per week, by service, pipeline, budget, source). Re-run it any time to rebuild the Dashboard.
 
-After editing the script, redeploy via **Deploy → Manage deployments → Edit → New version** so the web app URL keeps working with the new code.
+The script only saves rows with a name and a valid phone number or email, and stops saving after 30 leads in one hour (enquiries still reach WhatsApp). After editing the script, redeploy via **Deploy → Manage deployments → Edit → New version** so the web app URL keeps working with the new code.
 
 Leave both `lead-endpoint` and `LEAD_ENDPOINT` empty to send enquiries through WhatsApp only.
 

@@ -7,15 +7,32 @@ const STATUSES = ["New", "Contacted", "Quoted", "Won", "Lost"];
 const STATUS_COLORS = { New: "#FFF4CE", Contacted: "#E8EFFF", Quoted: "#EDE7FF", Won: "#DDF5E4", Lost: "#EEEEEE" };
 const NAVY = "#0A1426", BLUE = "#0150FD", BLUE_SOFT = "#E8EFFF", MUTED = "#5B6476", LINE = "#E3E7EF";
 
+const MAX_LEADS_PER_HOUR = 30; // real traffic is far below this; a spam script hitting the URL is not
+
 function doPost(e) {
+  const p = (e && e.parameter) || {};
+  if (!p.name || !validContact(p.contact)) return ContentService.createTextOutput("missing fields");
+  if (overLimit()) return ContentService.createTextOutput("busy");
+
   const sheet = leadsSheet();
   if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
-
-  const p = (e && e.parameter) || {};
-  if (!p.name || !p.contact) return ContentService.createTextOutput("missing fields");
-
   sheet.appendRow([new Date()].concat(FIELDS.map((key) => clean(p[key])), ["New"]));
   return ContentService.createTextOutput("ok");
+}
+
+// Same rule as the site forms: 8+ digits or an email.
+function validContact(value) {
+  const text = String(value || "").trim();
+  return text.replace(/\D/g, "").length >= 8 || /^\S+@\S+\.\S+$/.test(text);
+}
+
+// shortcut: one shared hourly counter, not per sender; an attacker can fill the hour's quota (WhatsApp still gets real leads). Move to a real backend if that happens.
+function overLimit() {
+  const cache = CacheService.getScriptCache();
+  const key = "leads-" + new Date().toISOString().slice(0, 13);
+  const count = Number(cache.get(key) || 0) + 1;
+  cache.put(key, String(count), 3700);
+  return count > MAX_LEADS_PER_HOUR;
 }
 
 // Public endpoint, so cap length and stop values being run as spreadsheet formulas.
