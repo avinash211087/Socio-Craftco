@@ -46,10 +46,11 @@
     return bad;
   });
 
-  // Guided filling: Enter / "Next" moves on, a complete phone, state or PIN moves on by itself,
+  // Guided filling: Enter / "Next" moves on, a chosen state or a complete PIN moves on by itself,
   // each field is checked when you leave it, and a finished step shows a green tick.
   const ORDER = ["amount", "name", "phone", "email", "address", "city", "state", "pincode"];
-  const AUTO_NEXT = { phone: 10, pincode: 6 }; // move on once this many digits are typed
+  // Move on once this many digits are typed. Not the phone: "+91 98765 43210" reaches 10 digits at "+91 98765 432".
+  const AUTO_NEXT = { pincode: 6 };
   const valid = (name) => RULES[name][0](form.elements[name].value);
   const next = (name) => { const after = ORDER[ORDER.indexOf(name) + 1]; (after ? form.elements[after] : button).focus(); };
   const steps = [...form.querySelectorAll(".pay-sec")];
@@ -86,6 +87,7 @@
     const { name, value } = e.target;
     if (RULES[name]) {
       if (e.target.getAttribute("aria-invalid") === "true" && valid(name)) setError(name, "");
+      if (msg.dataset.fields && !form.querySelector('[aria-invalid="true"]')) msg.hidden = true;
       if (AUTO_NEXT[name] && (e.inputType || "").startsWith("insert") && value.replace(/\D/g, "").length >= AUTO_NEXT[name] && valid(name)) next(name);
     }
     markSteps();
@@ -112,6 +114,7 @@
   if (matchMedia("(pointer: fine)").matches) { const first = ORDER.find((n) => !valid(n)); if (first) form.elements[first].focus({ preventScroll: true }); }
 
   const show = (text, link) => {
+    delete msg.dataset.fields; // only the "fill in" note hides itself as fields are fixed
     msg.textContent = text;
     if (link) {
       const a = document.createElement("a");
@@ -155,9 +158,11 @@
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    if (button.disabled) return; // already opening checkout or confirming: no second order
     const bad = invalidFields();
     if (bad.length) {
       show("Please fill in the " + (bad.length === 1 ? "highlighted field" : bad.length + " highlighted fields") + " to continue.");
+      msg.dataset.fields = "1";
       bad.forEach((name) => shake(form.elements[name]));
       form.elements[bad[0]].focus();
       return;

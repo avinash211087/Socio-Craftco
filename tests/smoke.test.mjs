@@ -59,6 +59,12 @@ assert.ok(pages[1].includes('form="payForm" disabled') && payJsSrc.includes("but
 for (const f of ["name", "phone", "email", "address", "city", "state", "pincode"])
   assert.ok(new RegExp(`name="${f}"[^>]*required`).test(pages[1]) && payJsSrc.includes(`${f}: [`), `pay page must require and check ${f}`);
 assert.ok(payJsSrc.includes("/api/razorpay-order") && payJsSrc.includes("/api/razorpay-verify"), "pay page must create orders and verify payments on the server");
+// "+91 98765 43210" reaches 10 digits at "+91 98765 432", which is a valid-looking number, so the phone must never auto-advance.
+const autoNext = Function("return " + payJsSrc.match(/const AUTO_NEXT = (\{[^}]*\})/)[1])();
+assert.ok(!("phone" in autoNext) && autoNext.pincode === 6, "phone must not jump to the next field on its own");
+assert.ok(Number(pages[1].match(/name="phone"[^>]*maxlength="(\d+)"/)[1]) >= "+91 98765 43210".length, "phone box must fit a number typed with +91 and spaces");
+// Enter in the PIN field calls requestSubmit(), which ignores the disabled button: the handler itself must refuse a second order.
+assert.match(payJsSrc, /addEventListener\("submit", async function \(e\) \{\s*e\.preventDefault\(\);\s*if \(button\.disabled\) return;/, "pay form must not start a second order while busy");
 assert.ok(!/rzp_(live|test)_|key_secret|RAZORPAY_KEY_SECRET/i.test(pages[1] + payJsSrc), "no Razorpay keys in the pay page code");
 // showDone fills id="payDone<Key>" for each key; a missing one would leave a paid client stuck on "Confirming…".
 const doneKeys = [...payJsSrc.match(/showDone\(\{([^}]*)\}\)/)[1].matchAll(/(\w+):/g)].map((m) => m[1]);
