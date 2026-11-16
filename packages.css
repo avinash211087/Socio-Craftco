@@ -1,9 +1,5 @@
 /* Packages + payment pages. Loaded after legal.css (fonts, header, footer, tokens).
    Type and buttons follow site.css: tracked kicker with blue rule, thin/bold h1, black pill buttons. */
-:root {
-  --muted-dark: #9AA6BD;
-}
-
 .top-links { display: flex; align-items: center; gap: .4rem; }
 .top-links a:not(.back) {
   color: var(--black);
@@ -53,7 +49,7 @@
 .btn-outline:hover { border-color: var(--black); }
 
 /* Page head */
-.pk-top { padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(2.5rem, 5vw, 3.5rem); border-bottom: 1px solid var(--line); }
+.pk-top { padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(2.5rem, 5vw, 3.5rem); }
 .pk-top h1 {
   font-size: clamp(2.4rem, 6vw, 4.6rem);
   line-height: 1.02;
@@ -63,6 +59,9 @@
 }
 .pk-top h1 .thin { display: block; font-weight: 200; letter-spacing: -.02em; color: var(--muted); }
 .pk-lead { max-width: 36rem; margin: 1.6rem 0 0; font-weight: 300; font-size: 1.1rem; color: var(--muted); }
+.pk-top .pk-kicker, .pk-top h1 .thin, .pk-top .pk-lead { color: var(--muted-dark); }
+.pk-top .pk-jump a { color: #fff; border-color: rgba(255, 255, 255, .25); }
+.pk-top .pk-jump a:hover { color: #5B8CFF; border-color: #5B8CFF; }
 .pk-jump { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; margin-top: 2.4rem; }
 .pk-jump a { color: var(--black); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: .15rem; }
 .pk-jump a:hover { border-color: var(--blue); color: var(--blue); }

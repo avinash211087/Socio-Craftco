@@ -23,6 +23,7 @@
   --mist: #F4F6FA;
   --blue: #0150FD;
   --navy: #050A12;
+  --muted-dark: #9AA6BD;
 }
 
 * { box-sizing: border-box; }
@@ -77,6 +78,13 @@ a { color: var(--blue); }
 .back:hover { border-color: var(--black); }
 
 .doc { padding: 4rem 0 5rem; }
+
+/* Dark navy top band (same gradient as the home page hero); the header above stays white for the logo. */
+.doc-top, .pk-top { background: radial-gradient(120% 90% at 85% -10%, #10234D 0%, #0A1426 38%, var(--navy) 75%); color: #fff; }
+.doc-top > .wrap { padding: clamp(3.2rem, 8vw, 5rem) 0 clamp(2.4rem, 5vw, 3.2rem); }
+.doc-top .kicker, .doc-top .meta, .doc-top p { color: var(--muted-dark); }
+.doc-top :focus-visible, .pk-top :focus-visible { outline-color: #5B8CFF; }
+.doc-top + .doc { padding-top: .6rem; }
 
 .kicker {
   margin: 0 0 .8rem;
