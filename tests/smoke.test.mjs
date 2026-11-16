@@ -124,6 +124,10 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   globalThis.fetch = async (url, o) => { sent = { url, o }; return { ok: true, json: async () => ({ id: "order_1", amount: JSON.parse(o.body).amount }) }; };
   for (const bad of [0, 0.5, -10, 500001, "abc"]) assert.equal((await call(makeOrder, { amount: bad, name: "A", invoice: "X" })).status, 400, `amount ${bad} rejected`);
   assert.equal((await call(makeOrder, { amount: 100, invoice: "X" })).status, 400, "name required");
+  const r1 = await call(makeOrder, { amount: 100, name: "A" }), r2 = await call(makeOrder, { amount: 100, name: "A" });
+  assert.match(r1.body.reference, /^SC-\d{6}-[0-9A-F]{6}$/, "reference made automatically");
+  assert.notEqual(r1.body.reference, r2.body.reference, "every payment gets its own reference");
+  assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "INV-7" })).body.reference, "INV-7", "a given invoice number is kept");
   assert.equal((await call(makeOrder, {}, "GET")).status, 405, "GET rejected");
   const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1" });
   assert.deepEqual([ok.status, ok.body.order_id, ok.body.amount, ok.body.key], [200, "order_1", 149950, "rzp_test_id"], "order created in paise");

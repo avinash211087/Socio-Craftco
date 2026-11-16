@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pay an Invoice | Socio Craftco</title>
-  <meta name="description" content="Pay a Socio Craftco invoice or quote securely online.">
+  <title>Pay Online | Socio Craftco</title>
+  <meta name="description" content="Pay Socio Craftco securely online with UPI, cards or net banking.">
   <meta name="theme-color" content="#050A12">
   <meta name="robots" content="noindex">
-  <!-- Razorpay key id (public). Empty = online payment not switched on yet. -->
   <link rel="canonical" href="https://www.sociocraftco.in/pay.html">
   <link rel="icon" type="image/jpeg" sizes="48x48" href="favicon-48.jpg">
   <link rel="apple-touch-icon" href="apple-touch-icon.jpg">
@@ -36,42 +35,31 @@
     <section class="pk-top">
       <div class="wide">
         <p class="pk-kicker tracked">Payments</p>
-        <h1><span class="thin">Pay an invoice</span>online.</h1>
-        <p class="pk-lead">Enter the amount and invoice number from your Socio Craftco invoice. Payments are processed by Razorpay; we never see your card or bank details.</p>
+        <h1><span class="thin">Pay securely</span>online.</h1>
+        <p class="pk-lead">Enter the amount, tap pay, done. Payments are processed by Razorpay; we never see your card or bank details.</p>
       </div>
     </section>
 
     <div class="wide pay-wrap">
       <form class="pay-form" id="payForm" novalidate>
-        <h2>Payment details</h2>
-        <p>Amounts are in Indian rupees.</p>
-        <div class="pay-row">
-          <label class="pay-field"><span>Full name</span><input name="name" autocomplete="name" required maxlength="80"></label>
-          <label class="pay-field"><span>Business name (optional)</span><input name="business" autocomplete="organization" maxlength="80"></label>
-        </div>
-        <div class="pay-row">
-          <label class="pay-field"><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-          <label class="pay-field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9+\(\) \-]{8,20}"></label>
-        </div>
-        <div class="pay-row">
-          <label class="pay-field"><span>Invoice or quote number</span><input name="invoice" required maxlength="40" placeholder="e.g. SC-2026-014"></label>
-          <label class="pay-field"><span>Payment for</span>
-            <select name="purpose" required>
-              <option value="">Choose one</option>
-              <option>Setup fee</option>
-              <option>Monthly package fee</option>
-              <option>Website advance</option>
-              <option>Website balance</option>
-              <option>Add-on service</option>
-              <option>Other</option>
-            </select>
-          </label>
-        </div>
         <label class="pay-field"><span>Amount</span>
-          <div class="pay-amount"><i aria-hidden="true">₹</i><input name="amount" type="number" inputmode="decimal" min="1" max="500000" step="0.01" required aria-label="Amount in rupees"></div>
+          <div class="pay-amount"><i aria-hidden="true">₹</i><input name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0" required aria-label="Amount in rupees"></div>
         </label>
-        <label class="pay-agree"><input type="checkbox" name="agree" required><span>I agree to the <a href="terms.html">Terms of Service</a> and <a href="refund.html">Refund &amp; Cancellation Policy</a>.</span></label>
-        <button class="btn btn-black" type="submit">Pay securely</button>
+        <fieldset class="pay-for">
+          <legend>Payment for</legend>
+          <label><input type="radio" name="purpose" value="Project payment" checked><span>Project payment</span></label>
+          <label><input type="radio" name="purpose" value="Advance"><span>Advance</span></label>
+          <label><input type="radio" name="purpose" value="Balance payment"><span>Balance</span></label>
+          <label><input type="radio" name="purpose" value="Monthly package"><span>Monthly package</span></label>
+        </fieldset>
+        <label class="pay-field"><span>Your name</span><input name="name" autocomplete="name" required maxlength="80"></label>
+        <div class="pay-row">
+          <label class="pay-field"><span>WhatsApp number</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9+\(\) \-]{8,20}"></label>
+          <label class="pay-field"><span>Email for your receipt</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        </div>
+        <input type="hidden" name="invoice">
+        <button class="btn btn-black pay-btn" type="submit">Pay securely</button>
+        <p class="pay-note">By paying you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund Policy</a>. A reference number is created for you automatically.</p>
         <p class="pay-msg" id="payMsg" role="status" hidden></p>
         <p class="pay-secure">Secured by Razorpay. UPI, cards, net banking and wallets.</p>
       </form>
@@ -79,10 +67,9 @@
       <aside class="pay-info" aria-labelledby="howPay">
         <h2 id="howPay">How it works</h2>
         <ol class="pay-steps">
-          <li>We send you an invoice with its number.</li>
-          <li>Enter the number and amount here.</li>
-          <li>Pay through Razorpay's checkout.</li>
-          <li>You get a receipt by email, and we confirm on WhatsApp.</li>
+          <li>Enter the amount and your details.</li>
+          <li>Pay with UPI, card or net banking in Razorpay's secure window.</li>
+          <li>Get a receipt by email with your reference number. We confirm on WhatsApp.</li>
         </ol>
         <div class="pay-trust">
           <span>Not sure what to pay? See our <a href="packages.html">packages and prices</a>.</span>
