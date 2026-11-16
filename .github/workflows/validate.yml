@@ -31,6 +31,7 @@ jobs:
           node --check chat.js
           node --check api/razorpay-order.js
           node --check api/razorpay-verify.js
+          node --check api/razorpay-webhook.js
 
       - name: Run smoke checks
         run: node tests/smoke.test.mjs
