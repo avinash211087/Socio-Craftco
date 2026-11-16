@@ -167,6 +167,30 @@
 .pay-msg { margin: 1rem 0 0; padding: .9rem 1rem; border-radius: 10px; background: var(--mist); font-size: .93rem; }
 .pay-secure { margin: .4rem 0 0; color: var(--muted); font-size: .85rem; text-align: center; }
 
+/* Success screen: ring draws, tick draws, then the details rise in. */
+.pay-done { padding: clamp(2rem, 5vw, 3rem) clamp(1.2rem, 4vw, 2.5rem); border: 1px solid var(--line); border-radius: 16px; text-align: center; }
+.pay-tick { display: block; width: 88px; height: 88px; margin: 0 auto 1.4rem; overflow: visible; }
+.pay-tick .disc { fill: #E7F6EE; transform-origin: center; animation: pay-pop .45s .75s ease-out both; }
+.pay-tick .ring, .pay-tick path { fill: none; stroke: #1E9E57; stroke-linecap: round; stroke-linejoin: round; }
+.pay-tick .ring { stroke-width: 2.5; stroke-dasharray: 151; stroke-dashoffset: 151; transform: rotate(-90deg); transform-origin: center; animation: pay-draw .6s ease-out forwards; }
+.pay-tick path { stroke-width: 3.5; stroke-dasharray: 34; stroke-dashoffset: 34; animation: pay-draw .35s .55s ease-out forwards; }
+.pay-done > :not(svg) { animation: pay-rise .5s .85s ease-out both; }
+.pay-done h2 { margin: 0; font-size: 1.6rem; font-weight: 500; outline: none; }
+.pay-done-amount { margin: .3rem 0 1.6rem; font-size: 2.4rem; font-weight: 600; letter-spacing: -.02em; }
+.pay-done-list { display: grid; gap: .1rem; max-width: 26rem; margin: 0 auto 1.4rem; text-align: left; }
+.pay-done-list div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem; padding: .7rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+.pay-done-list dt { color: var(--muted); white-space: nowrap; }
+.pay-done-list dd { margin: 0 0 0 auto; font-weight: 500; font-size: .9rem; overflow-wrap: break-word; max-width: 100%; text-align: right; }
+.pay-done-note { max-width: 26rem; margin: 0 auto 1.8rem; color: var(--muted); font-size: .92rem; line-height: 1.5; }
+.pay-done-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; }
+.pay-done-actions .btn { min-height: 50px; }
+@keyframes pay-draw { to { stroke-dashoffset: 0; } }
+@keyframes pay-pop { from { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.06); } to { transform: scale(1); opacity: 1; } }
+@keyframes pay-rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) {
+  .pay-tick *, .pay-done > * { animation: none !important; stroke-dashoffset: 0 !important; }
+}
+
 .pay-info { padding: 2rem; border-radius: 16px; background: var(--navy); color: #fff; }
 .pay-info h2 { margin-bottom: 1.2rem; }
 .pay-steps { margin: 0 0 1.6rem; padding-left: 1.2rem; color: #DCE3F0; }

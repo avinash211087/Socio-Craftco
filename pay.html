@@ -65,6 +65,22 @@
         <p class="pay-secure">Secured by Razorpay. UPI, cards, net banking and wallets.</p>
       </form>
 
+      <div class="pay-done" id="payDone" hidden>
+        <svg class="pay-tick" viewBox="0 0 52 52" aria-hidden="true"><circle class="disc" cx="26" cy="26" r="24"/><circle class="ring" cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+        <h2 id="payDoneTitle" tabindex="-1">Payment successful</h2>
+        <p class="pay-done-amount" id="payDoneAmount"></p>
+        <dl class="pay-done-list">
+          <div><dt>Paid for</dt><dd id="payDoneFor"></dd></div>
+          <div><dt>Reference</dt><dd id="payDoneRef"></dd></div>
+          <div><dt>Payment ID</dt><dd id="payDoneId"></dd></div>
+        </dl>
+        <p class="pay-done-note">Razorpay has emailed your receipt to <strong id="payDoneEmail"></strong>. We'll confirm on WhatsApp shortly.</p>
+        <div class="pay-done-actions">
+          <a class="btn btn-black" href="./">Back to home</a>
+          <button class="btn btn-outline" type="button" id="payAgain">Make another payment</button>
+        </div>
+      </div>
+
       <aside class="pay-info" aria-labelledby="howPay">
         <h2 id="howPay">How it works</h2>
         <ol class="pay-steps">

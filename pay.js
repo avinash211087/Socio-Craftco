@@ -39,6 +39,19 @@
     }
     msg.hidden = false;
   };
+  // Success screen: swaps in for the form; showing it again replays the tick animation (see packages.css).
+  const done = document.getElementById("payDone");
+  const showDone = (info) => {
+    for (const k in info) document.getElementById("payDone" + k[0].toUpperCase() + k.slice(1)).textContent = info[k];
+    form.hidden = true; done.hidden = false;
+    document.getElementById("payDoneTitle").focus({ preventScroll: true });
+    done.scrollIntoView({ block: "start" }); // taller than a phone screen, so show the tick first
+  };
+  document.getElementById("payAgain").addEventListener("click", () => {
+    done.hidden = true; form.hidden = false; msg.hidden = true;
+    amountInput.value = ""; label(); amountInput.focus();
+  });
+
   const waLink = (d, amount) => "https://wa.me/919119687579?text=" + encodeURIComponent(
     "Hi Socio Craftco, I'd like to pay " + inr(amount) + " (" + d.purpose + (d.invoice ? ", invoice " + d.invoice : "") +
     "). Name: " + d.name + ", email: " + d.email + ", phone: " + d.phone + ", address: " + d.address + ".");
@@ -80,8 +93,7 @@
           show("Confirming your payment…");
           const check = await post("/api/razorpay-verify", paid).catch(() => ({}));
           if (check.ok) {
-            show("Payment of " + inr(amount) + " received. Thank you! Reference: " + order.reference + ". Razorpay will email your receipt.");
-            amountInput.value = ""; label();
+            showDone({ amount: inr(amount), for: d.purpose, ref: order.reference, id: paid.razorpay_payment_id, email: d.email });
           } else {
             show("We could not confirm this payment yet. If money left your account, email sociocraftco@gmail.com with reference " + order.reference + " and Payment ID " + paid.razorpay_payment_id + ".");
           }
