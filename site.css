@@ -2459,6 +2459,17 @@ footer {
   .tagline { gap: .55rem; letter-spacing: .2em; }
   .rule-line { letter-spacing: .22em; }
   .faq details p { padding-right: 0; }
+  /* Phone readability: no text under 12px, and every tap target at least ~40px tall */
+  .pillar span { font-size: .75rem; letter-spacing: .2em; }
+  .step-out span { font-size: .75rem; }
+  label > span small { font-size: .75rem; }
+  .demo-tab .icon { display: none; } /* three tabs share 328px; icons pushed "Your business preview" onto 3 lines */
+  .demo-tab { flex: 1 1 auto; padding: .7rem .5rem; line-height: 1.25; } /* longer labels get more room: two lines each */
+  .swatch { width: 40px; height: 40px; }
+  .service .try { margin-top: .4rem; padding: .55rem 0; }
+  .footer-col { gap: 0; }
+  .footer-col a, .footer-col span { padding: .5rem 0; }
+  .footer-bottom a { display: inline-block; padding: .55rem 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

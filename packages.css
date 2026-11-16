@@ -251,4 +251,6 @@
   .pay-row-3 { grid-template-columns: 1fr 1fr; } /* city | state, then PIN: same order as the keyboard */
   .pk-row { grid-template-columns: 1fr; gap: 1rem; }
   .pay-summary { padding: 1.3rem; }
+  .pk-jump { gap: 0 1.4rem; }
+  .pk-jump a { padding-top: .6rem; }
 }
