@@ -1,7 +1,8 @@
 // Vercel function: Razorpay calls this when an order is paid, even if the client closed the tab before the pay page confirmed.
 // Set it up in Razorpay Dashboard → Settings → Webhooks: URL https://www.sociocraftco.in/api/razorpay-webhook, event "order.paid",
 // and the same secret as the RAZORPAY_WEBHOOK_SECRET environment variable in Vercel.
-// Each paid order is added to the lead Google Sheet with Source "Payment". The Razorpay dashboard stays the record of what was paid.
+// Each paid order is added to the "Payments" tab of the lead Google Sheet. SHEET_PAYMENT_KEY must match the Sheet script's
+// PAYMENT_KEY, so nobody else can add fake payments. The Razorpay dashboard stays the record of what was paid.
 const crypto = require("crypto");
 
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbw-wY5iioNYXIOOCgU5PfAAeR3B85IpfvZmnR2IMTKFH1iXVcnnGehy_m_eeoQDCXGo/exec"; // same as index.html lead-endpoint
@@ -23,8 +24,8 @@ const inr = (paise) => "₹" + (paise / 100).toLocaleString("en-IN", { maximumFr
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
-  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
-  if (!secret) return res.status(503).json({ error: "Webhook secret not set" });
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET, key = process.env.SHEET_PAYMENT_KEY;
+  if (!secret || !key) return res.status(503).json({ error: "Webhook not set up" });
 
   const body = await rawBody(req);
   const sig = String(req.headers["x-razorpay-signature"] || "");
@@ -39,12 +40,13 @@ module.exports = async (req, res) => {
   const notes = order.notes || {};
   const row = {
     source: "Payment",
+    key,
+    payment: payment.id || "",
     name: notes.name || payment.email || "Unknown payer",
-    business: notes.business || "",
     service: notes.purpose || "Payment",
     budget: inr(payment.amount || order.amount_paid || 0),
-    timeline: "Paid",
-    contact: notes.phone || payment.contact || notes.email || payment.email || "",
+    // Razorpay checked these at checkout; the typed phone in the notes may be too short for the Sheet.
+    contact: payment.contact || payment.email || notes.phone || notes.email || "",
     message: [
       "Reference " + (notes.invoice || order.receipt || "-"),
       "Payment ID " + (payment.id || "-"),
@@ -55,9 +57,13 @@ module.exports = async (req, res) => {
     ].filter(Boolean).join(" · ")
   };
 
-  // Razorpay retries anything that is not 2xx, so a Sheet hiccup must not fail the webhook.
+  // Anything but "ok" fails the webhook, so Razorpay retries it (for up to 24 hours). The Sheet skips Payment IDs it already has.
   try {
-    await fetch(SHEET_ENDPOINT, { method: "POST", body: new URLSearchParams(row), redirect: "follow" });
-  } catch {}
-  res.status(200).json({ ok: true });
+    const r = await fetch(SHEET_ENDPOINT, { method: "POST", body: new URLSearchParams(row), redirect: "follow" });
+    const reply = (await r.text()).trim();
+    if (reply === "ok") return res.status(200).json({ ok: true });
+    return res.status(502).json({ ok: false, sheet: reply.slice(0, 40) });
+  } catch {
+    return res.status(502).json({ ok: false });
+  }
 };

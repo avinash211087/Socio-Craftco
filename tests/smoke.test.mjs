@@ -146,4 +146,54 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: "x" })).body.ok, false, "bad signature rejected");
 }
 
+// Payment webhook: only signed Razorpay calls reach the Sheet, with the key; a Sheet refusal makes Razorpay retry.
+{
+  const { createRequire } = await import("node:module");
+  const { createHmac } = await import("node:crypto");
+  const { Readable } = await import("node:stream");
+  const webhook = createRequire(import.meta.url)("../api/razorpay-webhook.js");
+  process.env.RAZORPAY_WEBHOOK_SECRET = "whsec"; process.env.SHEET_PAYMENT_KEY = "sheetkey";
+  const event = (name) => JSON.stringify({ event: name, payload: {
+    payment: { entity: { id: "pay_9", amount: 1500000, method: "upi", contact: "+919876543210", email: "a@b.co" } },
+    order: { entity: { id: "order_9", notes: { name: "Asha", phone: "+91 98765", purpose: "Advance", invoice: "SC-9" } } } } });
+  const hook = async (body, sig = createHmac("sha256", "whsec").update(body).digest("hex")) => {
+    const out = {};
+    const req = Object.assign(Readable.from([Buffer.from(body)]), { method: "POST", headers: { "x-razorpay-signature": sig } });
+    const res = { status(c) { out.status = c; return res; }, json(j) { out.body = j; return res; } };
+    await webhook(req, res);
+    return out;
+  };
+  const realFetch = globalThis.fetch;
+  let rows = [], sheetReply = "ok";
+  globalThis.fetch = async (url, o) => { rows.push(Object.fromEntries(o.body)); return { text: async () => sheetReply }; };
+  assert.equal((await hook(event("order.paid"), "bad")).status, 400, "webhook: bad signature rejected");
+  assert.equal(rows.length, 0, "webhook: nothing saved for a bad signature");
+  assert.equal((await hook(event("payment.failed"))).status, 200, "webhook: other events ignored");
+  assert.equal(rows.length, 0, "webhook: nothing saved for other events");
+  assert.equal((await hook(event("order.paid"))).status, 200, "webhook: paid order saved");
+  assert.deepEqual([rows[0].source, rows[0].key, rows[0].payment, rows[0].budget, rows[0].contact],
+    ["Payment", "sheetkey", "pay_9", "₹15,000", "+919876543210"], "webhook: row carries the key and Razorpay's checked phone");
+  sheetReply = "busy";
+  assert.equal((await hook(event("order.paid"))).status, 502, "webhook: Sheet refusal fails so Razorpay retries");
+  globalThis.fetch = realFetch;
+
+  // Sheet script: payments need the key, go to their own tab, and are saved once per Payment ID.
+  const tabs = {};
+  const tab = (name) => ({ rows: [], getLastRow() { return this.rows.length; }, appendRow(r) { this.rows.push(r); },
+    createTextFinder(t) { return { findNext: () => this.rows.some((r) => r.some((c) => String(c).includes(t))) }; } });
+  const box = {
+    PropertiesService: { getScriptProperties: () => ({ getProperty: () => "sheetkey" }) },
+    ContentService: { createTextOutput: (t) => t },
+    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (n) => tabs[n], insertSheet: (n) => (tabs[n] = tab(n)), getSheets: () => [tabs.Leads] }) }
+  };
+  tabs.Leads = tab("Leads");
+  (await import("node:vm")).runInNewContext(gs, box);
+  const paid = { source: "Payment", payment: "pay_9", name: "Asha", service: "Advance", budget: "₹15,000", contact: "+919876543210", message: "Payment ID pay_9" };
+  assert.equal(box.doPost({ parameter: { ...paid, key: "guess" } }), "forbidden", "sheet: payment without the key refused");
+  assert.equal(box.doPost({ parameter: { ...paid, key: "sheetkey" } }), "ok", "sheet: signed payment saved");
+  assert.equal(box.doPost({ parameter: { ...paid, key: "sheetkey" } }), "ok", "sheet: repeat delivery accepted");
+  assert.equal(tabs.Payments.rows.length, 2, "sheet: header plus one row, no duplicate");
+  assert.equal(tabs.Leads.rows.length, 0, "sheet: payments stay out of the Leads tab");
+}
+
 console.log(`Smoke checks passed (${checks.length} behavioural checks, ${new Set(localAssets).size} local assets).`);

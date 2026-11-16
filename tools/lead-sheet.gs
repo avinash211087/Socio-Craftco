@@ -1,5 +1,6 @@
 // Google Apps Script: saves website enquiries to the "Leads" tab of the Google Sheet it is attached to,
 // and builds a live "Dashboard" tab. Setup steps are in README.md ("Saving enquiries to a Google Sheet").
+// Paid Razorpay orders arrive from api/razorpay-webhook.js and go to a separate "Payments" tab (README: "Online payments").
 
 const FIELDS = ["source", "name", "business", "service", "budget", "timeline", "contact", "message"];
 const HEADERS = ["Received", "Source", "Name", "Business", "Service", "Budget", "Timeline", "Contact", "Message", "Status", "Notes"];
@@ -7,17 +8,48 @@ const STATUSES = ["New", "Contacted", "Quoted", "Won", "Lost"];
 const STATUS_COLORS = { New: "#FFF4CE", Contacted: "#E8EFFF", Quoted: "#EDE7FF", Won: "#DDF5E4", Lost: "#EEEEEE" };
 const NAVY = "#0A1426", BLUE = "#0150FD", BLUE_SOFT = "#E8EFFF", MUTED = "#5B6476", LINE = "#E3E7EF";
 
+const PAYMENT_FIELDS = ["name", "service", "budget", "contact", "message"];
+const PAYMENT_HEADERS = ["Received", "Name", "Paid for", "Amount", "Contact", "Details"];
+
 const MAX_LEADS_PER_HOUR = 30; // real traffic is far below this; a spam script hitting the URL is not
 
 function doPost(e) {
   const p = (e && e.parameter) || {};
-  if (!p.name || !validContact(p.contact)) return ContentService.createTextOutput("missing fields");
-  if (overLimit()) return ContentService.createTextOutput("busy");
+  if (p.source === "Payment") return savePayment(p);
+  if (!p.name || !validContact(p.contact)) return reply("missing fields");
+  if (overLimit()) return reply("busy");
 
   const sheet = leadsSheet();
   if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
   sheet.appendRow([new Date()].concat(FIELDS.map((key) => clean(p[key])), ["New"]));
-  return ContentService.createTextOutput("ok");
+  return reply("ok");
+}
+
+// Only the website's webhook knows PAYMENT_KEY, so nobody else can add a "paid" row. Signed rows skip the spam limit.
+function savePayment(p) {
+  const want = PropertiesService.getScriptProperties().getProperty("PAYMENT_KEY");
+  if (!want || p.key !== want) return reply("forbidden");
+  if (!p.payment || !p.name) return reply("missing fields");
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Payments") || ss.insertSheet("Payments");
+  if (sheet.getLastRow() === 0) sheet.appendRow(PAYMENT_HEADERS);
+  // Razorpay can send the same payment twice (retries), so skip a Payment ID that is already saved.
+  if (sheet.createTextFinder(p.payment).findNext()) return reply("ok");
+  sheet.appendRow([new Date()].concat(PAYMENT_FIELDS.map((key) => clean(p[key]))));
+  return reply("ok");
+}
+
+// Run once from the Apps Script editor (select makePaymentKey → Run), then copy the key from the log
+// into Vercel as SHEET_PAYMENT_KEY. Running it again shows the same key.
+function makePaymentKey() {
+  const props = PropertiesService.getScriptProperties();
+  if (!props.getProperty("PAYMENT_KEY")) props.setProperty("PAYMENT_KEY", Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, ""));
+  Logger.log(props.getProperty("PAYMENT_KEY"));
+}
+
+function reply(text) {
+  return ContentService.createTextOutput(text);
 }
 
 // Same rule as the site forms: 8+ digits or an email.

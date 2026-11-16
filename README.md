@@ -71,6 +71,14 @@ The keys are never in the code. Add them in Vercel: project → **Settings → E
 
 Then redeploy (Deployments → ⋯ → Redeploy). Without the keys the pay page sends clients to WhatsApp instead. In the Razorpay dashboard, keep **automatic capture** on so payments settle without manual action. Every payment, refund and receipt is in the Razorpay dashboard.
 
+Paid orders are also copied to the **Payments** tab of the lead Sheet by `api/razorpay-webhook.js`. To set it up:
+
+1. In the Apps Script editor, run `makePaymentKey` once and copy the key from the log.
+2. In Vercel, add `SHEET_PAYMENT_KEY` (that key) and `RAZORPAY_WEBHOOK_SECRET` (any long random text), then redeploy.
+3. In Razorpay: Settings → Webhooks → Add: URL `https://www.sociocraftco.in/api/razorpay-webhook`, the same secret, event `order.paid`.
+
+If either Vercel value is missing, the webhook refuses every call and no payments reach the Sheet; Razorpay emails you about the failures.
+
 ## Analytics
 
 The site loads Vercel Web Analytics (no cookies). Turn it on once in the Vercel dashboard: project → **Analytics** → **Enable**. The script returns 404 locally; that is expected.
