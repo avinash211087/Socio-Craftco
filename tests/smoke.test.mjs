@@ -55,6 +55,9 @@ pages.forEach((page, i) => {
 });
 const payJsSrc = await readFile("pay.js", "utf8");
 assert.ok(pages[1].includes('id="payForm" novalidate inert') && payJsSrc.includes('form.removeAttribute("inert")'), "pay form must stay locked until pay.js loads");
+assert.ok(pages[1].includes('form="payForm" disabled') && payJsSrc.includes("button.disabled = false"), "pay button must stay disabled until pay.js loads");
+for (const f of ["name", "phone", "email", "address", "city", "state", "pincode"])
+  assert.ok(new RegExp(`name="${f}"[^>]*required`).test(pages[1]) && payJsSrc.includes(`${f}: [`), `pay page must require and check ${f}`);
 assert.ok(payJsSrc.includes("/api/razorpay-order") && payJsSrc.includes("/api/razorpay-verify"), "pay page must create orders and verify payments on the server");
 assert.ok(!/rzp_(live|test)_|key_secret|RAZORPAY_KEY_SECRET/i.test(pages[1] + payJsSrc), "no Razorpay keys in the pay page code");
 // showDone fills id="payDone<Key>" for each key; a missing one would leave a paid client stuck on "Confirming…".
@@ -122,27 +125,32 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
     await fn({ method, body, headers: { origin } }, res);
     return out;
   };
+  const you = { name: "Asha Verma", phone: "+91 98765 43210", email: "asha@example.com", address: "12 MG Road", city: "New Delhi", state: "Delhi", pincode: "110001" };
   delete process.env.RAZORPAY_KEY_ID; delete process.env.RAZORPAY_KEY_SECRET;
-  assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "X" })).status, 503, "no keys: payments switched off");
+  assert.equal((await call(makeOrder, { ...you, amount: 100, invoice: "X" })).status, 503, "no keys: payments switched off");
   process.env.RAZORPAY_KEY_ID = "rzp_test_id"; process.env.RAZORPAY_KEY_SECRET = "s3cret";
   const realFetch = globalThis.fetch;
   let sent;
   globalThis.fetch = async (url, o) => { sent = { url, o }; return { ok: true, json: async () => ({ id: "order_1", amount: JSON.parse(o.body).amount }) }; };
-  for (const bad of [0, 0.5, -10, 500001, "abc"]) assert.equal((await call(makeOrder, { amount: bad, name: "A", invoice: "X" })).status, 400, `amount ${bad} rejected`);
-  assert.equal((await call(makeOrder, { amount: 100, invoice: "X" })).status, 400, "name required");
-  const r1 = await call(makeOrder, { amount: 100, name: "A" }), r2 = await call(makeOrder, { amount: 100, name: "A" });
+  for (const bad of [0, 0.5, -10, 500001, "abc"]) assert.equal((await call(makeOrder, { ...you, amount: bad, invoice: "X" })).status, 400, `amount ${bad} rejected`);
+  for (const [field, value] of [["name", ""], ["phone", ""], ["phone", "12345"], ["phone", "5876543210"], ["email", ""], ["email", "asha@"],
+    ["address", ""], ["city", ""], ["state", ""], ["pincode", ""], ["pincode", "11001"], ["pincode", "011001"]])
+    assert.equal((await call(makeOrder, { ...you, amount: 100, [field]: value })).status, 400, `order refused when ${field} is "${value}"`);
+  const r1 = await call(makeOrder, { ...you, amount: 100 }), r2 = await call(makeOrder, { ...you, amount: 100 });
   assert.match(r1.body.reference, /^SC-\d{6}-[0-9A-F]{6}$/, "reference made automatically");
   assert.notEqual(r1.body.reference, r2.body.reference, "every payment gets its own reference");
-  assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "INV-7" })).body.reference, "INV-7", "a given invoice number is kept");
+  assert.equal((await call(makeOrder, { ...you, amount: 100, invoice: "INV-7" })).body.reference, "INV-7", "a given invoice number is kept");
   assert.equal((await call(makeOrder, {}, "GET")).status, 405, "GET rejected");
-  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "https://evil.example")).status, 403, "orders from other sites rejected");
-  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "")).status, 403, "orders without an origin rejected");
-  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "https://sociocraftco.in")).status, 200, "non-www address accepted");
-  const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1", address: "12 MG Road, Delhi 110001" });
+  assert.equal((await call(makeOrder, { ...you, amount: 100 }, "POST", "https://evil.example")).status, 403, "orders from other sites rejected");
+  assert.equal((await call(makeOrder, { ...you, amount: 100 }, "POST", "")).status, 403, "orders without an origin rejected");
+  assert.equal((await call(makeOrder, { ...you, amount: 100 }, "POST", "https://sociocraftco.in")).status, 200, "non-www address accepted");
+  const ok = await call(makeOrder, { ...you, amount: 1499.5, invoice: "SC-1" });
   assert.deepEqual([ok.status, ok.body.order_id, ok.body.amount, ok.body.key], [200, "order_1", 149950, "rzp_test_id"], "order created in paise");
   assert.ok(!JSON.stringify(ok.body).includes("s3cret"), "secret never sent to the browser");
   assert.equal(sent.url, "https://api.razorpay.com/v1/orders");
-  assert.equal(JSON.parse(sent.o.body).notes.address, "12 MG Road, Delhi 110001", "billing address goes to Razorpay with the payment");
+  const notes = JSON.parse(sent.o.body).notes;
+  assert.equal(notes.address, "12 MG Road, New Delhi, Delhi 110001", "full billing address goes to Razorpay with the payment");
+  assert.equal(notes.phone, "+919876543210", "mobile number saved in one standard form");
   globalThis.fetch = realFetch;
   const { createHmac } = await import("node:crypto");
   const sig = createHmac("sha256", "s3cret").update("order_1|pay_1").digest("hex");

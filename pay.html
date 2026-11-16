@@ -32,38 +32,81 @@
   </header>
 
   <main>
-    <section class="pk-top">
+    <section class="pk-top pay-top">
       <div class="wide">
         <p class="pk-kicker tracked">Payments</p>
         <h1><span class="thin">Pay securely</span>online.</h1>
-        <p class="pk-lead">Enter the amount, tap pay, done. Payments are processed by Razorpay; we never see your card or bank details.</p>
+        <p class="pk-lead">Fill in three short steps and pay with UPI, card or net banking. Payments are processed by Razorpay; we never see your card or bank details.</p>
       </div>
     </section>
 
     <div class="wide pay-wrap">
       <form class="pay-form" id="payForm" novalidate inert>
-        <label class="pay-field"><span>Amount</span>
-          <div class="pay-amount"><i aria-hidden="true">₹</i><input name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0" required aria-label="Amount in rupees"></div>
-        </label>
-        <fieldset class="pay-for">
-          <legend>Payment for</legend>
-          <label><input type="radio" name="purpose" value="Project payment" checked><span>Project payment</span></label>
-          <label><input type="radio" name="purpose" value="Advance"><span>Advance</span></label>
-          <label><input type="radio" name="purpose" value="Balance payment"><span>Balance</span></label>
-          <label><input type="radio" name="purpose" value="Monthly package"><span>Monthly package</span></label>
-        </fieldset>
-        <label class="pay-field"><span>Your name</span><input name="name" autocomplete="name" required maxlength="80"></label>
-        <div class="pay-row">
-          <label class="pay-field"><span>WhatsApp number</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9+\(\) \-]{8,20}"></label>
-          <label class="pay-field"><span>Email for your receipt</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-        </div>
-        <label class="pay-field"><span>Billing address</span><textarea name="address" rows="2" autocomplete="street-address" required maxlength="250" placeholder="House or office, street, city, PIN code"></textarea></label>
+        <section class="pay-sec" aria-labelledby="secAmount">
+          <h2 id="secAmount"><span aria-hidden="true">1</span>Amount</h2>
+          <label class="pay-field"><span>Amount to pay</span>
+            <div class="pay-prefix pay-amount"><i aria-hidden="true">₹</i><input name="amount" type="text" inputmode="decimal" enterkeyhint="next" autocomplete="off" placeholder="0" required aria-label="Amount in rupees"></div>
+          </label>
+          <fieldset class="pay-for">
+            <legend>Payment for</legend>
+            <label><input type="radio" name="purpose" value="Project payment" checked><span>Project payment</span></label>
+            <label><input type="radio" name="purpose" value="Advance"><span>Advance</span></label>
+            <label><input type="radio" name="purpose" value="Balance payment"><span>Balance</span></label>
+            <label><input type="radio" name="purpose" value="Monthly package"><span>Monthly package</span></label>
+          </fieldset>
+        </section>
+
+        <section class="pay-sec" aria-labelledby="secYou">
+          <h2 id="secYou"><span aria-hidden="true">2</span>Your details</h2>
+          <label class="pay-field"><span>Full name</span><input name="name" autocomplete="name" enterkeyhint="next" required maxlength="80" placeholder="As on your bill"></label>
+          <div class="pay-row">
+            <label class="pay-field"><span>Mobile number</span>
+              <div class="pay-prefix"><i aria-hidden="true">+91</i><input name="phone" type="tel" enterkeyhint="next" autocomplete="tel-national" inputmode="numeric" required maxlength="14" placeholder="98765 43210"></div>
+            </label>
+            <label class="pay-field"><span>Email</span><input name="email" type="email" enterkeyhint="next" autocomplete="email" required maxlength="120" placeholder="Your receipt goes here"></label>
+          </div>
+        </section>
+
+        <section class="pay-sec" aria-labelledby="secAddress">
+          <h2 id="secAddress"><span aria-hidden="true">3</span>Billing address</h2>
+          <label class="pay-field"><span>House / flat no., building, street, area</span><input name="address" autocomplete="address-line1" enterkeyhint="next" required maxlength="140"></label>
+          <div class="pay-row pay-row-3">
+            <label class="pay-field"><span>City</span><input name="city" autocomplete="address-level2" enterkeyhint="next" required maxlength="50"></label>
+            <label class="pay-field"><span>State</span>
+              <select name="state" autocomplete="address-level1" required>
+                <option value="">Select state</option>
+                <option>Andaman and Nicobar Islands</option><option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+                <option>Bihar</option><option>Chandigarh</option><option>Chhattisgarh</option><option>Dadra and Nagar Haveli and Daman and Diu</option>
+                <option>Delhi</option><option>Goa</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+                <option>Jammu and Kashmir</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Ladakh</option>
+                <option>Lakshadweep</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+                <option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Puducherry</option><option>Punjab</option>
+                <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option>
+                <option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+              </select>
+            </label>
+            <label class="pay-field"><span>PIN code</span><input name="pincode" autocomplete="postal-code" enterkeyhint="go" inputmode="numeric" required maxlength="6" placeholder="110001"></label>
+          </div>
+        </section>
         <input type="hidden" name="invoice">
-        <button class="btn btn-black pay-btn" type="submit">Pay securely</button>
-        <p class="pay-note">By paying you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund Policy</a>. A reference number is created for you automatically.</p>
-        <p class="pay-msg" id="payMsg" role="status" hidden></p>
-        <p class="pay-secure">Secured by Razorpay. UPI, cards, net banking and wallets.</p>
       </form>
+
+      <aside class="pay-summary" id="paySummary" aria-labelledby="sumTitle">
+        <h2 id="sumTitle">Payment summary</h2>
+        <dl class="pay-sum">
+          <div><dt>Paying</dt><dd>Socio Craftco</dd></div>
+          <div><dt>For</dt><dd id="sumFor">Project payment</dd></div>
+          <div class="total"><dt>Total</dt><dd id="sumAmount">₹0</dd></div>
+        </dl>
+        <button class="btn pay-btn" type="submit" form="payForm" disabled>Pay securely</button>
+        <p class="pay-msg" id="payMsg" role="status" hidden></p>
+        <ul class="pay-assure">
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Secured by Razorpay</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>UPI, cards, net banking and wallets</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Instant receipt by email</li>
+        </ul>
+        <p class="pay-note">By paying you agree to our <a href="terms.html">Terms</a>, <a href="refund.html">Refund Policy</a> and <a href="delivery.html">Delivery Policy</a>. Not sure what to pay? See <a href="packages.html">packages and prices</a>. Questions? <a href="mailto:sociocraftco@gmail.com">sociocraftco@gmail.com</a> or <a href="https://wa.me/919119687579" target="_blank" rel="noopener">WhatsApp</a>.</p>
+      </aside>
 
       <div class="pay-done" id="payDone" hidden>
         <svg class="pay-tick" viewBox="0 0 52 52" aria-hidden="true"><circle class="disc" cx="26" cy="26" r="24"/><circle class="ring" cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
@@ -80,20 +123,6 @@
           <button class="btn btn-outline" type="button" id="payAgain">Make another payment</button>
         </div>
       </div>
-
-      <aside class="pay-info" aria-labelledby="howPay">
-        <h2 id="howPay">How it works</h2>
-        <ol class="pay-steps">
-          <li>Enter the amount and your details.</li>
-          <li>Pay with UPI, card or net banking in Razorpay's secure window.</li>
-          <li>Get a receipt by email with your reference number. We confirm on WhatsApp.</li>
-        </ol>
-        <div class="pay-trust">
-          <span>Not sure what to pay? See our <a href="packages.html">packages and prices</a>.</span>
-          <span>Read our <a href="refund.html">refund &amp; cancellation policy</a> and <a href="delivery.html">service delivery policy</a> before paying.</span>
-          <span>Questions? Email <a href="mailto:sociocraftco@gmail.com">sociocraftco@gmail.com</a> or message <a href="https://wa.me/919119687579" target="_blank" rel="noopener">+91 91196 87579</a> on WhatsApp.</span>
-        </div>
-      </aside>
     </div>
   </main>
 
