@@ -6,7 +6,8 @@
   const msg = document.getElementById("payMsg");
   const button = form.querySelector('button[type="submit"]');
   const amountInput = form.elements.amount;
-  const SAVED = ["name", "phone", "email", "address"];
+  form.removeAttribute("inert"); // locked in the HTML until this script runs (see pay.html)
+  const SAVED = ["name", "phone", "email"]; // not the address: on a shared computer the next person would see it
 
   const rupees = (v) => Number(String(v).replace(/[,₹\s]/g, ""));
   const inr = (n) => "₹" + n.toLocaleString("en-IN", { maximumFractionDigits: 2 });
@@ -62,7 +63,7 @@
     show("Opening secure checkout…");
     try {
       const order = await post("/api/razorpay-order", { ...d, amount });
-      if (order.status === 503 || order.status === 404) {
+      if (order.status === 503) {
         show("Online payment is being switched on. For now, please", { href: waLink(d, amount), text: "send us your payment details on WhatsApp", after: " and we'll share a secure payment link." });
         return;
       }

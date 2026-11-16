@@ -54,6 +54,7 @@ pages.forEach((page, i) => {
     assert.ok(page.includes(`href="${link}"`), `${PAGES[i]} must link ${link}`);
 });
 const payJsSrc = await readFile("pay.js", "utf8");
+assert.ok(pages[1].includes('id="payForm" novalidate inert') && payJsSrc.includes('form.removeAttribute("inert")'), "pay form must stay locked until pay.js loads");
 assert.ok(payJsSrc.includes("/api/razorpay-order") && payJsSrc.includes("/api/razorpay-verify"), "pay page must create orders and verify payments on the server");
 assert.ok(!/rzp_(live|test)_|key_secret|RAZORPAY_KEY_SECRET/i.test(pages[1] + payJsSrc), "no Razorpay keys in the pay page code");
 
@@ -110,10 +111,10 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   const { createRequire } = await import("node:module");
   const req = createRequire(import.meta.url);
   const makeOrder = req("../api/razorpay-order.js"), verify = req("../api/razorpay-verify.js");
-  const call = async (fn, body, method = "POST") => {
+  const call = async (fn, body, method = "POST", origin = "https://www.sociocraftco.in") => {
     const out = {};
     const res = { status(c) { out.status = c; return res; }, json(j) { out.body = j; return res; } };
-    await fn({ method, body }, res);
+    await fn({ method, body, headers: { origin } }, res);
     return out;
   };
   delete process.env.RAZORPAY_KEY_ID; delete process.env.RAZORPAY_KEY_SECRET;
@@ -129,6 +130,9 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   assert.notEqual(r1.body.reference, r2.body.reference, "every payment gets its own reference");
   assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "INV-7" })).body.reference, "INV-7", "a given invoice number is kept");
   assert.equal((await call(makeOrder, {}, "GET")).status, 405, "GET rejected");
+  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "https://evil.example")).status, 403, "orders from other sites rejected");
+  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "")).status, 403, "orders without an origin rejected");
+  assert.equal((await call(makeOrder, { amount: 100, name: "A" }, "POST", "https://sociocraftco.in")).status, 200, "non-www address accepted");
   const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1", address: "12 MG Road, Delhi 110001" });
   assert.deepEqual([ok.status, ok.body.order_id, ok.body.amount, ok.body.key], [200, "order_1", 149950, "rzp_test_id"], "order created in paise");
   assert.ok(!JSON.stringify(ok.body).includes("s3cret"), "secret never sent to the browser");

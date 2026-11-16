@@ -5,8 +5,13 @@ const text = (v, n) => String(v || "").trim().slice(0, n);
 // Unique reference for every payment, e.g. SC-261116-A3F9C2 (date in India time + random part).
 const reference = () => "SC-" + new Date(Date.now() + 330 * 60000).toISOString().slice(2, 10).replace(/-/g, "") + "-" + crypto.randomBytes(3).toString("hex").toUpperCase();
 
+// shortcut: the Origin check stops other websites and simple scripts, not a determined attacker who fakes the header;
+// orders cost nothing and charge no one. Add a rate limiter if junk orders ever show up in the dashboard.
+const SITE = /^https:\/\/(www\.)?sociocraftco\.in$/;
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
+  if (!SITE.test((req.headers && req.headers.origin) || "")) return res.status(403).json({ error: "Please pay from sociocraftco.in." });
   const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
   if (!id || !secret) return res.status(503).json({ error: "Online payment is not set up yet." });
 
@@ -22,7 +27,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: "Basic " + Buffer.from(id + ":" + secret).toString("base64"), "Content-Type": "application/json" },
       body: JSON.stringify({
         amount: paise, currency: "INR", receipt: invoice,
-        notes: { invoice, name, purpose: text(b.purpose, 80), business: text(b.business, 80), email: text(b.email, 120), phone: text(b.phone, 20), address: text(b.address, 250) }
+        notes: { invoice, name, purpose: text(b.purpose, 80), email: text(b.email, 120), phone: text(b.phone, 20), address: text(b.address, 250) }
       })
     });
     const order = await r.json();
