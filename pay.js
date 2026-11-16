@@ -45,7 +45,7 @@
 
       const rzp = new window.Razorpay({
         key: order.key, order_id: order.order_id, amount: order.amount, currency: "INR",
-        name: "Socio Craftco", description: (d.purpose + " · " + d.invoice).slice(0, 255),
+        name: "Socio Craftco", image: "https://www.sociocraftco.in/brand/logo-square.jpg", description: (d.purpose + " · " + d.invoice).slice(0, 255),
         prefill: { name: d.name, email: d.email, contact: d.phone },
         theme: { color: "#0150FD" },
         handler: async (paid) => {
