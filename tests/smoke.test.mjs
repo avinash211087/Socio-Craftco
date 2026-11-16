@@ -57,6 +57,11 @@ const payJsSrc = await readFile("pay.js", "utf8");
 assert.ok(pages[1].includes('id="payForm" novalidate inert') && payJsSrc.includes('form.removeAttribute("inert")'), "pay form must stay locked until pay.js loads");
 assert.ok(payJsSrc.includes("/api/razorpay-order") && payJsSrc.includes("/api/razorpay-verify"), "pay page must create orders and verify payments on the server");
 assert.ok(!/rzp_(live|test)_|key_secret|RAZORPAY_KEY_SECRET/i.test(pages[1] + payJsSrc), "no Razorpay keys in the pay page code");
+// showDone fills id="payDone<Key>" for each key; a missing one would leave a paid client stuck on "Confirming…".
+const doneKeys = [...payJsSrc.match(/showDone\(\{([^}]*)\}\)/)[1].matchAll(/(\w+):/g)].map((m) => m[1]);
+assert.ok(doneKeys.length >= 5, "success screen details must be found in pay.js");
+for (const k of ["", "Title", ...doneKeys.map((k) => k[0].toUpperCase() + k.slice(1))])
+  assert.ok(pages[1].includes(`id="payDone${k}"`), `pay.html is missing id="payDone${k}" for the success screen`);
 
 const localAssets = [html, ...pages].flatMap((doc) => [...doc.matchAll(/(?:^|\s)(?:src|href)="([^"]+)"/g)])
   .map((match) => match[1].split(/[?#]/)[0].replace(/^\//, ""))
