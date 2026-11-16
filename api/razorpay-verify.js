@@ -10,6 +10,7 @@ module.exports = (req, res) => {
   if (!secret || !order || !payment || !sig) return res.status(400).json({ ok: false });
 
   const expected = crypto.createHmac("sha256", secret).update(order + "|" + payment).digest("hex");
-  const ok = sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+  const got = Buffer.from(sig), want = Buffer.from(expected); // compare bytes: "é" is 1 character but 2 bytes
+  const ok = got.length === want.length && crypto.timingSafeEqual(got, want);
   res.status(ok ? 200 : 400).json({ ok });
 };

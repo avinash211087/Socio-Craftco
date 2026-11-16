@@ -17,7 +17,8 @@ const rawBody = (req) => new Promise((ok, fail) => {
 
 const validSignature = (body, sig, secret) => {
   const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
-  return sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+  const got = Buffer.from(sig), want = Buffer.from(expected); // compare bytes: "é" is 1 character but 2 bytes
+  return got.length === want.length && crypto.timingSafeEqual(got, want);
 };
 
 const inr = (paise) => "₹" + (paise / 100).toLocaleString("en-IN", { maximumFractionDigits: 2 });

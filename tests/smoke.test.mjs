@@ -85,6 +85,7 @@ const chatJs = await readFile("chat.js", "utf8");
 });
 const endpoint = html.match(/name="lead-endpoint" content="([^"]*)"/)[1]; // empty = WhatsApp only
 assert.ok(chatJs.includes(`const LEAD_ENDPOINT = "${endpoint}"`), "chat must save leads to the same endpoint as the site");
+assert.ok((await readFile("api/razorpay-webhook.js", "utf8")).includes(`const SHEET_ENDPOINT = "${endpoint}"`), "payments must go to the same Sheet as the leads");
 const sandbox = {};
 (await import("node:vm")).runInNewContext(chatJs, sandbox);
 const { match, detect, TOPICS, UI } = sandbox.socioChat;
@@ -163,6 +164,7 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: sig })).body.ok, true, "good signature accepted");
   assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_2", razorpay_signature: sig })).body.ok, false, "wrong payment rejected");
   assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: "x" })).body.ok, false, "bad signature rejected");
+  assert.equal((await call(verify, { razorpay_order_id: "order_1", razorpay_payment_id: "pay_1", razorpay_signature: "é".repeat(64) })).status, 400, "odd signature rejected, not a crash");
 }
 
 // Payment webhook: only signed Razorpay calls reach the Sheet, with the key; a Sheet refusal makes Razorpay retry.
@@ -186,6 +188,7 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   let rows = [], sheetReply = "ok";
   globalThis.fetch = async (url, o) => { rows.push(Object.fromEntries(o.body)); return { text: async () => sheetReply }; };
   assert.equal((await hook(event("order.paid"), "bad")).status, 400, "webhook: bad signature rejected");
+  assert.equal((await hook(event("order.paid"), "é".repeat(64))).status, 400, "webhook: odd signature rejected, not a crash");
   assert.equal(rows.length, 0, "webhook: nothing saved for a bad signature");
   assert.equal((await hook(event("payment.failed"))).status, 200, "webhook: other events ignored");
   assert.equal(rows.length, 0, "webhook: nothing saved for other events");

@@ -44,7 +44,7 @@ The smoke test protects critical form-safety, chat-state, CSP, SEO, and asset in
 - `contact.html`, `refund.html`, `delivery.html`, `privacy.html`, `terms.html` — contact and policy pages, styled by `legal.css`
 
 **Changing the WhatsApp number:** update every copy together: the `wa-number` meta in `index.html`, `WA_NUMBER` in `chat.js`, the link in `pay.js`, and the `wa.me` links in `packages.html`, `contact.html` and `pay.html`. The smoke test fails if any copy differs.
-- `brand/`, `work/`, `media/`, `fonts/` — static assets
+- `brand/`, `work/`, `fonts/` — static assets
 - `vercel.json` — security headers and cache rules
 
 ## Saving enquiries to a Google Sheet
@@ -54,7 +54,7 @@ The enquiry forms (contact, personalised preview and the chat assistant) can sav
 1. Create a new Google Sheet, then open **Extensions → Apps Script**.
 2. Replace the code with `tools/lead-sheet.gs` and save.
 3. **Deploy → New deployment → Web app**. Execute as: **Me**. Who has access: **Anyone**. Deploy and approve the permissions.
-4. Copy the web app URL (ends in `/exec`) into the `lead-endpoint` meta tag in `index.html` **and** into `LEAD_ENDPOINT` in `chat.js`, then deploy the site. The smoke test fails if the two differ.
+4. Copy the web app URL (ends in `/exec`) into the `lead-endpoint` meta tag in `index.html` **and** into `LEAD_ENDPOINT` in `chat.js` **and** into `SHEET_ENDPOINT` in `api/razorpay-webhook.js`, then deploy the site. The smoke test fails if the three differ.
 
 5. In the Apps Script editor, pick `setupDashboard` and press **Run** once. It names the first tab **Leads**, adds a **Status** dropdown (New → Contacted → Quoted → Won/Lost) and a **Notes** column, and builds a live **Dashboard** tab (totals, latest leads, leads per week, by service, pipeline, budget, source). Re-run it any time to rebuild the Dashboard.
 
