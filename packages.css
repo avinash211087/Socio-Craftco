@@ -134,7 +134,7 @@
 .pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; }
 .pay-field { display: grid; gap: .4rem; margin-bottom: 1.2rem; }
 .pay-field span { font-size: .88rem; color: var(--muted); }
-.pay-field input, .pay-field select {
+.pay-field input, .pay-field select, .pay-field textarea {
   width: 100%;
   min-height: 48px;
   padding: .75rem .95rem;
@@ -145,7 +145,8 @@
   font: inherit;
   font-size: 1rem;
 }
-.pay-field input:focus, .pay-field select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(1, 80, 253, .15); }
+.pay-field textarea { resize: vertical; line-height: 1.5; }
+.pay-field input:focus, .pay-field select:focus, .pay-field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(1, 80, 253, .15); }
 .pay-amount { position: relative; }
 .pay-amount i { position: absolute; left: .95rem; top: 50%; transform: translateY(-50%); font-style: normal; color: var(--muted); font-size: 1.2rem; }
 .pay-amount input { padding-left: 2.1rem; font-size: 1.3rem; font-weight: 500; }

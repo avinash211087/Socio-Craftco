@@ -129,10 +129,11 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   assert.notEqual(r1.body.reference, r2.body.reference, "every payment gets its own reference");
   assert.equal((await call(makeOrder, { amount: 100, name: "A", invoice: "INV-7" })).body.reference, "INV-7", "a given invoice number is kept");
   assert.equal((await call(makeOrder, {}, "GET")).status, 405, "GET rejected");
-  const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1" });
+  const ok = await call(makeOrder, { amount: 1499.5, name: "A", invoice: "SC-1", address: "12 MG Road, Delhi 110001" });
   assert.deepEqual([ok.status, ok.body.order_id, ok.body.amount, ok.body.key], [200, "order_1", 149950, "rzp_test_id"], "order created in paise");
   assert.ok(!JSON.stringify(ok.body).includes("s3cret"), "secret never sent to the browser");
   assert.equal(sent.url, "https://api.razorpay.com/v1/orders");
+  assert.equal(JSON.parse(sent.o.body).notes.address, "12 MG Road, Delhi 110001", "billing address goes to Razorpay with the payment");
   globalThis.fetch = realFetch;
   const { createHmac } = await import("node:crypto");
   const sig = createHmac("sha256", "s3cret").update("order_1|pay_1").digest("hex");

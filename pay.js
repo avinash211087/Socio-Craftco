@@ -6,7 +6,7 @@
   const msg = document.getElementById("payMsg");
   const button = form.querySelector('button[type="submit"]');
   const amountInput = form.elements.amount;
-  const SAVED = ["name", "phone", "email"];
+  const SAVED = ["name", "phone", "email", "address"];
 
   const rupees = (v) => Number(String(v).replace(/[,₹\s]/g, ""));
   const inr = (n) => "₹" + n.toLocaleString("en-IN", { maximumFractionDigits: 2 });
@@ -40,7 +40,7 @@
   };
   const waLink = (d, amount) => "https://wa.me/919119687579?text=" + encodeURIComponent(
     "Hi Socio Craftco, I'd like to pay " + inr(amount) + " (" + d.purpose + (d.invoice ? ", invoice " + d.invoice : "") +
-    "). Name: " + d.name + ", email: " + d.email + ", phone: " + d.phone + ".");
+    "). Name: " + d.name + ", email: " + d.email + ", phone: " + d.phone + ", address: " + d.address + ".");
   const post = (url, body) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
     .then((r) => r.json().then((j) => ({ status: r.status, ...j })));
   const loadCheckout = () => window.Razorpay ? Promise.resolve() : new Promise((ok, fail) => {

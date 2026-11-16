@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: "Basic " + Buffer.from(id + ":" + secret).toString("base64"), "Content-Type": "application/json" },
       body: JSON.stringify({
         amount: paise, currency: "INR", receipt: invoice,
-        notes: { invoice, name, purpose: text(b.purpose, 80), business: text(b.business, 80), email: text(b.email, 120), phone: text(b.phone, 20) }
+        notes: { invoice, name, purpose: text(b.purpose, 80), business: text(b.business, 80), email: text(b.email, 120), phone: text(b.phone, 20), address: text(b.address, 250) }
       })
     });
     const order = await r.json();
