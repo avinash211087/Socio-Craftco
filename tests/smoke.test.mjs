@@ -203,10 +203,12 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   const tabs = {};
   const tab = (name) => ({ rows: [], getLastRow() { return this.rows.length; }, appendRow(r) { this.rows.push(r); },
     createTextFinder(t) { return { findNext: () => this.rows.some((r) => r.some((c) => String(c).includes(t))) }; } });
+  let locked = false;
   const box = {
+    LockService: { getScriptLock: () => ({ tryLock: () => !locked && (locked = true), releaseLock: () => { locked = false; } }) },
     PropertiesService: { getScriptProperties: () => ({ getProperty: () => "sheetkey" }) },
     ContentService: { createTextOutput: (t) => t },
-    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (n) => tabs[n], insertSheet: (n) => (tabs[n] = tab(n)), getSheets: () => [tabs.Leads] }) }
+    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (n) => tabs[n], insertSheet: (n) => (tabs[n] = tab(n)), getSheets: () => [tabs.Leads] }), flush() {} }
   };
   tabs.Leads = tab("Leads");
   (await import("node:vm")).runInNewContext(gs, box);
@@ -215,6 +217,11 @@ for (const [v, ok] of [["hello", false], ["98765 43210", true], ["a@b.co", true]
   assert.equal(box.doPost({ parameter: { ...paid, key: "sheetkey" } }), "ok", "sheet: signed payment saved");
   assert.equal(box.doPost({ parameter: { ...paid, key: "sheetkey" } }), "ok", "sheet: repeat delivery accepted");
   assert.equal(tabs.Payments.rows.length, 2, "sheet: header plus one row, no duplicate");
+  assert.equal(locked, false, "sheet: lock released after each save");
+  locked = true;
+  assert.equal(box.doPost({ parameter: { ...paid, payment: "pay_10", key: "sheetkey" } }), "busy", "sheet: a save already running makes the next one wait for a retry");
+  assert.equal(tabs.Payments.rows.length, 2, "sheet: nothing written while locked");
+  locked = false;
   assert.equal(tabs.Leads.rows.length, 0, "sheet: payments stay out of the Leads tab");
 }
 

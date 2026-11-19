@@ -31,13 +31,22 @@ function savePayment(p) {
   if (!want || p.key !== want) return reply("forbidden");
   if (!p.payment || !p.name) return reply("missing fields");
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName("Payments") || ss.insertSheet("Payments");
-  if (sheet.getLastRow() === 0) sheet.appendRow(PAYMENT_HEADERS);
-  // Razorpay can send the same payment twice (retries), so skip a Payment ID that is already saved.
-  if (sheet.createTextFinder(p.payment).findNext()) return reply("ok");
-  sheet.appendRow([new Date()].concat(PAYMENT_FIELDS.map((key) => clean(p[key]))));
-  return reply("ok");
+  // One save at a time, so two copies of the same payment arriving together cannot both pass the duplicate check.
+  // "busy" fails the webhook and Razorpay retries it later.
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return reply("busy");
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName("Payments") || ss.insertSheet("Payments");
+    if (sheet.getLastRow() === 0) sheet.appendRow(PAYMENT_HEADERS);
+    // Razorpay can send the same payment twice (retries), so skip a Payment ID that is already saved.
+    if (sheet.createTextFinder(p.payment).findNext()) return reply("ok");
+    sheet.appendRow([new Date()].concat(PAYMENT_FIELDS.map((key) => clean(p[key]))));
+    SpreadsheetApp.flush(); // write the row before the next save is let in
+    return reply("ok");
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 // Run once from the Apps Script editor (select makePaymentKey → Run), then copy the key from the log

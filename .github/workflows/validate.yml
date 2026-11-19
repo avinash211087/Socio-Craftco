@@ -32,6 +32,9 @@ jobs:
           node --check api/razorpay-order.js
           node --check api/razorpay-verify.js
           node --check api/razorpay-webhook.js
+          node --check demo-assets/medspa-home.js
+          node --check demo-assets/medspa-treatments.js
+          node --check demo-assets/medspa-about.js
 
       - name: Run smoke checks
         run: node tests/smoke.test.mjs
